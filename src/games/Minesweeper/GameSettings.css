@@ -1,0 +1,47 @@
+/* src/games/Minesweeper/GameSettings.css */
+
+.game-settings {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px; /* Space between each setting option */
+    padding: 10px 20px;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    max-width: 600px;
+  }
+  
+  .setting-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .setting-option label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  .setting-option select {
+    padding: 8px 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.3s;
+  }
+  
+  .setting-option select:hover {
+    border-color: #aaa;
+  }
+  
+  .setting-option select:focus {
+    border-color: #666;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  }
+  

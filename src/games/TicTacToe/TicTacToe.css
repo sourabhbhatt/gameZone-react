@@ -1,0 +1,142 @@
+/* src/TicTacToe/TicTacToe.css */
+
+.tic-tac-toe {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    gap: 10px;
+    margin-top: 20px;
+    position: relative;
+    /* For strikethrough overlay */
+    width: 310px;
+    /* Match with total width of grid */
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    background-color: #f1f1f1;
+    border: 2px solid #ccc;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.cell span {
+    font-size: 48px;
+    line-height: 1;
+}
+
+/* Dark gray for X */
+.x-marker {
+    color: #333333;
+}
+
+/* Lighter gray for O */
+.o-marker {
+    color: #888888;
+}
+
+/* Strikethrough line */
+.strikethrough-line {
+    position: absolute;
+    height: 4px;
+    background-color: #ff6347;
+    transform-origin: center;
+    z-index: 1;
+}
+
+/* Strikethrough effect for winning cells */
+.winning-cell span {
+    color: #ff6347;
+    /* Optional: different color for winning line */
+    text-decoration: line-through;
+}
+
+/* Horizontal Lines */
+.horizontal-top {
+    top: 50px;
+    left: 0;
+    width: 310px;
+}
+
+.horizontal-middle {
+    top: 150px;
+    left: 0;
+    width: 310px;
+}
+
+.horizontal-bottom {
+    top: 250px;
+    left: 0;
+    width: 310px;
+}
+
+/* Vertical Lines */
+.vertical-left {
+    top: 0;
+    left: 50px;
+    width: 310px;
+    transform: rotate(90deg);
+}
+
+.vertical-center {
+    top: 0;
+    left: 150px;
+    width: 310px;
+    transform: rotate(90deg);
+}
+
+.vertical-right {
+    top: 0;
+    left: 250px;
+    width: 310px;
+    transform: rotate(90deg);
+}
+
+/* Diagonal Lines */
+.diagonal-top-left {
+    top: 0;
+    left: 0;
+    width: 438px;
+    /* Slightly wider to cover diagonal */
+    transform: rotate(45deg);
+}
+
+.diagonal-top-right {
+    top: 0;
+    left: 0;
+    width: 438px;
+    /* Slightly wider to cover diagonal */
+    transform: rotate(-45deg);
+}
+
+.winner {
+    margin-top: 20px;
+    font-size: 24px;
+    color: green;
+}
+
+.reset-button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.reset-button:hover {
+    background-color: #0056b3;
+}
