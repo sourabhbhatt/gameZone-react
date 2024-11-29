@@ -11,6 +11,11 @@
       [2, 5, 8],
       [0, 4, 8],
       [2, 4, 6]
+    ],
+     "entryFees" : [
+      { "value": 0, "description": "Free Game" },
+      { "value": 10, "description": "Win upto", "winUpto": 50,"recommended":true },
+      { "value": 50, "description": "Win upto", "winUpto": 100 }
     ]
   }
   

@@ -1,22 +1,20 @@
-import React, { memo, useCallback, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import GameHeader from "../../components/GameHeader";
-import TicTacToeBoard from "./TicTacToeBoard";
+
 import PlayerInfo from "./PlayerInfo";
-import Timer from "../../components/Timer";
-import useTicTacToe from "./hooks/useTicTacToe";
-import ticTacToeGameConfig from "./ticTacToeGameConfig.json";
 import WinnerModal from "./WinnerModal";
+import Timer from "../../components/Timer";
+import TicTacToeBoard from "./TicTacToeBoard";
+import useTicTacToe from "./hooks/useTicTacToe";
+import GameHeader from "../../components/GameHeader";
+import ticTacToeGameConfig from "./ticTacToeGameConfig.json";
 import tictactoegameBg from "./assets/tictactoegameBg.png";
-import SettingsModal from "../../components/SettingsModal";
 
 const TicTacToeGame = memo(() => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false); // Modal visibility
   const { selectedOption } = location.state || {}; // User's selection from state
-
   const { gameState, isPlayerTurn, winner, timeLeft, handleMove, getBotMove } =
     useTicTacToe(ticTacToeGameConfig, selectedOption);
 
@@ -47,8 +45,6 @@ const TicTacToeGame = memo(() => {
         showCrossIcon={true}
         showSettingsIcon={true}
         title={"Tic Tac Toe"}
-        onBack={() => setIsSettingsOpen(false)}
-        onMenuClick={() => setIsSettingsOpen(true)}
       />
 
       {/* Players Section */}
@@ -81,11 +77,6 @@ const TicTacToeGame = memo(() => {
 
       {/* Timer */}
       <Timer timeLeft={timeLeft} warningTimeStartsFrom={5} />
-
-      <SettingsModal
-        isOpen={isSettingsOpen}
-        onClose={() => setIsSettingsOpen(false)}
-      />
 
       {/* Game Status */}
       {winner && (

@@ -1,6 +1,13 @@
-import React, { memo } from "react";
-import { CiSettings } from "react-icons/ci";
-import { FaBitcoin, FaAngleLeft, FaTimes, FaEllipsisV,FaCog } from "react-icons/fa";
+import React, { memo, useCallback, useState } from "react";
+import SettingsModal from "./SettingsModal";
+import { useNavigate } from "react-router-dom";
+import {
+  FaBitcoin,
+  FaAngleLeft,
+  FaTimes,
+  FaEllipsisV,
+  FaCog,
+} from "react-icons/fa";
 
 const GameHeader = memo(
   ({
@@ -11,11 +18,24 @@ const GameHeader = memo(
     showCrossIcon = false,
     showSettingsIcon = false,
   }) => {
+    const navigate = useNavigate();
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false); // Modal visibility
+
+    const onBackPress = useCallback(() => {
+      if (onBack) onBack();
+      else navigate(-1);
+    }, [navigate, onBack]);
+
+    const onMenuPress = useCallback(() => {
+      if (onMenuClick) onMenuClick();
+      else setIsSettingsOpen((p) => !p);
+    }, [onMenuClick, setIsSettingsOpen]);
+
     return (
       <div className="flex items-center justify-between w-full px-4 py-3">
         {/* Back or Cross Icon */}
         <button
-          onClick={onBack}
+          onClick={onBackPress}
           className="text-2xl text-white flex items-center justify-center w-10 h-10 bg-white bg-opacity-10 rounded-full"
         >
           {showCrossIcon ? <FaTimes /> : <FaAngleLeft />}
@@ -44,12 +64,17 @@ const GameHeader = memo(
 
           {/* Menu Button */}
           <button
-            onClick={onMenuClick}
+            onClick={onMenuPress}
             className="flex items-center justify-center w-10 h-10 bg-white bg-opacity-10 rounded-full text-white text-2xl"
           >
             {showSettingsIcon ? <FaCog /> : <FaEllipsisV />}
           </button>
         </div>
+
+        <SettingsModal
+          isOpen={isSettingsOpen}
+          onClose={() => setIsSettingsOpen(false)}
+        />
       </div>
     );
   }

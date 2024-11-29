@@ -1,99 +1,121 @@
-import React, { useState } from "react";
-import GameBoard from "../../components/GameBoard";
-import PlayerHand from "../../components/PlayerHand";
-import { useSelector, useDispatch } from "react-redux";
-import { updateWallet } from "../../redux/slices/userSlice";
-import { createDeck, shuffleDeck, dealHand, VALUES } from "../../components/Deck";
+import React, { memo, useState } from "react";
+import { useNavigate } from "react-router-dom"; // To navigate to the game
 
-const NehlePeDelha = () => {
-    const dispatch = useDispatch();
-    const wallet = useSelector((state) => state.user.wallet);
-    const userDetails = useSelector((state) => state.user.userDetails);
-    
-    const [deck, setDeck] = useState(shuffleDeck(createDeck()));
-    const [botHand, setBotHand] = useState([]);
-    const [playerHand, setPlayerHand] = useState([]);
-    const [winner, setWinner] = useState(null);
-    const [gameStarted, setGameStarted] = useState(false);
+import GameHeader from "../../components/GameHeader";
+import PlayAndEarnButton from "../../components/PlayAndEarnButton";
+import EntryFeeSelector from "../../components/EntryFeeSelector";
+import SwitchToggler from "../../components/SwitchToggler"; // Import the new component
+import { useNotification } from "../../contexts/NotificationContext";
+import { GoInfo } from "react-icons/go";
+import Modal from "../../components/Modal";
+import nehlePeDelhaLanding from "./assets/nehlePeDelhaLanding.png"; // Import the local image
 
-    const startGame = () => {
-        if (wallet < 50) {
-            alert("Not enough money to start the game!");
-            return;
-        }
+const NehlePeDelha = memo(() => {
+  const navigate = useNavigate();
 
-        // Deduct money from the player's wallet
-        dispatch(updateWallet(-50));
+  const { showNotification } = useNotification();
+  const [currentFee, setCurrentFee] = useState(20);
+  const [selectedOption, setSelectedOption] = useState("A"); // Default selected option
+  const [isModalOpen, setIsModalOpen] = useState(false); // Manage modal state
 
-        // Shuffle deck and deal one card to each player
-        const newDeck = shuffleDeck(createDeck());
-        setDeck(newDeck);
-        setPlayerHand(dealHand(newDeck, 1));
-        setBotHand(dealHand(newDeck, 1));
-        setGameStarted(true);
-        setWinner(null);
-    };
+  const entryFees = [
+    { value: 0, description: "Free Game" },
+    { value: 20, description: "Win upto", winUpto: 100, recommended: true },
+    { value: 50, description: "Win upto", winUpto: 200 },
+  ];
 
-    const determineWinner = () => {
-        const playerCard = playerHand[0];
-        const botCard = botHand[0];
-
-        const playerValue = VALUES.indexOf(playerCard.value);
-        const botValue = VALUES.indexOf(botCard.value);
-
-        if (playerValue > botValue) {
-            setWinner("Player Wins!");
-            dispatch(updateWallet(100)); // Add winnings
-        } else if (botValue > playerValue) {
-            setWinner("Bot Wins!");
-        } else {
-            setWinner("It's a Tie!");
-        }
-    };
-
-    return (
-        <div className="min-h-screen bg-gray-200 flex flex-col items-center justify-center">
-            <GameBoard walletMoney={wallet}>
-                {/* Display Player and Bot */}
-                <div className="grid grid-cols-2 gap-8 items-center">
-                    {/* Player */}
-                    <PlayerHand
-                        player={{
-                            id: userDetails.id,
-                            name: userDetails.name,
-                            profilePic: userDetails.profilePic,
-                            hand: playerHand,
-                        }}
-                        isCurrentPlayer={gameStarted}
-                        onPlayCard={determineWinner}
-                    />
-
-                    {/* Bot */}
-                    <div className="flex flex-col items-center">
-                        <h2 className="text-lg font-bold mb-2">Bot</h2>
-                        <div className="w-[60px] h-[90px] bg-gray-400 border border-gray-600 rounded-lg shadow-md flex justify-center items-center">
-                            <span className="text-gray-500 text-sm">Folded</span>
-                        </div>
-                    </div>
-                </div>
-            </GameBoard>
-
-            {/* Start Game Button */}
-            {!gameStarted && (
-                <button
-                    onClick={startGame}
-                    className="mt-8 px-4 py-2 bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600"
-                >
-                    Start Game
-                </button>
-            )}
-
-            {/* Winner Announcement */}
-            {winner && (
-                <div className="mt-6 text-lg font-bold text-green-600">{winner}</div>
-            )}
-        </div>
+  const handlePlayClick = () => {
+    navigate("/nehlepedelha-game", {
+      state: {
+        selectedOption,
+        entryFee: currentFee,
+      },
+    });
+    showNotification(
+      "success",
+      `Starting game with ${selectedOption} and ₹${currentFee}`,
+      {
+        autoClose: 2000,
+      }
     );
-};
+  };
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+  return (
+    <div
+      className="flex flex-col items-center min-h-screen text-white bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage: `url(${nehlePeDelhaLanding})`, // Use the imported image here
+      }}
+    >
+      {/* Sticky Header */}
+      <GameHeader
+        walletAmount="30,000"
+        onBack={() =>
+          showNotification("info", "Back button clicked", { autoClose: 2000 })
+        }
+        onMenuClick={() =>
+          showNotification("info", "Menu clicked", { autoClose: 2000 })
+        }
+      />
+
+      {/* Main Content */}
+      <div className="w-full max-w-lg px-4 mt-12">
+        <PlayAndEarnButton className="absolute bottom-4 left-1/2 transform -translate-x-1/2" />
+        <div className="text-center mt-5">
+          <h1 className="text-3xl font-bold">Nehle Pe Dehla</h1>
+          <p className="text-sm text-gray-300 mt-2">
+            Challenge your skills and strategy in this fun card game. Compete to
+            win exciting rewards and enjoy the thrill of victory!
+          </p>
+        </div>
+
+        {/* How to Play Section */}
+        <div className="flex items-center justify-center mt-4 cursor-pointer">
+          <span className="text-gray-300 text-sm mr-2">How to play</span>
+          <GoInfo
+            className="text-white text-lg hover:scale-110 transition"
+            onClick={toggleModal}
+          />
+        </div>
+
+        <h4 className="text-center mt-2" >Select your team</h4>
+        {/* Toggle Options */}
+        <SwitchToggler
+          options={["A", "B"]}
+          selectedOption={selectedOption}
+          onToggle={setSelectedOption}
+        />
+
+        {/* Gradient Divider */}
+        <div
+          className="w-full h-[1px] bg-gradient-to-r
+          from-blue-200 via-blue-600 to-blue-200 my-6"
+        />
+
+        {/* Entry Fee Selector */}
+        <EntryFeeSelector
+          fees={entryFees}
+          defaultFee={currentFee}
+          onSelectFee={(fee) => setCurrentFee(fee)}
+          onPlayClick={handlePlayClick}
+        />
+      </div>
+
+      {/* Modal for Game Rules */}
+      <Modal isOpen={isModalOpen} title="Game Rules" onClose={toggleModal}>
+        <div className="text-sm text-gray-300 space-y-4">
+          <p>1. Select your team to start the game.</p>
+          <p>2. Choose an entry fee to participate in the game.</p>
+          <p>3. Play strategically to win points for your team.</p>
+          <p>4. The team with the highest points wins. Good luck!</p>
+        </div>
+      </Modal>
+    </div>
+  );
+});
 
 export default NehlePeDelha;

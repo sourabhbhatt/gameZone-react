@@ -9,20 +9,15 @@ import { useNotification } from "../../contexts/NotificationContext";
 import { GoInfo } from "react-icons/go";
 import Modal from "../../components/Modal";
 import tictactoeLanding from "./assets/tictactoeLanding.png"; // Import the local image
+import ticTacToeGameConfig from "./ticTacToeGameConfig.json";
 
-const TicTacToeLanding = memo(() => {
+const index = memo(() => {
   const navigate = useNavigate();
 
   const { showNotification } = useNotification();
   const [currentFee, setCurrentFee] = useState(10);
   const [selectedOption, setSelectedOption] = useState("X"); // Default selected option
   const [isModalOpen, setIsModalOpen] = useState(false); // Manage modal state
-
-  const entryFees = [
-    { value: 0, description: "Free Game" },
-    { value: 10, description: "Win upto", winUpto: 50,recommended:true },
-    { value: 50, description: "Win upto", winUpto: 100 },
-  ];
 
   const handlePlayClick = () => {
     navigate("/tictactoe-game", {
@@ -52,15 +47,7 @@ const TicTacToeLanding = memo(() => {
       }}
     >
       {/* Sticky Header */}
-      <GameHeader
-        walletAmount="20,500"
-        onBack={() =>
-          showNotification("info", "Back button clicked", { autoClose: 2000 })
-        }
-        onMenuClick={() =>
-          showNotification("info", "Menu clicked", { autoClose: 2000 })
-        }
-      />
+      <GameHeader walletAmount="20,500" />
 
       {/* Main Content */}
       <div className="w-full max-w-lg px-4 mt-12">
@@ -97,7 +84,7 @@ const TicTacToeLanding = memo(() => {
 
         {/* Entry Fee Selector */}
         <EntryFeeSelector
-          fees={entryFees}
+          fees={ticTacToeGameConfig.entryFees}
           defaultFee={currentFee}
           onSelectFee={(fee) => setCurrentFee(fee)}
           onPlayClick={handlePlayClick}
@@ -117,4 +104,4 @@ const TicTacToeLanding = memo(() => {
   );
 });
 
-export default TicTacToeLanding;
+export default index;

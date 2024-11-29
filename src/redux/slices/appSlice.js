@@ -7,12 +7,16 @@ const initialState = {
     musicEnabled: true,
     musicVolume: 50,
   },
+  connectionStatus: {
+    isOnline: navigator.onLine, // Initial status based on browser API
+  },
 };
 
 const appSlice = createSlice({
   name: "app",
   initialState,
   reducers: {
+    // Sound settings reducers
     toggleSound(state) {
       state.soundSettings.soundEnabled = !state.soundSettings.soundEnabled;
     },
@@ -25,6 +29,11 @@ const appSlice = createSlice({
     setMusicVolume(state, action) {
       state.soundSettings.musicVolume = action.payload;
     },
+
+    // Internet connection reducers
+    setConnectionStatus(state, action) {
+      state.connectionStatus.isOnline = action.payload;
+    },
   },
 });
 
@@ -33,6 +42,7 @@ export const {
   toggleMusic,
   setSoundVolume,
   setMusicVolume,
+  setConnectionStatus,
 } = appSlice.actions;
 
 export default appSlice.reducer;
