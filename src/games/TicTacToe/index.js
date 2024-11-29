@@ -1,25 +1,30 @@
-import React, { memo, useState } from "react";
-import { useNavigate } from "react-router-dom"; // To navigate to the game
+import React, { memo, useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import GameHeader from "../../components/GameHeader";
 import PlayAndEarnButton from "../../components/PlayAndEarnButton";
 import EntryFeeSelector from "../../components/EntryFeeSelector";
-import SwitchToggler from "../../components/SwitchToggler"; // Import the new component
+import SwitchToggler from "../../components/SwitchToggler";
 import { useNotification } from "../../contexts/NotificationContext";
 import { GoInfo } from "react-icons/go";
 import Modal from "../../components/Modal";
-import tictactoeLanding from "./assets/tictactoeLanding.png"; // Import the local image
+import tictactoeLanding from "./assets/tictactoeLanding.png";
 import ticTacToeGameConfig from "./ticTacToeGameConfig.json";
+import { useDispatch, useSelector } from "react-redux";
+import { updateWallet } from "../../redux/slices/userSlice";
 
-const index = memo(() => {
+const TicTacToeLanding = memo(() => {
+  const dispatch = useDispatch();
+  const walletAmount = useSelector((state) => state.user?.wallet);
   const navigate = useNavigate();
-
   const { showNotification } = useNotification();
+
   const [currentFee, setCurrentFee] = useState(10);
-  const [selectedOption, setSelectedOption] = useState("X"); // Default selected option
-  const [isModalOpen, setIsModalOpen] = useState(false); // Manage modal state
+  const [selectedOption, setSelectedOption] = useState("X");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handlePlayClick = () => {
+    dispatch(updateWallet(walletAmount - currentFee));
     navigate("/tictactoe-game", {
       state: {
         selectedOption,
@@ -28,25 +33,21 @@ const index = memo(() => {
     });
     showNotification(
       "success",
-      `Starting game with ${selectedOption} and ₹${currentFee}`,
-      {
-        autoClose: 2000,
-      }
+      `Starting the game as "${selectedOption}" with an entry fee of ₹${currentFee}`,
+      { autoClose: 1000 }
     );
   };
 
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
+  const toggleModal = useCallback(() => {
+    setIsModalOpen((prev) => !prev);
+  }, []);
 
   return (
     <div
       className="flex flex-col items-center min-h-screen text-white bg-cover bg-center bg-no-repeat"
-      style={{
-        backgroundImage: `url(${tictactoeLanding})`, // Use the imported image here
-      }}
+      style={{ backgroundImage: `url(${tictactoeLanding})` }}
     >
-      {/* Sticky Header */}
+      {/* Header */}
       <GameHeader walletAmount="20,500" />
 
       {/* Main Content */}
@@ -55,8 +56,8 @@ const index = memo(() => {
         <div className="text-center mt-5">
           <h1 className="text-3xl font-bold">Tic Tac Toe</h1>
           <p className="text-sm text-gray-300 mt-2">
-            Lorem ipsum dolor sit amet consectetur. Iaculis ac sed dui morbi
-            vulputate faucibus elementum eu eget. Eget semper.
+            Experience the timeless classic Tic Tac Toe! Challenge yourself or
+            your friends to align three X's or O's in a row and claim victory!
           </p>
         </div>
 
@@ -77,10 +78,7 @@ const index = memo(() => {
         />
 
         {/* Gradient Divider */}
-        <div
-          className="w-full h-[1px] bg-gradient-to-r
-          from-green-200 via-green-600 to-green-200 my-6"
-        />
+        <div className="w-full h-[1px] bg-gradient-to-r from-green-200 via-green-600 to-green-200 my-6" />
 
         {/* Entry Fee Selector */}
         <EntryFeeSelector
@@ -92,16 +90,47 @@ const index = memo(() => {
       </div>
 
       {/* Modal for Game Rules */}
-      <Modal isOpen={isModalOpen} title="Game Rules" onClose={toggleModal}>
-        <div className="text-sm text-gray-300 space-y-4">
-          <p>1. Select an entry fee to participate in the game.</p>
-          <p>2. Click "Play" to start the game.</p>
-          <p>3. The first player to align three X's or O's in a row wins.</p>
-          <p>4. Enjoy the game and earn rewards!</p>
+      <Modal
+        isOpen={isModalOpen}
+        title="How to play"
+        onClose={toggleModal}
+        modalStyles={{
+          backgroundColor: "#f8f9fa",
+          width: "70%",
+          maxWidth: "500px",
+          padding: "2rem",
+          style: { borderRadius: "10px" },
+        }}
+      >
+        <div className="text-gray-100">
+          {/* Game Description */}
+          <p className="text-sm text-black mb-4 leading-relaxed">
+            Align three of your symbols in a row—horizontally, vertically, or
+            diagonally—before the bot.
+          </p>
+
+          {/* Instructions Section */}
+          <h3 className="font-semibold text-lg text-black mt-4">
+            Instructions
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-sm text-gray-800">
+            <li>You play as X (or O), and the bot takes the other symbol.</li>
+            <li>Tap on any empty square to place your symbol.</li>
+            <li>The bot will then make its move automatically.</li>
+          </ul>
+
+          {/* Winning & Draw Section */}
+          <h3 className="font-semibold text-lg text-black mt-6">
+            Winning & Draw
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-sm text-gray-800">
+            <li>Win by making a row of three symbols.</li>
+            <li>If all squares are filled without a winner, it’s a draw.</li>
+          </ul>
         </div>
       </Modal>
     </div>
   );
 });
 
-export default index;
+export default TicTacToeLanding;

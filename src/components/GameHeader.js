@@ -8,6 +8,7 @@ import {
   FaEllipsisV,
   FaCog,
 } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const GameHeader = memo(
   ({
@@ -20,7 +21,7 @@ const GameHeader = memo(
   }) => {
     const navigate = useNavigate();
     const [isSettingsOpen, setIsSettingsOpen] = useState(false); // Modal visibility
-
+    const amountOnWallet = useSelector((state) => state.user?.wallet);
     const onBackPress = useCallback(() => {
       if (onBack) onBack();
       else navigate(-1);
@@ -41,7 +42,6 @@ const GameHeader = memo(
           {showCrossIcon ? <FaTimes /> : <FaAngleLeft />}
         </button>
 
-        {/* Title (Only Visible if Available) */}
         {title ? (
           <h1 className="flex-1 text-center text-lg font-bold text-white">
             {title}
@@ -52,12 +52,11 @@ const GameHeader = memo(
 
         {/* Wallet and Menu Section */}
         <div className="flex items-center space-x-3">
-          {/* Wallet Amount */}
-          {!title && (
+          {!title && amountOnWallet && (
             <div className="flex items-center px-3 py-1 bg-white bg-opacity-10 rounded-full">
               <FaBitcoin className="text-yellow-500 text-lg" />
               <span className="ml-2 text-lg font-bold text-white">
-                {walletAmount}
+                {amountOnWallet}
               </span>
             </div>
           )}

@@ -15,7 +15,7 @@ const TicTacToeGame = memo(() => {
   const navigate = useNavigate();
 
   const { selectedOption } = location.state || {}; // User's selection from state
-  const { gameState, isPlayerTurn, winner, timeLeft, handleMove, getBotMove } =
+  const { gameState, isPlayerTurn, winner, timeLeft, handleMove, getBotMove,winningCombination } =
     useTicTacToe(ticTacToeGameConfig, selectedOption);
 
   const handleModalClose = useCallback(() => {
@@ -33,6 +33,9 @@ const TicTacToeGame = memo(() => {
     }
   }, [isPlayerTurn, winner, getBotMove, handleMove]);
 
+
+  console.log("winningCombination",winningCombination);
+  
   return (
     <div
       className="flex flex-col items-center min-h-screen text-white bg-[#001e1c]"
@@ -70,7 +73,7 @@ const TicTacToeGame = memo(() => {
       <div className="mt-6">
         <TicTacToeBoard
           gameState={gameState}
-          winningCombination={ticTacToeGameConfig.winningCombinations}
+          winningCombination={winningCombination}
           onMove={handleMove}
         />
       </div>
