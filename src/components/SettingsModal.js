@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  FaVolumeUp,
-  FaVolumeMute,
-  FaMusic,
-  FaTimes,
-} from "react-icons/fa";
+import { FaVolumeUp, FaVolumeMute, FaMusic, FaTimes } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -104,7 +99,9 @@ const SettingsModal = ({ isOpen, onClose }) => {
               max="100"
               value={soundEnabled ? soundVolume : 0}
               className={`w-full ${
-                soundEnabled ? "accent-green-500" : "accent-gray-300"
+                soundEnabled
+                  ? "bg-gradient-to-r from-green-500 to-green-700"
+                  : "bg-black cursor-not-allowed"
               }`}
               disabled={!soundEnabled}
               onChange={(e) =>
@@ -182,8 +179,9 @@ const SettingsModal = ({ isOpen, onClose }) => {
               max="100"
               value={musicEnabled ? musicVolume : 0}
               className={`w-full ${
-                musicEnabled ? "accent-green-500" : "accent-gray-300"
-              }`}
+                musicEnabled
+                ? "bg-gradient-to-r from-green-500 to-green-700"
+                : "bg-black cursor-not-allowed"              }`}
               disabled={!musicEnabled}
               onChange={(e) =>
                 dispatch(setMusicVolume(parseInt(e.target.value)))

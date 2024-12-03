@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import GameHeader from "../../components/GameHeader";
@@ -12,9 +12,14 @@ import tictactoeLanding from "./assets/tictactoeLanding.png";
 import ticTacToeGameConfig from "./ticTacToeGameConfig.json";
 import { useDispatch, useSelector } from "react-redux";
 import { updateWallet } from "../../redux/slices/userSlice";
+import useSoundEffects from "../../hooks/useSoundEffects";
+import gameMusic from "./audio/game-music-loop.mp3";
+import gameStartSound from "./audio/game-start.mp3";
 
 const TicTacToeLanding = memo(() => {
   const dispatch = useDispatch();
+  const { initializeSound, playSound, stopSound, updateSound } =
+    useSoundEffects();
   const walletAmount = useSelector((state) => state.user?.wallet);
   const navigate = useNavigate();
   const { showNotification } = useNotification();
@@ -24,23 +29,25 @@ const TicTacToeLanding = memo(() => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handlePlayClick = () => {
-    dispatch(updateWallet(walletAmount - currentFee));
-    navigate("/tictactoe-game", {
-      state: {
-        selectedOption,
-        entryFee: currentFee,
-      },
-    });
-    showNotification(
-      "success",
-      `Starting the game as "${selectedOption}" with an entry fee of ₹${currentFee}`,
-      { autoClose: 1000 }
-    );
+    stopSound("gameMusic");
+    playSound("gameStartSound");
+    setTimeout(() => {
+      dispatch(updateWallet(walletAmount - currentFee));
+      navigate("/tictactoe-game", {
+        state: { selectedOption, entryFee: currentFee },
+      });
+    }, 700);
   };
 
   const toggleModal = useCallback(() => {
     setIsModalOpen((prev) => !prev);
   }, []);
+
+  useEffect(() => {
+    initializeSound("gameMusic", gameMusic, { volume: 0.5, loop: true });
+    initializeSound("gameStartSound", gameStartSound, { volume: 1.0 });
+    playSound("gameMusic");
+  }, [initializeSound]);
 
   return (
     <div

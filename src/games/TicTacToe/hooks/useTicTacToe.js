@@ -1,49 +1,122 @@
 import { useState, useEffect, useCallback } from "react";
+import useSoundEffects from "../../../hooks/useSoundEffects";
+import clickSound from "../audio/click.mp3";
+import gameOverSound from "../audio/game-over.mp3";
+import successSound from "../audio/success.mp3";
 
 const useTicTacToe = (ticTacToeGameConfig, selectedOption) => {
-  const [winner, setWinner] = useState(null);
+  const [status, setStatus] = useState(null); // Track game status: win, loss, tie
+  const [winnerDetails, setWinnerDetails] = useState(null); // Detailed info about the winner
   const [winningCombination, setWinningCombination] = useState(null); // Track winning combination
   const [gameState, setGameState] = useState(Array(9).fill(null));
   const [isPlayerTurn, setIsPlayerTurn] = useState(selectedOption === "X");
   const [timeLeft, setTimeLeft] = useState(ticTacToeGameConfig.playerTimeLimit);
 
+  const { initializeSound, playSound } = useSoundEffects();
+
+  useEffect(() => {
+    initializeSound("click", clickSound, { volume: 0.5 });
+    initializeSound("gameOver", gameOverSound, { volume: 0.7 });
+    initializeSound("success", successSound, { volume: 0.7 });
+  }, [initializeSound]);
+
+  const resetTimer = useCallback(() => {
+    setTimeLeft(ticTacToeGameConfig.playerTimeLimit);
+  }, [ticTacToeGameConfig.playerTimeLimit]);
+
+  const checkWinner = useCallback(
+    (board) => {
+      for (const combination of ticTacToeGameConfig.winningCombinations) {
+        const [a, b, c] = combination;
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+          return { winner: board[a], combination }; // Return winner and combination
+        }
+      }
+      return null;
+    },
+    [ticTacToeGameConfig.winningCombinations]
+  );
+
+  const handleGameEnd = useCallback(
+    (result) => {
+      if (result) {
+        setWinningCombination(result.combination);
+        if (result.winner === selectedOption) {
+          setStatus("win");
+          setWinnerDetails({ winner: "user", symbol: selectedOption }); // User wins
+          playSound("success");
+        } else {
+          setStatus("loss");
+          setWinnerDetails({ winner: "bot", symbol: result.winner }); // Bot wins
+          playSound("gameOver");
+        }
+      } else if (!gameState.includes(null)) {
+        setStatus("tie");
+        setWinnerDetails({ winner: "tie" }); // Game is tied
+        playSound("gameOver");
+      }
+    },
+    [gameState, playSound, selectedOption]
+  );
+
+  const minimax = (board, depth, isMaximizing) => {
+    const result = checkWinner(board);
+    if (result) {
+      if (result.winner === selectedOption) return -10 + depth; // User win
+      if (result.winner === (selectedOption === "X" ? "O" : "X"))
+        return 10 - depth; // Bot win
+    }
+    if (!board.includes(null)) return 0; // Tie
+
+    const botSymbol = selectedOption === "X" ? "O" : "X";
+
+    if (isMaximizing) {
+      let maxScore = -Infinity;
+      for (let i = 0; i < board.length; i++) {
+        if (board[i] === null) {
+          board[i] = botSymbol;
+          const score = minimax(board, depth + 1, false);
+          board[i] = null;
+          maxScore = Math.max(maxScore, score);
+        }
+      }
+      return maxScore;
+    } else {
+      let minScore = Infinity;
+      for (let i = 0; i < board.length; i++) {
+        if (board[i] === null) {
+          board[i] = selectedOption;
+          const score = minimax(board, depth + 1, true);
+          board[i] = null;
+          minScore = Math.min(minScore, score);
+        }
+      }
+      return minScore;
+    }
+  };
+
   const getBotMove = useCallback(() => {
-    const emptyCells = gameState
-      .map((cell, index) => (cell === null ? index : null))
-      .filter((index) => index !== null);
-    return emptyCells[Math.floor(Math.random() * emptyCells.length)];
-  }, [gameState]);
+    const botSymbol = selectedOption === "X" ? "O" : "X";
+    let bestMove = null;
+    let bestScore = -Infinity;
 
-  // Sound Effects
-  const playSound = useCallback((soundPath, volume = 0.5) => {
-    const sound = new Audio(soundPath);
-    sound.volume = volume;
-    sound.play();
-  }, []);
-
-  const playMoveSound = useCallback(() => {
-    playSound(require("../audio/click.wav"));
-  }, [playSound]);
-
-  const playGameOverSound = useCallback(() => {
-    playSound(require("../audio/game-over.wav"));
-  }, [playSound]);
-
-  // Check for a winner
-  const checkWinner = useCallback((board) => {
-    for (const combination of ticTacToeGameConfig.winningCombinations) {
-      const [a, b, c] = combination;
-      if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-        return { winner: board[a], combination }; // Return winner and combination
+    for (let i = 0; i < gameState.length; i++) {
+      if (gameState[i] === null) {
+        const newBoard = [...gameState];
+        newBoard[i] = botSymbol;
+        const score = minimax(newBoard, 0, false);
+        if (score > bestScore) {
+          bestScore = score;
+          bestMove = i;
+        }
       }
     }
-    return null;
-  }, [ticTacToeGameConfig.winningCombinations]);
+    return bestMove;
+  }, [gameState, selectedOption, minimax]);
 
-  // Handle player or bot move
   const handleMove = useCallback(
     (index) => {
-      if (gameState[index] || winner) return; // Prevent invalid moves
+      if (gameState[index] || status) return; // Prevent invalid moves
       const newGameState = [...gameState];
       newGameState[index] = isPlayerTurn
         ? selectedOption
@@ -51,13 +124,12 @@ const useTicTacToe = (ticTacToeGameConfig, selectedOption) => {
         ? "O"
         : "X";
       setGameState(newGameState);
-      playMoveSound();
+      playSound("click");
+
       const result = checkWinner(newGameState);
-      if (result) {
-        setWinner(result.winner);
-        setWinningCombination(result.combination); // Set winning combination
-        playGameOverSound();
-      } else {
+      handleGameEnd(result);
+
+      if (!result) {
         setIsPlayerTurn(!isPlayerTurn);
         resetTimer();
       }
@@ -66,37 +138,35 @@ const useTicTacToe = (ticTacToeGameConfig, selectedOption) => {
       gameState,
       isPlayerTurn,
       selectedOption,
-      winner,
-      playMoveSound,
-      playGameOverSound,
+      status,
       checkWinner,
+      playSound,
+      resetTimer,
+      handleGameEnd,
     ]
   );
 
-  const resetTimer = useCallback(() => {
-    setTimeLeft(ticTacToeGameConfig.playerTimeLimit);
-  }, [ticTacToeGameConfig.playerTimeLimit]);
-
   const handleTimeOut = useCallback(() => {
-    if (!isPlayerTurn) return; // Only execute if it's the player's turn
+    if (!isPlayerTurn) return;
     const botMove = getBotMove();
-    handleMove(botMove); // Bot plays if time runs out
+    handleMove(botMove);
   }, [getBotMove, handleMove, isPlayerTurn]);
 
   useEffect(() => {
-    if (timeLeft > 0 && !winner) {
+    if (timeLeft > 0 && !status) {
       const timer = setTimeout(() => setTimeLeft((prev) => prev - 1), 1000);
       return () => clearTimeout(timer);
-    } else if (timeLeft === 0 && !winner) {
-      handleTimeOut(); // Trigger timeout logic when the timer hits zero
+    } else if (timeLeft === 0 && !status) {
+      handleTimeOut();
     }
-  }, [timeLeft, winner, handleTimeOut]);
+  }, [timeLeft, status, handleTimeOut]);
 
   return {
     gameState,
     isPlayerTurn,
-    winner,
-    winningCombination, // Expose winning combination
+    status,
+    winnerDetails,
+    winningCombination,
     timeLeft,
     handleMove,
     getBotMove,

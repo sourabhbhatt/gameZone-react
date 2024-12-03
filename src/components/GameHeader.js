@@ -1,21 +1,16 @@
 import React, { memo, useCallback, useState } from "react";
 import SettingsModal from "./SettingsModal";
 import { useNavigate } from "react-router-dom";
-import {
-  FaBitcoin,
-  FaAngleLeft,
-  FaTimes,
-  FaEllipsisV,
-  FaCog,
-} from "react-icons/fa";
+import { FaAngleLeft, FaTimes, FaEllipsisV, FaCog } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { images } from "../assets/images";
 
 const GameHeader = memo(
   ({
     title,
-    walletAmount,
     onBack,
     onMenuClick,
+    menuButton = true,
     showCrossIcon = false,
     showSettingsIcon = false,
   }) => {
@@ -54,20 +49,24 @@ const GameHeader = memo(
         <div className="flex items-center space-x-3">
           {!title && amountOnWallet && (
             <div className="flex items-center px-3 py-1 bg-white bg-opacity-10 rounded-full">
-              <FaBitcoin className="text-yellow-500 text-lg" />
+              <img
+                src={images.coin}
+                alt="Coin"
+                className="w-5 h-5 object-contain"
+              />
               <span className="ml-2 text-lg font-bold text-white">
                 {amountOnWallet}
               </span>
             </div>
           )}
-
-          {/* Menu Button */}
-          <button
-            onClick={onMenuPress}
-            className="flex items-center justify-center w-10 h-10 bg-white bg-opacity-10 rounded-full text-white text-2xl"
-          >
-            {showSettingsIcon ? <FaCog /> : <FaEllipsisV />}
-          </button>
+          {!!menuButton && (
+            <button
+              onClick={onMenuPress}
+              className="flex items-center justify-center w-10 h-10 bg-white bg-opacity-10 rounded-full text-white text-2xl"
+            >
+              {showSettingsIcon ? <FaCog /> : <FaEllipsisV />}
+            </button>
+          )}
         </div>
 
         <SettingsModal

@@ -1,5 +1,5 @@
 import React, { memo, useState } from "react";
-import { images } from "../assets/images"; // Import the coin image
+import { images } from "../assets/images";
 
 const EntryFeeSelector = memo(
   ({ fees, defaultFee, onSelectFee, onPlayClick }) => {
@@ -34,7 +34,6 @@ const EntryFeeSelector = memo(
                 </div>
               )}
 
-              {/* Fee Amount */}
               <div className="flex items-center space-x-2">
                 <img
                   src={images.coin}
@@ -44,15 +43,12 @@ const EntryFeeSelector = memo(
                 <span className="text-lg font-bold">{fee.value}</span>
               </div>
 
-              {/* Divider */}
               <div className="w-full h-[1px] bg-gradient-to-r from-green-200 via-green-600 to-green-200 my-2"></div>
 
-              {/* Fee Description */}
               <p className="text-sm text-gray-300 font-semibold">
                 {fee.description}
               </p>
 
-              {/* Win Up To Section */}
               {fee.value !== 0 && (
                 <div className="flex items-center space-x-2 mt-2">
                   <img
@@ -68,7 +64,7 @@ const EntryFeeSelector = memo(
             </div>
           ))}
         </div>
-        {/* Play Button */}
+
         <div className="w-full px-6 mt-6">
           <button
             className="flex items-center justify-center w-full px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white 
