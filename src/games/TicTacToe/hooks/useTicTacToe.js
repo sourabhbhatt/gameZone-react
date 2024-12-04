@@ -1,16 +1,24 @@
 import { useState, useEffect, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateWallet } from "../../../redux/slices/userSlice";
 import useSoundEffects from "../../../hooks/useSoundEffects";
+
 import clickSound from "../audio/click.mp3";
 import gameOverSound from "../audio/game-over.mp3";
 import successSound from "../audio/success.mp3";
+import collectPointsSound from "../audio/collectPoints.mp3";
 
-const useTicTacToe = (ticTacToeGameConfig, selectedOption) => {
-  const [status, setStatus] = useState(null); // Track game status: win, loss, tie
-  const [winnerDetails, setWinnerDetails] = useState(null); // Detailed info about the winner
-  const [winningCombination, setWinningCombination] = useState(null); // Track winning combination
+const useTicTacToe = (config, selectedOption, entryFee) => {
+  const dispatch = useDispatch();
+
   const [gameState, setGameState] = useState(Array(9).fill(null));
-  const [isPlayerTurn, setIsPlayerTurn] = useState(selectedOption === "X");
-  const [timeLeft, setTimeLeft] = useState(ticTacToeGameConfig.playerTimeLimit);
+  const [isPlayerTurn, setIsPlayerTurn] = useState(true); // Player always starts
+  const [timeLeft, setTimeLeft] = useState(config.playerTimeLimit);
+  const [status, setStatus] = useState(null);
+  const [winnerDetails, setWinnerDetails] = useState(null);
+  const [winningCombination, setWinningCombination] = useState(null);
+
+  const walletAmount = useSelector((state) => state.user?.wallet);
 
   const { initializeSound, playSound } = useSoundEffects();
 
@@ -18,23 +26,31 @@ const useTicTacToe = (ticTacToeGameConfig, selectedOption) => {
     initializeSound("click", clickSound, { volume: 0.5 });
     initializeSound("gameOver", gameOverSound, { volume: 0.7 });
     initializeSound("success", successSound, { volume: 0.7 });
+    initializeSound("collectPoints", collectPointsSound, { volume: 0.7 });
   }, [initializeSound]);
 
   const resetTimer = useCallback(() => {
-    setTimeLeft(ticTacToeGameConfig.playerTimeLimit);
-  }, [ticTacToeGameConfig.playerTimeLimit]);
+    setTimeLeft(config.playerTimeLimit);
+  }, [config.playerTimeLimit]);
 
-  const checkWinner = useCallback(
+  const determineWinner = useCallback(
     (board) => {
-      for (const combination of ticTacToeGameConfig.winningCombinations) {
+      for (const combination of config.winningCombinations) {
         const [a, b, c] = combination;
         if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-          return { winner: board[a], combination }; // Return winner and combination
+          return { winner: board[a], combination };
         }
       }
       return null;
     },
-    [ticTacToeGameConfig.winningCombinations]
+    [config.winningCombinations]
+  );
+
+  const updateWalletAmount = useCallback(
+    (amount) => {
+      dispatch(updateWallet(walletAmount + amount));
+    },
+    [dispatch, walletAmount]
   );
 
   const handleGameEnd = useCallback(
@@ -43,80 +59,85 @@ const useTicTacToe = (ticTacToeGameConfig, selectedOption) => {
         setWinningCombination(result.combination);
         if (result.winner === selectedOption) {
           setStatus("win");
-          setWinnerDetails({ winner: "user", symbol: selectedOption }); // User wins
+          setWinnerDetails({ winner: "user", symbol: selectedOption });
+          updateWalletAmount(entryFee);
           playSound("success");
+          setTimeout(() => playSound("collectPoints"), 500);
         } else {
           setStatus("loss");
-          setWinnerDetails({ winner: "bot", symbol: result.winner }); // Bot wins
+          setWinnerDetails({ winner: "bot", symbol: result.winner });
+          updateWalletAmount(-entryFee);
           playSound("gameOver");
         }
       } else if (!gameState.includes(null)) {
         setStatus("tie");
-        setWinnerDetails({ winner: "tie" }); // Game is tied
+        setWinnerDetails({ winner: "tie" });
         playSound("gameOver");
       }
     },
-    [gameState, playSound, selectedOption]
+    [gameState, selectedOption, entryFee, updateWalletAmount, playSound]
   );
 
-  const minimax = (board, depth, isMaximizing) => {
-    const result = checkWinner(board);
-    if (result) {
-      if (result.winner === selectedOption) return -10 + depth; // User win
-      if (result.winner === (selectedOption === "X" ? "O" : "X"))
-        return 10 - depth; // Bot win
-    }
-    if (!board.includes(null)) return 0; // Tie
-
-    const botSymbol = selectedOption === "X" ? "O" : "X";
-
-    if (isMaximizing) {
-      let maxScore = -Infinity;
-      for (let i = 0; i < board.length; i++) {
-        if (board[i] === null) {
-          board[i] = botSymbol;
-          const score = minimax(board, depth + 1, false);
-          board[i] = null;
-          maxScore = Math.max(maxScore, score);
-        }
+  const minimax = useCallback(
+    (board, depth, isMaximizing) => {
+      const result = determineWinner(board);
+      if (result) {
+        if (result.winner === selectedOption) return -10 + depth;
+        if (result.winner === (selectedOption === "X" ? "O" : "X"))
+          return 10 - depth;
       }
-      return maxScore;
-    } else {
-      let minScore = Infinity;
-      for (let i = 0; i < board.length; i++) {
-        if (board[i] === null) {
-          board[i] = selectedOption;
-          const score = minimax(board, depth + 1, true);
-          board[i] = null;
-          minScore = Math.min(minScore, score);
-        }
+      if (!board.includes(null)) return 0;
+
+      const botSymbol = selectedOption === "X" ? "O" : "X";
+      if (isMaximizing) {
+        let maxScore = -Infinity;
+        board.forEach((cell, index) => {
+          if (cell === null) {
+            board[index] = botSymbol;
+            maxScore = Math.max(maxScore, minimax(board, depth + 1, false));
+            board[index] = null;
+          }
+        });
+        return maxScore;
+      } else {
+        let minScore = Infinity;
+        board.forEach((cell, index) => {
+          if (cell === null) {
+            board[index] = selectedOption;
+            minScore = Math.min(minScore, minimax(board, depth + 1, true));
+            board[index] = null;
+          }
+        });
+        return minScore;
       }
-      return minScore;
-    }
-  };
+    },
+    [determineWinner, selectedOption]
+  );
 
   const getBotMove = useCallback(() => {
     const botSymbol = selectedOption === "X" ? "O" : "X";
     let bestMove = null;
     let bestScore = -Infinity;
 
-    for (let i = 0; i < gameState.length; i++) {
-      if (gameState[i] === null) {
+    gameState.forEach((cell, index) => {
+      if (cell === null) {
         const newBoard = [...gameState];
-        newBoard[i] = botSymbol;
+        newBoard[index] = botSymbol;
         const score = minimax(newBoard, 0, false);
         if (score > bestScore) {
           bestScore = score;
-          bestMove = i;
+          bestMove = index;
         }
       }
-    }
+    });
+
     return bestMove;
-  }, [gameState, selectedOption, minimax]);
+  }, [gameState, minimax, selectedOption]);
 
   const handleMove = useCallback(
     (index) => {
-      if (gameState[index] || status) return; // Prevent invalid moves
+      if (gameState[index] || status) return;
+
       const newGameState = [...gameState];
       newGameState[index] = isPlayerTurn
         ? selectedOption
@@ -126,11 +147,11 @@ const useTicTacToe = (ticTacToeGameConfig, selectedOption) => {
       setGameState(newGameState);
       playSound("click");
 
-      const result = checkWinner(newGameState);
+      const result = determineWinner(newGameState);
       handleGameEnd(result);
 
       if (!result) {
-        setIsPlayerTurn(!isPlayerTurn);
+        setIsPlayerTurn((prev) => !prev);
         resetTimer();
       }
     },
@@ -139,17 +160,18 @@ const useTicTacToe = (ticTacToeGameConfig, selectedOption) => {
       isPlayerTurn,
       selectedOption,
       status,
-      checkWinner,
+      determineWinner,
+      handleGameEnd,
       playSound,
       resetTimer,
-      handleGameEnd,
     ]
   );
 
   const handleTimeOut = useCallback(() => {
-    if (!isPlayerTurn) return;
-    const botMove = getBotMove();
-    handleMove(botMove);
+    if (isPlayerTurn) {
+      const botMove = getBotMove();
+      handleMove(botMove);
+    }
   }, [getBotMove, handleMove, isPlayerTurn]);
 
   useEffect(() => {

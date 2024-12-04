@@ -4,6 +4,7 @@ import GameHeader from "../../components/GameHeader";
 import { images } from "../../assets/images";
 import PlayerInfo from "./PlayerInfo";
 import { BiRefresh } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 const headingInfo = {
   win: {
@@ -31,6 +32,7 @@ const GameSuccessModal = ({
   status = "win",
 }) => {
   const { title, icon, description } = headingInfo[status] || headingInfo.win;
+  const navigate = useNavigate();
 
   return (
     <div
@@ -100,7 +102,7 @@ const GameSuccessModal = ({
         className="w-[90%] flex justify-center items-center mt-10 px-8 py-4 bg-gradient-to-r from-green-500 via-green-600 to-green-500 text-white 
         text-lg font-bold shadow-lg hover:shadow-[0_0_20px_rgba(34,197,94,0.8)] transition-all
        hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300"
-        onClick={() => window.location.reload()}
+        onClick={() => navigate(-1)}
       >
         <span className="flex items-center space-x-2">
           <BiRefresh className="h-6 w-6" />

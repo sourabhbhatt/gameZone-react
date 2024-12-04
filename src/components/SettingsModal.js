@@ -8,6 +8,7 @@ import {
   setSoundVolume,
   setMusicVolume,
 } from "../redux/slices/appSlice";
+import '../App.css';
 
 const SettingsModal = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();

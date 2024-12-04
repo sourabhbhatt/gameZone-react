@@ -1,7 +1,7 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 const TicTacToeBoard = ({ gameState, onMove, winningCombination }) => {
-  // Function to calculate line position and orientation based on winning combination
   const getLineStyle = (combination) => {
     if (!combination) return {};
     const [a, b, c] = combination;
@@ -54,7 +54,6 @@ const TicTacToeBoard = ({ gameState, onMove, winningCombination }) => {
       className="relative w-[280px] h-[280px] rounded-xl bg-[#001e1c]"
       style={{ boxShadow: "0 0 5px rgba(106, 255, 176, 0.5)" }}
     >
-      {/* Winning Line */}
       {winningCombination && (
         <div
           className="absolute bg-gradient-to-r from-green-400 via-green-600 to-green-400"
@@ -62,15 +61,12 @@ const TicTacToeBoard = ({ gameState, onMove, winningCombination }) => {
         ></div>
       )}
 
-      {/* Vertical Lines */}
       <div className="absolute top-0 left-[33.33%] w-[1px] h-full bg-gradient-to-b from-green-200 via-green-400 to-green-200" />
       <div className="absolute top-0 left-[66.66%] w-[1px] h-full bg-gradient-to-b from-green-200 via-green-400 to-green-200" />
 
-      {/* Horizontal Lines */}
       <div className="absolute left-0 top-[33.33%] w-full h-[1px] bg-gradient-to-r from-green-200 via-green-400 to-green-200" />
       <div className="absolute left-0 top-[66.66%] w-full h-[1px] bg-gradient-to-r from-green-200 via-green-400 to-green-200" />
 
-      {/* Grid */}
       <div className="grid grid-cols-3 grid-rows-3 w-full h-full">
         {gameState.map((cell, index) => (
           <button
@@ -79,17 +75,29 @@ const TicTacToeBoard = ({ gameState, onMove, winningCombination }) => {
             onClick={() => onMove(index)}
             disabled={!!cell}
           >
-            <span
-              className={`text-5xl font-bold transition-transform duration-500 ${
+            <motion.span
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{
+                scale: cell ? 1.1 : 0,
+                opacity: cell ? 1 : 0,
+                rotate: cell ? 180 : 0,
+              }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className={`text-5xl font-bold transition-transform ${
                 cell === "X"
-                  ? "text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-green-600 to-green-400 animate-scale"
+                  ? "text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-green-600 to-green-400"
                   : cell === "O"
-                  ? "text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-600 to-purple-400 animate-scale"
+                  ? "text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-green-600 to-green-400"
                   : ""
               }`}
+              style={{
+                textShadow: cell
+                  ? "0 0 8px rgba(106, 255, 176, 0.3), 0 0 16px rgba(106, 255, 176, 0.6)"
+                  : "",
+              }}
             >
               {cell}
-            </span>
+            </motion.span>
           </button>
         ))}
       </div>
