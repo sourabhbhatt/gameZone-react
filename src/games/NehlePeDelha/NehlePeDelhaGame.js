@@ -16,22 +16,19 @@ import GameHeader from "../../components/GameHeader";
 const NehlePeDelhaGame = () => {
   const dispatch = useDispatch();
 
-  // State management
-  const [botHand, setBotHand] = useState([]); // Bot's card
-  const [playerHand, setPlayerHand] = useState([]); // Player's card
-  const [winner, setWinner] = useState(null); // Winner of the game
-  const [cardsRevealed, setCardsRevealed] = useState(false); // Whether cards are revealed
+  const [botHand, setBotHand] = useState([]);
+  const [playerHand, setPlayerHand] = useState([]);
+  const [winner, setWinner] = useState(null);
+  const [cardsRevealed, setCardsRevealed] = useState(false);
 
-  // Helper function to start the game
   const startGame = useCallback(() => {
-    const newDeck = shuffleDeck(createDeck()); // Create and shuffle a new deck
-    setPlayerHand(dealHand(newDeck, 1)); // Deal one card to the player
-    setBotHand(dealHand(newDeck, 1)); // Deal one card to the bot
-    setCardsRevealed(false); // Reset revealed state
-    setWinner(null); // Reset winner
+    const newDeck = shuffleDeck(createDeck());
+    setPlayerHand(dealHand(newDeck, 1));
+    setBotHand(dealHand(newDeck, 1));
+    setCardsRevealed(false);
+    setWinner(null);
   }, []);
 
-  // Helper function to determine the winner
   const determineWinner = useCallback(() => {
     const playerCard = playerHand[0];
     const botCard = botHand[0];
@@ -45,7 +42,7 @@ const NehlePeDelhaGame = () => {
 
     if (playerValue > botValue) {
       setWinner("Player Wins!");
-      dispatch(updateWallet(100)); // Add winnings to player's wallet
+      dispatch(updateWallet(100));
     } else if (botValue > playerValue) {
       setWinner("Bot Wins!");
     } else {
@@ -53,13 +50,11 @@ const NehlePeDelhaGame = () => {
     }
   }, [playerHand, botHand, dispatch]);
 
-  // Reveal cards and determine the winner
   const revealCards = () => {
     setCardsRevealed(true);
     determineWinner();
   };
 
-  // Automatically start the game on the first load
   useEffect(() => {
     startGame();
   }, [startGame]);
@@ -71,12 +66,9 @@ const NehlePeDelhaGame = () => {
         backgroundImage: `url(${nehlePeDelhaLanding})`,
       }}
     >
-      {/* Game Header */}
       <GameHeader showCrossIcon showSettingsIcon title="Nehle Pe Dehla" />
 
-      {/* Game Board */}
       <div className="flex flex-col items-center mt-6 space-y-6">
-        {/* Bot Info and Card */}
         <PlayerInfo name="Bot" isBot={true} />
         {cardsRevealed ? (
           <CardFront
@@ -88,14 +80,12 @@ const NehlePeDelhaGame = () => {
           <CardBack />
         )}
 
-        {/* Game Status */}
         {winner && (
           <div className="text-center text-lg font-semibold text-green-400">
             {winner}
           </div>
         )}
 
-        {/* Player Info and Card */}
         {cardsRevealed ? (
           <CardFront
             value={playerHand[0]?.value}
@@ -107,7 +97,6 @@ const NehlePeDelhaGame = () => {
         )}
         <PlayerInfo name="You" avatar={require("../../assets/avatar.png")} />
 
-        {/* Action Buttons */}
         {!cardsRevealed ? (
           <button
             onClick={revealCards}
