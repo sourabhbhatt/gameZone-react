@@ -1,102 +1,129 @@
-import React, { useState } from "react";
-import GameBoard from "../../components/GameBoard";
-import PlayerHand from "../../components/PlayerHand";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateWallet } from "../../redux/slices/userSlice";
+import nehlePeDelhaLanding from "./assets/nehlePeDelhaLanding.png";
 import {
   createDeck,
   shuffleDeck,
   dealHand,
   VALUES,
 } from "../../components/Deck";
+import PlayerInfo from "./PlayerInfo";
+import CardFront from "../../components/CardFront";
+import CardBack from "../../components/CardBack";
+import GameHeader from "../../components/GameHeader";
 
 const NehlePeDelhaGame = () => {
   const dispatch = useDispatch();
-  const wallet = useSelector((state) => state.user.wallet);
-  const userDetails = useSelector((state) => state.user.userDetails);
 
-  const [deck, setDeck] = useState(shuffleDeck(createDeck()));
-  const [botHand, setBotHand] = useState([]);
-  const [playerHand, setPlayerHand] = useState([]);
-  const [winner, setWinner] = useState(null);
-  const [gameStarted, setGameStarted] = useState(false);
+  // State management
+  const [botHand, setBotHand] = useState([]); // Bot's card
+  const [playerHand, setPlayerHand] = useState([]); // Player's card
+  const [winner, setWinner] = useState(null); // Winner of the game
+  const [cardsRevealed, setCardsRevealed] = useState(false); // Whether cards are revealed
 
-  const startGame = () => {
-    if (wallet < 50) {
-      alert("Not enough money to start the game!");
-      return;
-    }
+  // Helper function to start the game
+  const startGame = useCallback(() => {
+    const newDeck = shuffleDeck(createDeck()); // Create and shuffle a new deck
+    setPlayerHand(dealHand(newDeck, 1)); // Deal one card to the player
+    setBotHand(dealHand(newDeck, 1)); // Deal one card to the bot
+    setCardsRevealed(false); // Reset revealed state
+    setWinner(null); // Reset winner
+  }, []);
 
-    // Deduct money from the player's wallet
-    dispatch(updateWallet(-50));
-
-    // Shuffle deck and deal one card to each player
-    const newDeck = shuffleDeck(createDeck());
-    setDeck(newDeck);
-    setPlayerHand(dealHand(newDeck, 1));
-    setBotHand(dealHand(newDeck, 1));
-    setGameStarted(true);
-    setWinner(null);
-  };
-
-  const determineWinner = () => {
+  // Helper function to determine the winner
+  const determineWinner = useCallback(() => {
     const playerCard = playerHand[0];
     const botCard = botHand[0];
 
+    if (!playerCard || !botCard) return;
+
     const playerValue = VALUES.indexOf(playerCard.value);
     const botValue = VALUES.indexOf(botCard.value);
+    console.log("playerValue", playerValue);
+    console.log("botValue", botValue);
 
     if (playerValue > botValue) {
       setWinner("Player Wins!");
-      dispatch(updateWallet(100)); // Add winnings
+      dispatch(updateWallet(100)); // Add winnings to player's wallet
     } else if (botValue > playerValue) {
       setWinner("Bot Wins!");
     } else {
       setWinner("It's a Tie!");
     }
+  }, [playerHand, botHand, dispatch]);
+
+  // Reveal cards and determine the winner
+  const revealCards = () => {
+    setCardsRevealed(true);
+    determineWinner();
   };
 
+  // Automatically start the game on the first load
+  useEffect(() => {
+    startGame();
+  }, [startGame]);
+
   return (
-    <div className="min-h-screen bg-gray-200 flex flex-col items-center justify-center">
-      <GameBoard walletMoney={wallet}>
-        {/* Display Player and Bot */}
-        <div className="grid grid-cols-2 gap-8 items-center">
-          {/* Player */}
-          <PlayerHand
-            player={{
-              id: userDetails.id,
-              name: userDetails.name,
-              profilePic: userDetails.profilePic,
-              hand: playerHand,
-            }}
-            isCurrentPlayer={gameStarted}
-            onPlayCard={determineWinner}
+    <div
+      className="flex flex-col items-center min-h-screen text-white bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage: `url(${nehlePeDelhaLanding})`,
+      }}
+    >
+      {/* Game Header */}
+      <GameHeader showCrossIcon showSettingsIcon title="Nehle Pe Dehla" />
+
+      {/* Game Board */}
+      <div className="flex flex-col items-center mt-6 space-y-6">
+        {/* Bot Info and Card */}
+        <PlayerInfo name="Bot" isBot={true} />
+        {cardsRevealed ? (
+          <CardFront
+            value={botHand[0]?.value}
+            suit={botHand[0]?.suit}
+            isPlayerCard={false}
           />
+        ) : (
+          <CardBack />
+        )}
 
-          {/* Bot */}
-          <div className="flex flex-col items-center">
-            <h2 className="text-lg font-bold mb-2">Bot</h2>
-            <div className="w-[60px] h-[90px] bg-gray-400 border border-gray-600 rounded-lg shadow-md flex justify-center items-center">
-              <span className="text-gray-500 text-sm">Folded</span>
-            </div>
+        {/* Game Status */}
+        {winner && (
+          <div className="text-center text-lg font-semibold text-green-400">
+            {winner}
           </div>
-        </div>
-      </GameBoard>
+        )}
 
-      {/* Start Game Button */}
-      {!gameStarted && (
-        <button
-          onClick={startGame}
-          className="mt-8 px-4 py-2 bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600"
-        >
-          Start Game
-        </button>
-      )}
+        {/* Player Info and Card */}
+        {cardsRevealed ? (
+          <CardFront
+            value={playerHand[0]?.value}
+            suit={playerHand[0]?.suit}
+            isPlayerCard={true}
+          />
+        ) : (
+          <CardBack />
+        )}
+        <PlayerInfo name="You" avatar={require("../../assets/avatar.png")} />
 
-      {/* Winner Announcement */}
-      {winner && (
-        <div className="mt-6 text-lg font-bold text-green-600">{winner}</div>
-      )}
+        {/* Action Buttons */}
+        {!cardsRevealed ? (
+          <button
+            onClick={revealCards}
+            className="mt-6 px-6 py-3 bg-blue-500 text-white rounded-lg shadow-md hover:scale-105 transition-all"
+          >
+            Reveal Cards
+          </button>
+        ) : (
+          <button
+            onClick={startGame}
+            className="mt-6 px-6 py-3 bg-purple-500 text-white rounded-lg shadow-md hover:scale-105 transition-all"
+          >
+            Play Again
+          </button>
+        )}
+      </div>
     </div>
   );
 };
