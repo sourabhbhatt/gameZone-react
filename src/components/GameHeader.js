@@ -13,10 +13,13 @@ const GameHeader = memo(
     menuButton = true,
     showCrossIcon = false,
     showSettingsIcon = false,
+    bgColor = null,
+    bgImage = null,
   }) => {
     const navigate = useNavigate();
     const [isSettingsOpen, setIsSettingsOpen] = useState(false); // Modal visibility
     const amountOnWallet = useSelector((state) => state.user?.wallet);
+
     const onBackPress = useCallback(() => {
       if (onBack) onBack();
       else navigate(-1);
@@ -27,9 +30,19 @@ const GameHeader = memo(
       else setIsSettingsOpen((p) => !p);
     }, [onMenuClick, setIsSettingsOpen]);
 
+    // Dynamic Background Style
+    const backgroundStyle = bgImage
+      ? { backgroundImage: `url(${bgImage})`, backgroundSize: "cover", backgroundPosition: "center" }
+      : bgColor
+      ? { backgroundColor: bgColor }
+      : {};
+
     return (
-      <div className="flex items-center justify-between w-full px-4 py-3">
-        {/* Back or Cross Icon */}
+      <div
+        className="flex items-center justify-between w-full px-4 py-3"
+        style={backgroundStyle}
+      >
+        {/* Back Button */}
         <button
           onClick={onBackPress}
           className="text-2xl text-white flex items-center justify-center w-10 h-10 bg-white bg-opacity-10 rounded-full"
@@ -37,6 +50,7 @@ const GameHeader = memo(
           {showCrossIcon ? <FaTimes /> : <FaAngleLeft />}
         </button>
 
+        {/* Title */}
         {title ? (
           <h1 className="flex-1 text-center text-lg font-bold text-white">
             {title}
@@ -69,6 +83,7 @@ const GameHeader = memo(
           )}
         </div>
 
+        {/* Settings Modal */}
         <SettingsModal
           isOpen={isSettingsOpen}
           onClose={() => setIsSettingsOpen(false)}

@@ -1,0 +1,16 @@
+{
+    "gameName": "Teen Patti",
+    "rules": {
+      "cardsPerPlayer": 3,
+      "winningConditions": [
+        { "name": "Trail", "priority": 1 },
+        { "name": "Pure Sequence", "priority": 2 },
+        { "name": "Sequence", "priority": 3 },
+        { "name": "Color", "priority": 4 },
+        { "name": "Pair", "priority": 5 },
+        { "name": "High Card", "priority": 6 }
+      ],
+      "tieBreaker": "highCard"
+    }
+  }
+  

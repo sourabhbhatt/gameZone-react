@@ -1,25 +1,27 @@
+import { useDispatch } from "react-redux";
 import React, { useCallback, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import LobbyBg from "./assets/LobbyBg.png";
+import BottomSection from "./BottomSection";
+import PlayerInfoHeader from "./PlayerInfoHeader";
+import PlayerCardSection from "./PlayerCardSection";
+import GameHeader from "../../components/GameHeader";
+import CountdownRevealModal from "./CountdownRevealModal";
 import { updateWallet } from "../../redux/slices/userSlice";
-import nehlePeDelhaLanding from "./assets/nehlePeDelhaLanding.png";
 import {
   createDeck,
   shuffleDeck,
   dealHand,
   VALUES,
 } from "../../components/Deck";
-import PlayerInfo from "./PlayerInfo";
-import CardFront from "../../components/CardFront";
-import CardBack from "../../components/CardBack";
-import GameHeader from "../../components/GameHeader";
 
 const NehlePeDelhaGame = () => {
   const dispatch = useDispatch();
-
+  const [currentBetAmount, setCurrentBetAmount] = useState(10);
   const [botHand, setBotHand] = useState([]);
   const [playerHand, setPlayerHand] = useState([]);
   const [winner, setWinner] = useState(null);
   const [cardsRevealed, setCardsRevealed] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const startGame = useCallback(() => {
     const newDeck = shuffleDeck(createDeck());
@@ -37,8 +39,6 @@ const NehlePeDelhaGame = () => {
 
     const playerValue = VALUES.indexOf(playerCard.value);
     const botValue = VALUES.indexOf(botCard.value);
-    console.log("playerValue", playerValue);
-    console.log("botValue", botValue);
 
     if (playerValue > botValue) {
       setWinner("Player Wins!");
@@ -52,6 +52,7 @@ const NehlePeDelhaGame = () => {
 
   const revealCards = () => {
     setCardsRevealed(true);
+    setIsModalOpen(false);
     determineWinner();
   };
 
@@ -62,57 +63,29 @@ const NehlePeDelhaGame = () => {
   return (
     <div
       className="flex flex-col items-center min-h-screen text-white bg-cover bg-center bg-no-repeat"
-      style={{
-        backgroundImage: `url(${nehlePeDelhaLanding})`,
-      }}
+      style={{ backgroundImage: `url(${LobbyBg})` }}
     >
       <GameHeader showCrossIcon showSettingsIcon title="Nehle Pe Dehla" />
+      <PlayerInfoHeader currentBetAmount={currentBetAmount} />
+      <PlayerCardSection
+        botHand={botHand}
+        playerHand={playerHand}
+        cardsRevealed={cardsRevealed}
+        currentBetAmount={currentBetAmount}
+      />
+      <BottomSection
+        currentBetAmount={currentBetAmount}
+        setCurrentBetAmount={setCurrentBetAmount}
+        revealCards={() => setIsModalOpen(true)}
+        winner={winner}
+        disabled={cardsRevealed}
+      />
 
-      <div className="flex flex-col items-center mt-6 space-y-6">
-        <PlayerInfo name="Bot" isBot={true} />
-        {cardsRevealed ? (
-          <CardFront
-            value={botHand[0]?.value}
-            suit={botHand[0]?.suit}
-            isPlayerCard={false}
-          />
-        ) : (
-          <CardBack />
-        )}
-
-        {winner && (
-          <div className="text-center text-lg font-semibold text-green-400">
-            {winner}
-          </div>
-        )}
-
-        {cardsRevealed ? (
-          <CardFront
-            value={playerHand[0]?.value}
-            suit={playerHand[0]?.suit}
-            isPlayerCard={true}
-          />
-        ) : (
-          <CardBack />
-        )}
-        <PlayerInfo name="You" avatar={require("../../assets/avatar.png")} />
-
-        {!cardsRevealed ? (
-          <button
-            onClick={revealCards}
-            className="mt-6 px-6 py-3 bg-blue-500 text-white rounded-lg shadow-md hover:scale-105 transition-all"
-          >
-            Reveal Cards
-          </button>
-        ) : (
-          <button
-            onClick={startGame}
-            className="mt-6 px-6 py-3 bg-purple-500 text-white rounded-lg shadow-md hover:scale-105 transition-all"
-          >
-            Play Again
-          </button>
-        )}
-      </div>
+      <CountdownRevealModal
+        isOpen={isModalOpen}
+        onReveal={revealCards}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };

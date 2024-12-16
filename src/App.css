@@ -40,85 +40,74 @@
 .glow-text {
   text-shadow: 0 0 8px rgba(34, 197, 94, 0.6), 0 0 16px rgba(255, 255, 255, 0.8);
 }
+
 /* General Style */
-input[type="range"].range-slider {
-  appearance: none; /* Remove default styles */
-  -webkit-appearance: none;
+input[type="range"] {
+  -webkit-appearance: none; /* Remove default styling */
   width: 100%;
-  height: 8px; /* Thickness of the slider track */
-  border-radius: 4px;
-  background: black; /* Default rail color */
+  height: 10px; /* Height of the range bar */
+  background: #ffffff; /* Default (inactive) bar color */
   outline: none;
-  transition: background 0.3s ease-in-out;
+  border-radius: 5px; /* Optional: for rounded edges */
+  position: relative;
+  /* overflow: hidden; */
 }
 
-/* Active Slider Track */
-input[type="range"].range-slider-active::-webkit-slider-runnable-track {
-  background: linear-gradient(to right, green, green) no-repeat, black;
-  height: 8px;
-  border-radius: 4px;
+/* Active (filled) part of the bar */
+input[type="range"]::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, #4A2574 var(--value, 0%), #ffffff var(--value, 0%));
+  height: 10px;
+  border-radius: 5px;
 }
 
-input[type="range"].range-slider-active::-moz-range-track {
-  background: linear-gradient(to right, green, green) no-repeat, black;
-  height: 8px;
-  border-radius: 4px;
+input[type="range"]::-moz-range-track {
+  background: linear-gradient(to right, #4A2574 var(--value, 0%), #ffffff var(--value, 0%));
+  height: 10px;
+  border-radius: 5px;
 }
 
-input[type="range"].range-slider-active::-ms-track {
-  background: black;
-  border-color: transparent;
-  color: transparent;
-  height: 8px;
-  border-radius: 4px;
+input[type="range"]::-ms-track {
+  background: linear-gradient(to right, #4A2574 var(--value, 0%), #ffffff var(--value, 0%));
+  height: 10px;
+  border-radius: 5px;
 }
 
-/* Slider Thumb */
-input[type="range"].range-slider::-webkit-slider-thumb {
-  appearance: none; /* Remove default thumb */
+/* Thumb styling */
+input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: green !important ; /* Thumb color */
+  width: 20px; /* Adjust the thumb size */
+  height: 20px;
+  background: #4A2574; /* Thumb color */
+  border-radius: 50%; /* Make the thumb circular */
   cursor: pointer;
-  transition: background 0.3s ease-in-out;
+  border: 2px solid #ffffff; /* Optional: add a border */
+  position: relative;
+  top: -5px; /* Center the thumb on the track */
 }
 
-input[type="range"].range-slider-active::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
-  border: none;
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #4A2574;
   border-radius: 50%;
-  background: green !important; /* Thumb color */
   cursor: pointer;
+  border: 2px solid #ffffff;
+  position: relative;
+  top: -5px; /* Center the thumb on the track */
 }
 
-input[type="range"].range-slider-active::-ms-thumb {
-  width: 16px;
-  height: 16px;
+input[type="range"]::-ms-thumb {
+  width: 20px;
+  height: 20px;
+  background: #4A2574;
   border-radius: 50%;
-  background: green !important; /* Thumb color */
   cursor: pointer;
+  border: 2px solid #ffffff;
+  position: relative;
+  top: -5px; /* Center the thumb on the track */
 }
 
-/* Disabled Slider */
-input[type="range"].range-slider-disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-input[type="range"].range-slider-disabled::-webkit-slider-thumb {
-  background: black;
-  cursor: not-allowed;
-}
-
-input[type="range"].range-slider-disabled::-moz-range-thumb {
-  background: black;
-  cursor: not-allowed;
-}
-
-input[type="range"].range-slider-disabled::-ms-thumb {
-  background: black;
-  cursor: not-allowed;
+/* Optional: Add a hover effect for the thumb */
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
 }

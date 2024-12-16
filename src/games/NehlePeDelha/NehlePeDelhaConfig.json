@@ -1,22 +1,30 @@
 {
-    "gameTitle": "Nehle Pe Dehla",
-    "entryFees": [
-      { "value": 0, "description": "Free Game", "recommended": false },
-      { "value": 10, "description": "Win up to 20 coins", "recommended": true },
-      { "value": 50, "description": "Win up to 100 coins", "recommended": false }
-    ],
-    "uiSettings": {
-        "theme": {
-          "primaryColor": "#6C63FF",
-          "secondaryColor": "#F9A826",
-          "backgroundColor": "#1A1A2E",
-          "textColor": "#FFFFFF"
-        },
-        "font": {
-          "family": "Outfit, sans-serif",
-          "size": "16px"
-        }
+  "gameTitle": "Nehle Pe Dehla",
+  "rules": {
+    "cardsPerPlayer": 1,
+    "determineWinner": {
+      "type": "highCard",
+      "tieBreaker": {
+        "type": "suitPriority",
+        "suitPriority": ["♠", "♥", "♦", "♣"]
       }
+    }
+  },
+  "entryFees": [
+    { "value": 0, "description": "Free Game", "recommended": false },
+    { "value": 10, "description": "Win up to 20 coins", "recommended": true },
+    { "value": 50, "description": "Win up to 100 coins", "recommended": false }
+  ],
+  "uiSettings": {
+    "theme": {
+      "primaryColor": "#6C63FF",
+      "secondaryColor": "#F9A826",
+      "backgroundColor": "#1A1A2E",
+      "textColor": "#FFFFFF"
+    },
+    "font": {
+      "family": "Outfit, sans-serif",
+      "size": "16px"
+    }
   }
-  
-  
+}
