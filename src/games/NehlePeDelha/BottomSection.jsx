@@ -8,6 +8,7 @@ const BottomSection = ({
   revealCards,
   winner,
   disabled,
+  onViewHistory = () => {},
 }) => {
   return (
     <div
@@ -25,7 +26,10 @@ const BottomSection = ({
         <span className="text-white font-medium capitalize">
           {winner || "Place your bet!"}
         </span>
-        <span className="underline text-white font-medium cursor-pointer">
+        <span
+          className="underline text-white font-medium cursor-pointer"
+          onClick={onViewHistory}
+        >
           View bet history
         </span>
       </div>
