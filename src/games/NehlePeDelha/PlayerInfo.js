@@ -62,6 +62,9 @@ const PlayerInfo = ({
       {/* Amount Block - Top */}
       {amountPlacement === "top" && amountBlock}
 
+      {/* Amount Block - Left */}
+      {amountPlacement === "left" && amountBlock}
+
       {/* Avatar and Name */}
       <div className="flex flex-col items-center">
         <div
@@ -100,14 +103,11 @@ const PlayerInfo = ({
         </div>
       </div>
 
-      {/* Amount Block - Bottom */}
-      {amountPlacement === "bottom" && amountBlock}
-
-      {/* Amount Block - Left */}
-      {amountPlacement === "left" && amountBlock}
-
       {/* Amount Block - Right */}
       {amountPlacement === "right" && amountBlock}
+
+      {/* Amount Block - Bottom */}
+      {amountPlacement === "bottom" && amountBlock}
     </div>
   );
 };

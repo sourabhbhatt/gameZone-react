@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { motion, AnimatePresence } from "framer-motion";
 
-const CountdownRevealModal = ({ isOpen, onReveal }) => {
+const CountdownRevealModal = ({ isOpen, onReveal = () => {} }) => {
   const [count, setCount] = useState(3);
 
   useEffect(() => {
@@ -27,16 +28,29 @@ const CountdownRevealModal = ({ isOpen, onReveal }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-white bg-opacity-50 flex justify-center items-center z-50">
-      <div className="relative flex flex-col items-center justify-center  rounded-3xl p-6 w-[90%] max-w-sm">
-        <p className="text-[#040404] font-semibold text-3xl mb-6">Revealing card in</p>
-        <div className="flex items-center justify-center mb-6">
-          <div className="text-[#040404] text-[72px] font-bold leading-none">
-            {count}
+    <AnimatePresence>
+      <div className="fixed inset-0 bg-white bg-opacity-50 flex justify-center items-center z-50">
+        <div className="relative flex flex-col items-center justify-center  rounded-3xl p-6 w-[90%] max-w-sm">
+          <p className="text-[#040404] font-semibold text-3xl mb-6">
+            Revealing card in
+          </p>
+          <div className="flex items-center justify-center mb-6">
+            <motion.div
+              key={`count-number-${count}`}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="flex items-center justify-center mb-6"
+            >
+              <div className="text-[#040404] text-[72px] font-bold leading-none">
+                {count}
+              </div>
+            </motion.div>
           </div>
         </div>
       </div>
-    </div>
+    </AnimatePresence>
   );
 };
 

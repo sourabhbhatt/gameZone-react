@@ -106,9 +106,9 @@ const NehlePeDelhaGame = () => {
       />
 
       <CountdownRevealModal
+        // isOpen={true}
         isOpen={isModalOpen}
         onReveal={revealCards}
-        onClose={() => setIsModalOpen(false)}
       />
 
       <BetHistoryModal

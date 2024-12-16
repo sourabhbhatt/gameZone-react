@@ -45,10 +45,10 @@ const HistoryCard = ({ status, amount, betDetails }) => {
       </div>
 
       {/* Divider Line */}
-      <div className="w-full h-[0.5px] bg-[#040404] my-4" />
+      {/* <div className="w-full h-[0.5px] bg-[#040404] my-4" />
 
-      {/* Bet Details */}
       <p className="mt-1 text-md text-gray-700">{betDetails}</p>
+      */}
     </div>
   );
 };

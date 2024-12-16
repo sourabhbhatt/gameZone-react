@@ -42,72 +42,19 @@
 }
 
 /* General Style */
-input[type="range"] {
-  -webkit-appearance: none; /* Remove default styling */
-  width: 100%;
-  height: 10px; /* Height of the range bar */
-  background: #ffffff; /* Default (inactive) bar color */
-  outline: none;
-  border-radius: 5px; /* Optional: for rounded edges */
-  position: relative;
-  /* overflow: hidden; */
+
+/* Scroll bar */
+/* For WebKit Browsers (Chrome, Safari) */
+.text-gray-100::-webkit-scrollbar {
+  width: 8px;
 }
 
-/* Active (filled) part of the bar */
-input[type="range"]::-webkit-slider-runnable-track {
-  background: linear-gradient(to right, #4A2574 var(--value, 0%), #ffffff var(--value, 0%));
-  height: 10px;
-  border-radius: 5px;
+.text-gray-100::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1; /* Gray color for the thumb */
+  border-radius: 4px;
 }
 
-input[type="range"]::-moz-range-track {
-  background: linear-gradient(to right, #4A2574 var(--value, 0%), #ffffff var(--value, 0%));
-  height: 10px;
-  border-radius: 5px;
+.text-gray-100::-webkit-scrollbar-track {
+  background-color: transparent; /* Transparent background */
 }
-
-input[type="range"]::-ms-track {
-  background: linear-gradient(to right, #4A2574 var(--value, 0%), #ffffff var(--value, 0%));
-  height: 10px;
-  border-radius: 5px;
-}
-
-/* Thumb styling */
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 20px; /* Adjust the thumb size */
-  height: 20px;
-  background: #4A2574; /* Thumb color */
-  border-radius: 50%; /* Make the thumb circular */
-  cursor: pointer;
-  border: 2px solid #ffffff; /* Optional: add a border */
-  position: relative;
-  top: -5px; /* Center the thumb on the track */
-}
-
-input[type="range"]::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  background: #4A2574;
-  border-radius: 50%;
-  cursor: pointer;
-  border: 2px solid #ffffff;
-  position: relative;
-  top: -5px; /* Center the thumb on the track */
-}
-
-input[type="range"]::-ms-thumb {
-  width: 20px;
-  height: 20px;
-  background: #4A2574;
-  border-radius: 50%;
-  cursor: pointer;
-  border: 2px solid #ffffff;
-  position: relative;
-  top: -5px; /* Center the thumb on the track */
-}
-
-/* Optional: Add a hover effect for the thumb */
-input[type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.1);
-}
+/* Scroll bar */
