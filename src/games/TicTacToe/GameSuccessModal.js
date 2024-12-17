@@ -30,6 +30,7 @@ const GameSuccessModal = ({
   botScore = 2,
   personalBest = "12:0",
   status = "win",
+  resetGame = () => {},
 }) => {
   const { title, icon, description } = headingInfo[status] || headingInfo.win;
   const navigate = useNavigate();
@@ -102,7 +103,10 @@ const GameSuccessModal = ({
         className="w-[90%] flex justify-center items-center mt-10 px-8 py-4 bg-gradient-to-r from-green-500 via-green-600 to-green-500 text-white 
         text-lg font-bold shadow-lg hover:shadow-[0_0_20px_rgba(34,197,94,0.8)] transition-all
        hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300"
-        onClick={() => navigate(-1)}
+        onClick={() => {
+          resetGame();
+          navigate(-1);
+        }}
       >
         <span className="flex items-center space-x-2">
           <BiRefresh className="h-6 w-6" />

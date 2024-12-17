@@ -3,26 +3,30 @@ import { useEffect, useRef } from "react";
 const useSoundEffects = () => {
   const soundsRef = useRef({});
 
-  // Initialize a sound
+  // Initialize or update a sound
   const initializeSound = (key, audioFile, config = {}) => {
+    const { loop = false, volume = 1, autoplay = false } = config;
+
     if (!soundsRef.current[key]) {
-      const { loop = false, volume = 1, autoplay = false } = config;
       const audio = new Audio(audioFile);
       audio.loop = loop;
       audio.volume = volume;
       if (autoplay) {
         audio.play().catch((error) => {
-          console.error(`Error playing audio for ${key}:`, error);
+          console.warn(`Autoplay blocked for ${key}:`, error);
         });
       }
       soundsRef.current[key] = audio;
+    } else {
+      // Update properties if sound already exists
+      updateSound(key, config);
     }
   };
 
-  // Play a sound
+  // Play a sound if not already playing
   const playSound = (key) => {
     const sound = soundsRef.current[key];
-    if (sound) {
+    if (sound && sound.paused) {
       sound.play().catch((error) => {
         console.error(`Error playing sound for ${key}:`, error);
       });
@@ -32,7 +36,7 @@ const useSoundEffects = () => {
   // Pause a sound
   const pauseSound = (key) => {
     const sound = soundsRef.current[key];
-    if (sound) {
+    if (sound && !sound.paused) {
       sound.pause();
     }
   };
@@ -50,16 +54,18 @@ const useSoundEffects = () => {
   const updateSound = (key, config = {}) => {
     const sound = soundsRef.current[key];
     if (sound) {
-      if (config.volume !== undefined) {
-        sound.volume = config.volume;
-      }
-      if (config.loop !== undefined) {
-        sound.loop = config.loop;
-      }
+      if (config.volume !== undefined) sound.volume = config.volume;
+      if (config.loop !== undefined) sound.loop = config.loop;
     }
   };
 
-  // Cleanup on unmount
+  const isSoundPlaying = (key) => {
+    const sound = soundsRef.current[key];
+    return sound && !sound.paused;
+  };
+
+
+  // Cleanup all sounds on unmount
   useEffect(() => {
     return () => {
       Object.values(soundsRef.current).forEach((sound) => {
@@ -76,6 +82,7 @@ const useSoundEffects = () => {
     pauseSound,
     stopSound,
     updateSound,
+    isSoundPlaying
   };
 };
 

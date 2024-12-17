@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 // import userProfilePicture from "../assets/avatar.png";
 
 const initialState = {
-  wallet: 10000,
+  wallet: 0,
   userDetails: {
     id: 1,
     name: "Sourabh",

@@ -31,18 +31,24 @@ const TicTacToeGame = memo(() => {
     winnerDetails,
     timeLeft,
     handleMove,
-    getBotMove,
+    joinGame,
     winningCombination,
+    resetGame,
+    currentPlayer
   } = useTicTacToe(ticTacToeGameConfig, selectedOption, entryFee);
+
+  useEffect(() => {
+    joinGame();
+  }, [joinGame]);
 
   useEffect(() => {
     if (!isPlayerTurn && !status) {
       const botMoveTimeout = setTimeout(() => {
-        handleMove(getBotMove());
+        handleMove(-1); // Backend will handle bot moves
       }, 1000);
       return () => clearTimeout(botMoveTimeout);
     }
-  }, [isPlayerTurn, status, getBotMove, handleMove]);
+  }, [isPlayerTurn, status, handleMove]);
 
   useEffect(() => {
     let modalTimeout;
@@ -57,12 +63,12 @@ const TicTacToeGame = memo(() => {
             winnerDetails,
           });
         }, 1000);
-      } else {
-        setResultModalInfo({
-          visible: true,
-          status,
-          winnerDetails,
-        });
+      // } else {
+      //   setResultModalInfo({
+      //     visible: true,
+      //     status,
+      //     winnerDetails,
+      //   });
       }
     }
 
@@ -76,7 +82,7 @@ const TicTacToeGame = memo(() => {
       className="flex flex-col items-center min-h-screen text-white bg-[#001e1c]"
       style={{ backgroundImage: `url(${tictactoegameBg})` }}
     >
-      <GameHeader showCrossIcon showSettingsIcon title="Tic Tac Toe" />
+      <GameHeader showCrossIcon showSettingsIcon title="Tic Tac Toe" resetGame={resetGame} />
 
       <div className="flex flex-col items-center space-y-4 mt-4">
         <div className="flex justify-center items-center space-x-8">
@@ -104,7 +110,7 @@ const TicTacToeGame = memo(() => {
         />
       </div>
 
-      <Timer timeLeft={timeLeft} warningTimeStartsFrom={5} />
+      {currentPlayer === selectedOption && <Timer timeLeft={timeLeft} warningTimeStartsFrom={5} />}
 
       {showWinnerModal && (
         <WinnerModal isPlayerWinner={winnerDetails?.winner === "user"} />
@@ -120,6 +126,7 @@ const TicTacToeGame = memo(() => {
               : "tie"
           }
           winnerDetails={resultModalInfo.winnerDetails}
+          resetGame={resetGame}
         />
       )}
     </div>

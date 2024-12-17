@@ -13,16 +13,23 @@ import PlayAndEarnButton from "../../components/PlayAndEarnButton";
 import useSoundEffects from "../../hooks/useSoundEffects";
 import { updateWallet } from "../../redux/slices/userSlice";
 
+import useTicTacToe from "./hooks/useTicTacToe";
+
 import gameMusic from "./audio/game-music-loop.mp3";
 import gameStartSound from "./audio/game-start.mp3";
 import tictactoeLanding from "./assets/tictactoeLanding.png";
 import ticTacToeGameConfig from "./ticTacToeGameConfig.json";
+import { use } from "react";
 
 const TicTacToeLanding = memo(() => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { initializeSound, playSound, stopSound } = useSoundEffects();
+  const { initializeSound, playSound, stopSound, isSoundPlaying } = useSoundEffects();
   const walletAmount = useSelector((state) => state.user?.wallet);
+
+  const {getBalance,resetGame} = useTicTacToe(
+
+  );
 
   const [loading, setLoading] = useState(false);
   const [currentFee, setCurrentFee] = useState(10);
@@ -30,15 +37,30 @@ const TicTacToeLanding = memo(() => {
   const [selectedOption, setSelectedOption] = useState("X");
 
   useEffect(() => {
+
+    // check if already playting, dont play, it is creating loop 
+
+    if(isSoundPlaying("gameMusic")) return
+    
     initializeSound("gameMusic", gameMusic, { volume: 0.5, loop: true });
     initializeSound("gameStartSound", gameStartSound, { volume: 1.0 });
     playSound("gameMusic");
-    return () => stopSound("gameMusic"); // Cleanup on unmount
+    // return () => stopSound("gameMusic"); // Cleanup on unmount
   }, [initializeSound, playSound, stopSound]);
 
   const toggleModal = useCallback(() => {
     setIsModalOpen((prev) => !prev);
   }, []);
+
+  useEffect(() => {
+    getBalance();
+  },[])
+
+  useEffect(() => {
+    resetGame(selectedOption)
+  },[selectedOption])
+
+
 
   const handlePlayClick = () => {
     setLoading(true)
