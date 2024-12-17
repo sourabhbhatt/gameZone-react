@@ -17,7 +17,7 @@ const gameData = [
     title: "Tic Tac Toe",
     description: "Enjoy the classic game of Xs and Os.",
     imageSrc: ticTacToeIcon,
-    link: "/tictactoe",
+    link: "/games/tic-tac-toe",
     bgColor: "bg-purple-500",
   },
   {

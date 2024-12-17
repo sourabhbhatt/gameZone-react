@@ -5,7 +5,7 @@ const useTicTacToe = (ticTacToeGameConfig, selectedOption) => {
   const [winner, setWinner] = useState(null);
   const [gameState, setGameState] = useState(Array(9).fill(null));
   const [isPlayerTurn, setIsPlayerTurn] = useState(selectedOption === "X");
-  const [timeLeft, setTimeLeft] = useState(ticTacToeGameConfig.playerTimeLimit);
+  const [timeLeft, setTimeLeft] = useState(ticTacToeGameConfig?.playerTimeLimit || 15);
   const { soundEnabled, soundVolume, musicEnabled, musicVolume } = useSelector(
     (state) => state.app.soundSettings
   );
@@ -73,7 +73,7 @@ const useTicTacToe = (ticTacToeGameConfig, selectedOption) => {
   }, []);
 
   const resetTimer = useCallback(() => {
-    setTimeLeft(ticTacToeGameConfig.playerTimeLimit);
+    setTimeLeft(ticTacToeGameConfig?.playerTimeLimit);
   }, []);
 
   const handleTimeOut = useCallback(() => {

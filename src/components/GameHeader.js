@@ -15,12 +15,14 @@ const GameHeader = memo(
     showSettingsIcon = false,
     bgColor = null,
     bgImage = null,
+    resetGame = () => {},
   }) => {
     const navigate = useNavigate();
     const [isSettingsOpen, setIsSettingsOpen] = useState(false); // Modal visibility
     const amountOnWallet = useSelector((state) => state.user?.wallet);
 
     const onBackPress = useCallback(() => {
+      resetGame();
       if (onBack) onBack();
       else navigate(-1);
     }, [navigate, onBack]);

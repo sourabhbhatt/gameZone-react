@@ -37,7 +37,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<GameZone />} />
 
-                <Route path="/tictactoe" element={<TicTacToe />} />
+                <Route path="/games/tic-tac-toe" element={<TicTacToe />} />
                 <Route path="/tictactoe-game" element={<TicTacToeGame />} />
 
                 <Route path="/nehlepedelha" element={<NehlePeDelha />} />
