@@ -8,7 +8,7 @@ import {
   setSoundVolume,
   setMusicVolume,
 } from "../redux/slices/appSlice";
-import '../App.css';
+import "../App.css";
 
 const SettingsModal = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
@@ -70,11 +70,8 @@ const SettingsModal = ({ isOpen, onClose }) => {
                 checked={soundEnabled}
                 onChange={() => {
                   dispatch(toggleSound());
-                  if (!soundEnabled) {
-                    dispatch(setSoundVolume(50)); // Default volume to 50% when toggled on
-                  } else {
-                    dispatch(setSoundVolume(0)); // Set to 0 when toggled off
-                  }
+                  if (!soundEnabled) dispatch(setSoundVolume(50));
+                  else dispatch(setSoundVolume(0));
                 }}
               />
               <div
@@ -181,8 +178,9 @@ const SettingsModal = ({ isOpen, onClose }) => {
               value={musicEnabled ? musicVolume : 0}
               className={`w-full ${
                 musicEnabled
-                ? "bg-gradient-to-r from-green-500 to-green-700"
-                : "bg-black cursor-not-allowed"              }`}
+                  ? "bg-gradient-to-r from-green-500 to-green-700"
+                  : "bg-black cursor-not-allowed"
+              }`}
               disabled={!musicEnabled}
               onChange={(e) =>
                 dispatch(setMusicVolume(parseInt(e.target.value)))

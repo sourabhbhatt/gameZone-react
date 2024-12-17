@@ -1,9 +1,24 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { motion, AnimatePresence } from "framer-motion";
+import useSoundEffects from "../../hooks/useSoundEffects";
+import { useSelector } from "react-redux";
+import ticking from "./audio/click.mp3";
 
 const CountdownRevealModal = ({ isOpen, onReveal = () => {} }) => {
   const [count, setCount] = useState(3);
+  const { soundEnabled, soundVolume, musicEnabled, musicVolume } = useSelector(
+    (state) => state.app.soundSettings
+  );
+  const { initializeSound, playSound, updateSound, stopSound } =
+    useSoundEffects();
+
+  useEffect(() => {
+    initializeSound("ticking", ticking, {
+      volume: soundVolume / 100,
+      loop: true,
+    });
+  }, [initializeSound]);
 
   useEffect(() => {
     let timer;
@@ -17,12 +32,16 @@ const CountdownRevealModal = ({ isOpen, onReveal = () => {} }) => {
             onReveal();
             return 0;
           }
+          playSound("ticking");
           return prevCount - 1;
         });
       }, 1000);
     }
 
-    return () => clearInterval(timer);
+    return () => {
+      clearInterval(timer);
+      stopSound("ticking");
+    };
   }, [isOpen, onReveal]);
 
   if (!isOpen) return null;

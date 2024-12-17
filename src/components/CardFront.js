@@ -19,7 +19,7 @@ const valueMap = {
 // Dynamically import images
 const getCardImage = (suit, value) => {
   const suitName = suitMap[suit];
-  const cardValue = valueMap[value]
+  const cardValue = valueMap?.[value]
     ? `Number=${valueMap[value]}`
     : `Number=${value}`; // Map special values or keep the number
   return require(`../assets/New deck/Suit=${suitName}, ${cardValue}.png`);

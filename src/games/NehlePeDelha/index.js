@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import bgCards from "./assets/cardsBg.png";
 import bgBottomCard from "./assets/cardBottomBg.png";
 import Modal from "../../components/Modal";
@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { images } from "../../assets/images";
 import RangeSlider from "../../components/RangeSlider";
+import gameMusic from "./audio/gameMusic.mp3";
+import useSoundEffects from "../../hooks/useSoundEffects";
 
 const index = memo(() => {
   const navigate = useNavigate();
@@ -18,6 +20,25 @@ const index = memo(() => {
   );
   const minimumAmount = 10;
   const walletAmount = useSelector((state) => state.user?.wallet);
+  const { initializeSound, playSound, stopSound, updateSound } =
+    useSoundEffects();
+  const soundSettings = useSelector((state) => state.app.soundSettings);
+  const { musicEnabled = false, musicVolume = 50 } = soundSettings || {};
+
+  useEffect(() => {
+    initializeSound("gameMusic", gameMusic, {
+      volume: musicVolume / 100,
+      loop: true,
+    });
+    if (musicEnabled) playSound("gameMusic");
+    else stopSound("gameMusic");
+
+    return () => stopSound("gameMusic"); // Cleanup on unmount
+  }, [initializeSound, playSound, stopSound]);
+
+  useEffect(() => {
+    updateSound("gameMusic", { volume: musicVolume / 100 });
+  }, [musicVolume, updateSound]);
 
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 

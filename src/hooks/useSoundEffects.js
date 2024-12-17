@@ -10,30 +10,23 @@ const useSoundEffects = () => {
       const audio = new Audio(audioFile);
       audio.loop = loop;
       audio.volume = volume;
+      soundsRef.current[key] = audio;
+
       if (autoplay) {
         audio.play().catch((error) => {
           console.error(`Error playing audio for ${key}:`, error);
         });
       }
-      soundsRef.current[key] = audio;
     }
   };
 
-  // Play a sound
+  // Play an existing sound without restarting
   const playSound = (key) => {
     const sound = soundsRef.current[key];
-    if (sound) {
+    if (sound && sound.paused) {
       sound.play().catch((error) => {
         console.error(`Error playing sound for ${key}:`, error);
       });
-    }
-  };
-
-  // Pause a sound
-  const pauseSound = (key) => {
-    const sound = soundsRef.current[key];
-    if (sound) {
-      sound.pause();
     }
   };
 
@@ -46,12 +39,12 @@ const useSoundEffects = () => {
     }
   };
 
-  // Update sound properties dynamically
+  // Dynamically update sound properties
   const updateSound = (key, config = {}) => {
     const sound = soundsRef.current[key];
     if (sound) {
-      if (config.volume !== undefined) {
-        sound.volume = config.volume;
+      if (config.volume !== undefined && sound.volume !== config.volume) {
+        sound.volume = config.volume; // Update volume without restarting
       }
       if (config.loop !== undefined) {
         sound.loop = config.loop;
@@ -73,7 +66,6 @@ const useSoundEffects = () => {
   return {
     initializeSound,
     playSound,
-    pauseSound,
     stopSound,
     updateSound,
   };

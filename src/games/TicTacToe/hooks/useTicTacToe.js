@@ -18,16 +18,31 @@ const useTicTacToe = (config, selectedOption, entryFee) => {
   const [winnerDetails, setWinnerDetails] = useState(null);
   const [winningCombination, setWinningCombination] = useState(null);
 
+  const isOnline = useSelector((state) => state.app.connectionStatus.isOnline);
   const walletAmount = useSelector((state) => state.user?.wallet);
+  const { soundEnabled, soundVolume, musicEnabled, musicVolume } = useSelector(
+    (state) => state.app.soundSettings
+  );
 
-  const { initializeSound, playSound } = useSoundEffects();
+  const { initializeSound, playSound, updateSound } = useSoundEffects();
+
+  // Initialize and update sounds dynamically
+  useEffect(() => {
+    initializeSound("click", clickSound, { volume: soundVolume / 100 });
+    initializeSound("gameOver", gameOverSound, { volume: musicVolume / 100 });
+    initializeSound("success", successSound, { volume: musicVolume / 100 });
+    initializeSound("collectPoints", collectPointsSound, {
+      volume: musicVolume / 100,
+    });
+  }, [initializeSound]);
 
   useEffect(() => {
-    initializeSound("click", clickSound, { volume: 0.5 });
-    initializeSound("gameOver", gameOverSound, { volume: 0.7 });
-    initializeSound("success", successSound, { volume: 0.7 });
-    initializeSound("collectPoints", collectPointsSound, { volume: 0.7 });
-  }, [initializeSound]);
+    // Update sound volumes in real-time
+    updateSound("click", { volume: soundVolume / 100 });
+    updateSound("gameOver", { volume: musicVolume / 100 });
+    updateSound("success", { volume: musicVolume / 100 });
+    updateSound("collectPoints", { volume: musicVolume / 100 });
+  }, [soundVolume, musicVolume, updateSound]);
 
   const resetTimer = useCallback(() => {
     setTimeLeft(config.playerTimeLimit);
@@ -61,22 +76,51 @@ const useTicTacToe = (config, selectedOption, entryFee) => {
           setStatus("win");
           setWinnerDetails({ winner: "user", symbol: selectedOption });
           updateWalletAmount(entryFee);
-          playSound("success");
-          setTimeout(() => playSound("collectPoints"), 500);
+          if (musicEnabled) {
+            playSound("success");
+            setTimeout(() => playSound("collectPoints"), 500);
+          }
         } else {
           setStatus("loss");
           setWinnerDetails({ winner: "bot", symbol: result.winner });
           updateWalletAmount(-entryFee);
-          playSound("gameOver");
+          if (musicEnabled) playSound("gameOver");
         }
       } else if (!gameState.includes(null)) {
         setStatus("tie");
         setWinnerDetails({ winner: "tie" });
-        playSound("gameOver");
+        if (musicEnabled) playSound("gameOver");
       }
     },
-    [gameState, selectedOption, entryFee, updateWalletAmount, playSound]
+    [
+      gameState,
+      selectedOption,
+      entryFee,
+      updateWalletAmount,
+      playSound,
+      musicEnabled,
+    ]
   );
+
+  const getBotMove = useCallback(() => {
+    const botSymbol = selectedOption === "X" ? "O" : "X";
+    let bestMove = null;
+    let bestScore = -Infinity;
+
+    gameState.forEach((cell, index) => {
+      if (cell === null) {
+        const newBoard = [...gameState];
+        newBoard[index] = botSymbol;
+        const score = minimax(newBoard, 0, false);
+        if (score > bestScore) {
+          bestScore = score;
+          bestMove = index;
+        }
+      }
+    });
+
+    return bestMove;
+  }, [gameState, selectedOption]);
 
   const minimax = useCallback(
     (board, depth, isMaximizing) => {
@@ -114,38 +158,14 @@ const useTicTacToe = (config, selectedOption, entryFee) => {
     [determineWinner, selectedOption]
   );
 
-  const getBotMove = useCallback(() => {
-    const botSymbol = selectedOption === "X" ? "O" : "X";
-    let bestMove = null;
-    let bestScore = -Infinity;
-
-    gameState.forEach((cell, index) => {
-      if (cell === null) {
-        const newBoard = [...gameState];
-        newBoard[index] = botSymbol;
-        const score = minimax(newBoard, 0, false);
-        if (score > bestScore) {
-          bestScore = score;
-          bestMove = index;
-        }
-      }
-    });
-
-    return bestMove;
-  }, [gameState, minimax, selectedOption]);
-
   const handleMove = useCallback(
     (index) => {
-      if (gameState[index] || status) return;
+      if (gameState[index] || status) return; // Block move if offline
 
       const newGameState = [...gameState];
-      newGameState[index] = isPlayerTurn
-        ? selectedOption
-        : selectedOption === "X"
-        ? "O"
-        : "X";
+      newGameState[index] = isPlayerTurn ? selectedOption : "O";
       setGameState(newGameState);
-      playSound("click");
+      if (soundEnabled) playSound("click");
 
       const result = determineWinner(newGameState);
       handleGameEnd(result);
@@ -167,21 +187,14 @@ const useTicTacToe = (config, selectedOption, entryFee) => {
     ]
   );
 
-  const handleTimeOut = useCallback(() => {
-    if (isPlayerTurn) {
-      const botMove = getBotMove();
-      handleMove(botMove);
-    }
-  }, [getBotMove, handleMove, isPlayerTurn]);
-
   useEffect(() => {
     if (timeLeft > 0 && !status) {
       const timer = setTimeout(() => setTimeLeft((prev) => prev - 1), 1000);
       return () => clearTimeout(timer);
     } else if (timeLeft === 0 && !status) {
-      handleTimeOut();
+      handleMove(getBotMove());
     }
-  }, [timeLeft, status, handleTimeOut]);
+  }, [timeLeft, status, handleMove, getBotMove]);
 
   return {
     gameState,

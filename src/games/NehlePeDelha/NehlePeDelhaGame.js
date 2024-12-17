@@ -11,6 +11,11 @@ import WinningModal from "./WinningModal";
 import { updateWallet } from "../../redux/slices/userSlice";
 import { createDeck, shuffleDeck, dealHand } from "../../components/Deck";
 
+import clickSound from "./audio/click.mp3";
+import flip from "./audio/flip.mp3";
+import collectPointsSound from "./audio/coinsEarned.mp3";
+import useSoundEffects from "../../hooks/useSoundEffects";
+
 const NehlePeDelhaGame = () => {
   const dispatch = useDispatch();
   const walletAmount = useSelector((state) => state.user?.wallet);
@@ -25,6 +30,18 @@ const NehlePeDelhaGame = () => {
   const [betHistory, setBetHistory] = useState([]);
   const [isWinningModalOpen, setIsWinningModalOpen] = useState(false);
   const [winningPlayer, setWinningPlayer] = useState(""); // "You" or "Bot"
+  const { soundEnabled, soundVolume, musicEnabled, musicVolume } = useSelector(
+    (state) => state.app.soundSettings
+  );
+  const { initializeSound, playSound, updateSound } = useSoundEffects();
+
+  useEffect(() => {
+    initializeSound("click", clickSound, { volume: soundVolume / 100 });
+    initializeSound("flip", flip, { volume: musicVolume / 100 });
+    initializeSound("collectPoints", collectPointsSound, {
+      volume: musicVolume / 100,
+    });
+  }, [initializeSound]);
 
   // Function to start the game
   const startGame = useCallback(() => {
@@ -35,7 +52,7 @@ const NehlePeDelhaGame = () => {
     setCardsRevealed(false);
     setWinner(null);
     setIsWinningModalOpen(false);
-  }, []);
+  }, [dispatch, walletAmount, currentBetAmount]);
 
   // Function to determine the winner based on card rank
   const determineWinner = useCallback(() => {
@@ -45,6 +62,7 @@ const NehlePeDelhaGame = () => {
     if (!playerCard || !botCard) return;
 
     if (playerCard.rank > botCard.rank) {
+      if (musicEnabled) playSound("collectPoints");
       setWinner("You Won!");
       setWinningPlayer("You");
       dispatch(updateWallet(currentBetAmount * 2));
@@ -73,15 +91,15 @@ const NehlePeDelhaGame = () => {
 
   // Reveal cards and determine winner
   const revealCards = () => {
+    if (musicEnabled) playSound("flip");
     setCardsRevealed(true);
     setIsModalOpen(false);
     determineWinner();
   };
 
-  // Automatically start the game on component mount
   useEffect(() => {
     startGame();
-  }, [startGame]);
+  }, []);
 
   return (
     <div
@@ -99,7 +117,9 @@ const NehlePeDelhaGame = () => {
       <BottomSection
         currentBetAmount={currentBetAmount}
         setCurrentBetAmount={setCurrentBetAmount}
-        revealCards={() => setIsModalOpen(true)}
+        revealCards={() => {
+          setIsModalOpen(true);
+        }}
         onViewHistory={() => setIsHistoryOpen(true)}
         winner={winner}
         disabled={cardsRevealed}
