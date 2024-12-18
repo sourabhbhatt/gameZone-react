@@ -15,6 +15,8 @@ import clickSound from "./audio/click.mp3";
 import flip from "./audio/flip.mp3";
 import collectPointsSound from "./audio/coinsEarned.mp3";
 import useSoundEffects from "../../hooks/useSoundEffects";
+import ExitModal from "./ExitModal";
+import { useNavigate } from "react-router-dom";
 
 const NehlePeDelhaGame = () => {
   const dispatch = useDispatch();
@@ -30,10 +32,14 @@ const NehlePeDelhaGame = () => {
   const [betHistory, setBetHistory] = useState([]);
   const [isWinningModalOpen, setIsWinningModalOpen] = useState(false);
   const [winningPlayer, setWinningPlayer] = useState(""); // "You" or "Bot"
+  const [isExitModal, setIsExitModal] = useState(false);
+
   const { soundEnabled, soundVolume, musicEnabled, musicVolume } = useSelector(
     (state) => state.app.soundSettings
   );
+
   const { initializeSound, playSound, updateSound } = useSoundEffects();
+  const navigate = useNavigate();
 
   useEffect(() => {
     initializeSound("click", clickSound, { volume: soundVolume / 100 });
@@ -97,6 +103,10 @@ const NehlePeDelhaGame = () => {
     determineWinner();
   };
 
+  const handleExitConfirm = () => {
+    navigate(-1);
+  };
+
   useEffect(() => {
     startGame();
   }, []);
@@ -106,13 +116,19 @@ const NehlePeDelhaGame = () => {
       className="flex flex-col items-center min-h-screen text-white bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: `url(${LobbyBg})` }}
     >
-      <GameHeader showCrossIcon showSettingsIcon title="Nehle Pe Dehla" />
+      <GameHeader
+        showCrossIcon
+        onBack={() => setIsExitModal(true)}
+        showSettingsIcon
+        title="Nehle Pe Dehla"
+      />
       <PlayerInfoHeader currentBetAmount={currentBetAmount} />
       <PlayerCardSection
         botHand={botHand}
         playerHand={playerHand}
         cardsRevealed={cardsRevealed}
         currentBetAmount={currentBetAmount}
+        winnerDetails={winner} 
       />
       <BottomSection
         currentBetAmount={currentBetAmount}
@@ -126,7 +142,6 @@ const NehlePeDelhaGame = () => {
       />
 
       <CountdownRevealModal
-        // isOpen={true}
         isOpen={isModalOpen}
         onReveal={revealCards}
       />
@@ -144,6 +159,12 @@ const NehlePeDelhaGame = () => {
           startGame();
         }}
         winnerName={winningPlayer || "It's a Tie!"}
+      />
+
+      <ExitModal
+        isOpen={isExitModal}
+        onClose={() => setIsExitModal(false)}
+        onConfirm={handleExitConfirm}
       />
     </div>
   );
