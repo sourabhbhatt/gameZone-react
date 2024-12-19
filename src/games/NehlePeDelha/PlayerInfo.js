@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaRobot } from "react-icons/fa";
 import { images } from "../../assets/images"; // Ensure the images path is correct
 
@@ -11,7 +11,19 @@ const PlayerInfo = ({
   isActive,
   isBot = false,
   size = "small", // 'small', 'medium', 'large'
+
+  isWinnerPlayer = null,
+  isWinnerBot = null,
 }) => {
+  // const [showAnimation, setShowAnimation] = useState(false);
+
+  // useEffect(() => {
+  //   if (isWinnerPlayer || isWinnerBot) {
+  //     setShowAnimation(true);
+  //     setTimeout(() => setShowAnimation(false), 1500); // Stop after 1.5 seconds
+  //   }
+  // }, [isWinnerPlayer, isWinnerBot]);
+
   const sizes = {
     small: {
       container: "w-10 h-10",
@@ -35,21 +47,20 @@ const PlayerInfo = ({
 
   const selectedSize = sizes[size];
 
-  const amountBlock =
-    !!coinAmount && coinAmount > 0 && (
-      <div className="flex items-center space-x-1">
-        {isCoinImage && (
-          <img
-            src={images.coin}
-            alt="Coin"
-            className="w-5 h-5 object-contain animate-spin-slow"
-          />
-        )}
-        <span className={`font-medium text-white ${selectedSize.amount}`}>
-          {coinAmount}
-        </span>
-      </div>
-    );
+  const amountBlock = !!coinAmount && coinAmount > 0 && (
+    <div className="flex items-center space-x-1">
+      {isCoinImage && (
+        <img
+          src={images.coin}
+          alt="Coin"
+          className="w-5 h-5 object-contain animate-spin-slow"
+        />
+      )}
+      <span className={`font-medium text-white ${selectedSize.amount}`}>
+        {coinAmount}
+      </span>
+    </div>
+  );
 
   return (
     <div
@@ -59,24 +70,40 @@ const PlayerInfo = ({
           : "flex-col items-center space-y-3"
       }`}
     >
-      {/* Amount Block - Top */}
       {amountPlacement === "top" && amountBlock}
-
-      {/* Amount Block - Left */}
       {amountPlacement === "left" && amountBlock}
 
-      {/* Avatar and Name */}
+      {/* {showAnimation && (
+        <div
+          className={`absolute coins-container ${
+            isWinnerBot ? "coins-up" : "coins-down"
+          }`}
+        >
+          {Array(10)
+            .fill(0)
+            .map((_, i) => (
+              <img
+                key={i}
+                src={images.coin}
+                alt="coin"
+                className={`coin-animation delay-${i}`}
+              />
+            ))}
+        </div>
+      )} */}
       <div className="flex flex-col items-center">
         <div
-          className={`${selectedSize.container} rounded-full border-2 flex justify-center items-center ${
+          className={`${
+            selectedSize.container
+          } rounded-full border-2 flex justify-center items-center ${
             isActive ? "border-green-500" : "border-gray-600"
           }`}
         >
           {isBot ? (
             <FaRobot
-              className={`${
-                isActive ? "text-green-500" : "text-green-200"
-              } ${selectedSize.icon}`}
+              className={`${isActive ? "text-green-500" : "text-green-200"} ${
+                selectedSize.icon
+              }`}
             />
           ) : (
             <img
@@ -86,10 +113,10 @@ const PlayerInfo = ({
             />
           )}
         </div>
-
-        {/* Player Name */}
         <div
-          className={`px-3 ${selectedSize.name} rounded-full bg-gradient-to-r from-black via-gray-800 to-black border-2 ${
+          className={`px-3 ${
+            selectedSize.name
+          } rounded-full bg-gradient-to-r from-black via-gray-800 to-black border-2 ${
             isActive ? "border-green-500" : "border-gray-600"
           }`}
         >
@@ -102,11 +129,7 @@ const PlayerInfo = ({
           </span>
         </div>
       </div>
-
-      {/* Amount Block - Right */}
       {amountPlacement === "right" && amountBlock}
-
-      {/* Amount Block - Bottom */}
       {amountPlacement === "bottom" && amountBlock}
     </div>
   );

@@ -1,73 +1,68 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { motion, AnimatePresence } from "framer-motion";
-import useSoundEffects from "../../hooks/useSoundEffects";
-import { useSelector } from "react-redux";
 import ticking from "./audio/click.mp3";
+import { useSelector } from "react-redux";
 
-const CountdownRevealModal = ({ isOpen, onReveal = () => {} }) => {
+const CountdownRevealModal = ({ isOpen, onReveal }) => {
   const [count, setCount] = useState(3);
-  const { soundEnabled, soundVolume, musicEnabled, musicVolume } = useSelector(
+  const { musicEnabled, musicVolume } = useSelector(
     (state) => state.app.soundSettings
   );
-  const { initializeSound, playSound, updateSound, stopSound } =
-    useSoundEffects();
 
   useEffect(() => {
-    initializeSound("ticking", ticking, {
-      volume: soundVolume / 100,
-      loop: true,
-    });
-  }, [initializeSound]);
+    if (!isOpen) return;
 
-  useEffect(() => {
     let timer;
+    const audio = new Audio(ticking);
+    audio.volume = musicVolume / 100;
 
-    if (isOpen) {
-      setCount(3);
-      timer = setInterval(() => {
-        setCount((prevCount) => {
-          if (prevCount === 1) {
-            clearInterval(timer);
-            onReveal();
-            return 0;
-          }
-          playSound("ticking");
+    const playTickSound = () => {
+      if (musicEnabled) {
+        audio.pause();
+        audio.currentTime = 0;
+        audio.play().catch((err) => console.error("Audio play error:", err));
+      }
+    };
+
+    setCount(3);
+    playTickSound();
+
+    timer = setInterval(() => {
+      setCount((prevCount) => {
+        if (prevCount > 1) {
+          playTickSound();
           return prevCount - 1;
-        });
-      }, 1000);
-    }
+        } else {
+          clearInterval(timer);
+          setTimeout(onReveal, 100);
+          return 0;
+        }
+      });
+    }, 1000);
 
     return () => {
       clearInterval(timer);
-      stopSound("ticking");
+      audio.pause();
+      audio.currentTime = 0;
     };
-  }, [isOpen, onReveal]);
+  }, [isOpen, onReveal, musicEnabled, musicVolume]);
 
-  if (!isOpen) return null;
+  if (!isOpen || count === 0) return null;
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 bg-white bg-opacity-50 flex justify-center items-center z-50">
-        <div className="relative flex flex-col items-center justify-center  rounded-3xl p-6 w-[90%] max-w-sm">
-          <p className="text-[#040404] font-semibold text-3xl mb-6">
-            Revealing card in
-          </p>
-          <div className="flex items-center justify-center mb-6">
-            <motion.div
-              key={`count-number-${count}`}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0, opacity: 0 }}
-              transition={{ duration: 0.5 }}
-              className="flex items-center justify-center mb-6"
-            >
-              <div className="text-[#040404] text-[72px] font-bold leading-none">
-                {count}
-              </div>
-            </motion.div>
-          </div>
-        </div>
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+        <motion.div
+          key={`count-number-${count}`}
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0, opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-white text-[72px] font-bold leading-none"
+        >
+          {count}
+        </motion.div>
       </div>
     </AnimatePresence>
   );

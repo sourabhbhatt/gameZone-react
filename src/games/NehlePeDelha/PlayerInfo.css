@@ -1,0 +1,79 @@
+.coins-container {
+    pointer-events: none;
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 120px;
+    height: 150px;
+  }
+  
+  .coin-animation {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-in-out;
+  }
+  
+  .coins-up .coin-animation {
+    animation-name: moveUp;
+  }
+  
+  .coins-down .coin-animation {
+    animation-name: moveDown;
+  }
+  
+  @keyframes moveUp {
+    0% {
+      transform: translateY(0) scale(0.8);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-100px) scale(1.2);
+      opacity: 0;
+    }
+  }
+  
+  @keyframes moveDown {
+    0% {
+      transform: translateY(0) scale(0.8);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100px) scale(1.2);
+      opacity: 0;
+    }
+  }
+  
+  .delay-0 {
+    animation-delay: 0s;
+  }
+  .delay-1 {
+    animation-delay: 0.1s;
+  }
+  .delay-2 {
+    animation-delay: 0.2s;
+  }
+  .delay-3 {
+    animation-delay: 0.3s;
+  }
+  .delay-4 {
+    animation-delay: 0.4s;
+  }
+  .delay-5 {
+    animation-delay: 0.5s;
+  }
+  .delay-6 {
+    animation-delay: 0.6s;
+  }
+  .delay-7 {
+    animation-delay: 0.7s;
+  }
+  .delay-8 {
+    animation-delay: 0.8s;
+  }
+  .delay-9 {
+    animation-delay: 0.9s;
+  }
+  
