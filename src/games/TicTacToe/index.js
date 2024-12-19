@@ -13,72 +13,62 @@ import PlayAndEarnButton from "../../components/PlayAndEarnButton";
 import useSoundEffects from "../../hooks/useSoundEffects";
 import { updateWallet } from "../../redux/slices/userSlice";
 
+import useTicTacToe from "./hooks/useTicTacToe";
+
 import gameMusic from "./audio/game-music-loop.mp3";
 import gameStartSound from "./audio/game-start.mp3";
 import tictactoeLanding from "./assets/tictactoeLanding.png";
 import ticTacToeGameConfig from "./ticTacToeGameConfig.json";
+import { use } from "react";
 
 const TicTacToeLanding = memo(() => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const { initializeSound, playSound, stopSound, updateSound } = useSoundEffects();
-
-  // Retrieve sound settings
-  const soundSettings = useSelector((state) => state.app.soundSettings);
+  const { initializeSound, playSound, stopSound } = useSoundEffects();
   const walletAmount = useSelector((state) => state.user?.wallet);
 
-  // Default fallback values to avoid errors
-  const {
-    soundEnabled = false,
-    soundVolume = 50,
-    musicEnabled = false,
-    musicVolume = 50,
-  } = soundSettings || {};
+  const {getBalance,resetGame} = useTicTacToe(
+
+  );
 
   const [loading, setLoading] = useState(false);
   const [currentFee, setCurrentFee] = useState(10);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("X");
 
-  // Initialize game music and start sound
   useEffect(() => {
-    initializeSound("gameMusic", gameMusic, {
-      volume: musicVolume / 100,
-      loop: true,
-    });
-    initializeSound("gameStartSound", gameStartSound, {
-      volume: soundVolume / 100,
-    });
-    if (musicEnabled) playSound("gameMusic");
-    else stopSound("gameMusic");
 
-    return () => stopSound("gameMusic"); // Cleanup on unmount
+    // check if already playting, dont play, it is creating loop 
+
+    // if(isSoundPlaying("gameMusic")) return
+    
+    initializeSound("gameMusic", gameMusic, { volume: 0.5, loop: true });
+    initializeSound("gameStartSound", gameStartSound, { volume: 1.0 });
+    playSound("gameMusic");
+    // return () => stopSound("gameMusic"); // Cleanup on unmount
   }, [initializeSound, playSound, stopSound]);
-
-  // Dynamically update music volume in real time
-  useEffect(() => {
-    updateSound("gameMusic", { volume: musicVolume / 100 });
-  }, [musicVolume, updateSound]);
-
-  // Dynamically update sound effect volume
-  useEffect(() => {
-    updateSound("gameStartSound", { volume: soundVolume / 100 });
-  }, [soundVolume, updateSound]);
 
   const toggleModal = useCallback(() => {
     setIsModalOpen((prev) => !prev);
   }, []);
 
+  useEffect(() => {
+    getBalance();
+  },[])
+
+  useEffect(() => {
+    resetGame(selectedOption)
+  },[selectedOption])
+
+
+
   const handlePlayClick = () => {
-    setLoading(true);
-    if (musicEnabled) {
-      stopSound("gameMusic");
-      playSound("gameStartSound");
-    }
+    setLoading(true)
+    stopSound("gameMusic");
+    playSound("gameStartSound");
     setTimeout(() => {
       dispatch(updateWallet(walletAmount - currentFee));
-      setLoading(false);
+      setLoading(false)
       navigate("/tictactoe-game", {
         state: { selectedOption, entryFee: currentFee },
       });
@@ -90,8 +80,8 @@ const TicTacToeLanding = memo(() => {
       className="flex flex-col items-center min-h-screen text-white bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: `url(${tictactoeLanding})` }}
     >
-      {loading && <Loader size={60} speed={0.8} />}
-      <GameHeader walletAmount={walletAmount?.toLocaleString()} />
+      {loading && <Loader size={60}  speed={0.8} />}
+      <GameHeader walletAmount="20,500" />
       <main className="w-full max-w-lg px-4 mt-12">
         <PlayAndEarnButton className="absolute bottom-4 left-1/2 transform -translate-x-1/2" />
         <section className="text-center mt-5">
