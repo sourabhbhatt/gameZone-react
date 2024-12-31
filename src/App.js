@@ -13,7 +13,8 @@ const NotFound = lazy(() => import("./components/NotFound"));
 const Fallback = lazy(() => import("./components/Fallback"));
 
 const Ludo = lazy(() => import("./games/Ludo/Ludo"));
-const Minesweeper = lazy(() => import("./games/Minesweeper/Minesweeper"));
+const MinesweeperLoading = lazy(() => import("./games/Minesweeper"));
+const MinesweeperGame = lazy(() => import("./games/Minesweeper/Minesweeper"));
 const FruitNinja = lazy(() => import("./games/FruitNinja/FruitNinja"));
 const TeenPatti = lazy(() => import("./games/TeenPatti/TeenPatti"));
 
@@ -45,9 +46,10 @@ function App() {
                   path="/nehlepedelha-game"
                   element={<NehlePeDelhaGame />}
                 />
+                <Route path="/minesweeper" element={<MinesweeperLoading />} />
+                <Route path="/minesweeper-game" element={<MinesweeperGame />} />
 
                 <Route path="/ludo" element={<Ludo />} />
-                <Route path="/minesweeper" element={<Minesweeper />} />
                 <Route path="/fruit-ninja" element={<FruitNinja />} />
                 <Route path="/teen-patti" element={<TeenPatti />} />
                 <Route path="*" element={<NotFound />} />
