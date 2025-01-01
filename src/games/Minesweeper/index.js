@@ -17,7 +17,6 @@ const Index = memo(() => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("X");
 
   const [currentFee, setCurrentFee] = useState(
     MinesweeperConfig.entryFees.find((fee) => fee.recommended)?.value || 0
@@ -48,28 +47,33 @@ const Index = memo(() => {
 
   const handlePlayClick = () => {
     if (loading) return;
-
     setLoading(true);
-    if (musicEnabled) {
-      stopSound("gameMusic");
-      playSound("gameStartSound");
-    }
-
-    setTimeout(() => {
-      dispatch(updateWallet(walletAmount - currentFee));
-      setLoading(false);
-      navigate("/minesweeper-game", {
-        state: { selectedOption, entryFee: currentFee },
-      });
-    }, 700);
+    if (musicEnabled) stopSound("gameMusic");
+    dispatch(updateWallet(walletAmount - currentFee));
+    setLoading(false);
+    navigate("/minesweeper-game", { state: { entryFee: currentFee } });
   };
 
   return (
     <div
       className="flex flex-col items-center justify-end min-h-screen text-white bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: `url(${landingBg})` }}
+      style={{
+        backgroundImage: `url(${landingBg})`,
+        // objectFit: "contain",
+        // backgroundSize: "contain",
+        // scale:1
+      }}
     >
-      <GameHeader />
+      <GameHeader
+        themeConfig={{
+          bg: "#5C59F1",
+          switchTogglerEnabledColor: "gray",
+          switchTogglerDisabledColor: "gray",
+          barColor: "#A4B2FF",
+          titleColor: "#ffffff",
+          headingColor: "#ffffff",
+        }}
+      />
 
       <div className="flex-grow-[6] relative rounded-t-3xl mt-[90px]">
         <PlayAndEarnButton />
@@ -79,8 +83,8 @@ const Index = memo(() => {
               {MinesweeperConfig.gameTitle}
             </h1>
             <p className="text-sm text-gray-300 mt-5">
-              Challenge your skills and strategy in this fun card game. Compete
-              to win exciting rewards and enjoy the thrill of victory!
+              Uncover safe squares, avoid hidden mines – that’s all you need to
+              master the thrilling challenge of Minesweeper!{" "}
             </p>
             <div className="flex items-center justify-center mt-4 cursor-pointer">
               <span className="text-gray-300 text-sm mr-2">How to play</span>
@@ -122,35 +126,27 @@ const Index = memo(() => {
 
 const ModalContent = () => (
   <div
-    className="h-[80vh] overflow-y-auto p-4 bg-gray-100 text-justify"
-    style={{
-      maxHeight: "80vh",
-    }}
+    className="overflow-y-auto p-4 text-justify"
+    style={{ maxHeight: "80vh", borderRadius: "20px" }}
   >
-    <p className="text-sm text-black mb-4 leading-relaxed">
-      Welcome to the Minesweeper challenge! Your objective is to navigate the
-      field and uncover all the hidden diamonds while avoiding the mines.
+    <h2 className="font-bold text-2xl text-black mb-2">How to play</h2>
+    <p className="text-base text-black mb-4">
+      Find all the diamonds while avoiding the mines.
     </p>
-    <h3 className="font-semibold text-lg text-black mt-4">Instructions</h3>
-    <ul className="list-disc list-inside space-y-2 text-sm text-gray-800">
-      <li>Select a cell to reveal whether it contains a diamond or a mine.</li>
-      <li>
-        Diamonds add to your score, while triggering a mine ends the game.
-      </li>
-      <li>Strategically uncover cells to maximize your diamond count.</li>
-      <li>Mark suspected mines with flags to avoid accidental clicks.</li>
+    <h3 className="font-semibold text-sm text-black mt-4 uppercase">
+      Instructions
+    </h3>
+    <ul className="list-disc list-inside space-y-2 text-sm text-black">
+      <li>Tap on a tile to reveal it.</li>
+      <li>Each tile will either show a diamond or a mine.</li>
+      <li>Keep tapping to uncover all the diamonds without hitting a mine.</li>
     </ul>
-    <h3 className="font-semibold text-lg text-black mt-6">Tips & Tricks</h3>
-    <ul className="list-disc list-inside space-y-2 text-sm text-gray-800">
-      <li>Think ahead and uncover cells in less risky areas first.</li>
-      <li>Flag cells you suspect to contain mines to keep track of them.</li>
-      <li>Focus on areas with a higher likelihood of finding diamonds.</li>
-    </ul>
-    <h3 className="font-semibold text-lg text-black mt-6">Winning & Scoring</h3>
-    <ul className="list-disc list-inside space-y-2 text-sm text-gray-800">
-      <li>Collect as many diamonds as possible without triggering a mine.</li>
-      <li>The more diamonds you find, the higher your score.</li>
-      <li>Avoid mines to stay in the game and maximize your rewards.</li>
+    <h3 className="font-semibold text-sm text-black mt-6 uppercase">
+      Winning & Losing
+    </h3>
+    <ul className="list-disc list-inside space-y-2 text-sm text-black">
+      <li>Win by revealing all the diamonds.</li>
+      <li>If you reveal a mine, the game is over.</li>
     </ul>
   </div>
 );
