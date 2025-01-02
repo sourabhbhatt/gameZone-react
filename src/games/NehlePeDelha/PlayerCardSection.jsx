@@ -8,10 +8,8 @@ const PlayerCardSection = ({
   playerHand,
   cardsRevealed,
   currentBetAmount,
-  winnerDetails,
+  winningPlayer = null,
 }) => {
-  const isWinnerPlayer = false //winnerDetails === "You";
-  const isWinnerBot = true//winnerDetails === "Bot";
   return (
     <div className="flex flex-col items-center mt-6 space-y-6">
       <PlayerInfo
@@ -20,7 +18,8 @@ const PlayerCardSection = ({
         isCoinImage={true}
         coinAmount={currentBetAmount}
         amountPlacement="right"
-        isWinnerBot={isWinnerBot}
+        isWinner={winningPlayer === "Bot"}
+        isLooser={winningPlayer === "You"}
       />
       {cardsRevealed ? (
         <CardFront
@@ -46,7 +45,8 @@ const PlayerCardSection = ({
         amountPlacement="right"
         name="You"
         avatar={require("../../assets/avatar.png")}
-        isWinnerPlayer={isWinnerPlayer}
+        isLooser={winningPlayer === "Bot"}
+        isWinner={winningPlayer === "You"}
       />
     </div>
   );

@@ -1,0 +1,8 @@
+{
+  "gameTitle": "Minesweeper",
+  "entryFees": [
+    { "value": 0, "description": "Free Game", "recommended": false },
+    { "value": 10, "description": "Win up to 20 coins", "recommended": true },
+    { "value": 50, "description": "Win up to 100 coins", "recommended": false }
+  ]
+}

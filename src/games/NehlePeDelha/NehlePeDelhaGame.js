@@ -100,7 +100,9 @@ const NehlePeDelhaGame = () => {
     if (musicEnabled) playSound("flip");
     setCardsRevealed(true);
     setIsModalOpen(false);
-    determineWinner();
+    setTimeout(() => {
+      determineWinner();
+    }, 1000);
   };
 
   const handleExitConfirm = () => {
@@ -128,7 +130,7 @@ const NehlePeDelhaGame = () => {
         playerHand={playerHand}
         cardsRevealed={cardsRevealed}
         currentBetAmount={currentBetAmount}
-        winnerDetails={winner} 
+        winningPlayer={winningPlayer}
       />
       <BottomSection
         currentBetAmount={currentBetAmount}
@@ -141,10 +143,7 @@ const NehlePeDelhaGame = () => {
         disabled={cardsRevealed}
       />
 
-      <CountdownRevealModal
-        isOpen={isModalOpen}
-        onReveal={revealCards}
-      />
+      <CountdownRevealModal isOpen={isModalOpen} onReveal={revealCards} />
 
       <BetHistoryModal
         isOpen={isHistoryOpen}

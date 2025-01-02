@@ -1,53 +1,7 @@
-.minesweeper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .game-settings {
-    margin-bottom: 20px;
-  }
-  
-  .setting-option {
-    margin: 10px 0;
-  }
-  
-  .start-game-button {
-    margin: 10px 0;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .grid {
-    display: grid;
-    gap: 5px;
-    margin-top: 20px;
-  }
-  
-  .cell {
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #ccc;
-    border: 1px solid #888;
-    cursor: pointer;
-    font-size: 24px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .cell.star {
-    background-color: #a4e6a9;
-  }
-  
-  .cell.bomb {
-    background-color: #f8a5a5;
-  }
-  
-  .game-over {
-    margin-top: 20px;
-    text-align: center;
-  }
-  
+.modal-background {
+  background-size: contain; /* or cover */
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+}

@@ -58,3 +58,44 @@
   background-color: transparent; /* Transparent background */
 }
 /* Scroll bar */
+
+
+
+.range-slider {
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  background: linear-gradient(
+    to right,
+    var(--slider-fill-color, gray) var(--slider-value, 0%),
+    #ccc var(--slider-value, 0%)
+  );
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+
+.range-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  border: 2px solid var(--slider-fill-color, gray);
+  cursor: pointer;
+  position: relative;
+}
+
+.range-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  border: 2px solid var(--slider-fill-color, gray);
+  cursor: pointer;
+}
+
+.range-slider:disabled {
+  cursor: not-allowed;
+  background: #e0e0e0;
+}

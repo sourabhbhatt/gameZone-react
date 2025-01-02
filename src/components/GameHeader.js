@@ -5,6 +5,15 @@ import { FaAngleLeft, FaTimes, FaEllipsisV, FaCog } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { images } from "../assets/images";
 
+const defultThemeConfig = {
+  bg: "#5C59F1",
+  switchTogglerEnabledColor: "gray",
+  switchTogglerDisabledColor: "gray",
+  barColor: "gray",
+  titleColor: "#ffffff",
+  headingColor: "#ffffff",
+};
+
 const GameHeader = memo(
   ({
     title,
@@ -15,6 +24,7 @@ const GameHeader = memo(
     showSettingsIcon = false,
     bgColor = null,
     bgImage = null,
+    themeConfig = defultThemeConfig,
   }) => {
     const navigate = useNavigate();
     const [isSettingsOpen, setIsSettingsOpen] = useState(false); // Modal visibility
@@ -32,7 +42,11 @@ const GameHeader = memo(
 
     // Dynamic Background Style
     const backgroundStyle = bgImage
-      ? { backgroundImage: `url(${bgImage})`, backgroundSize: "cover", backgroundPosition: "center" }
+      ? {
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }
       : bgColor
       ? { backgroundColor: bgColor }
       : {};
@@ -85,6 +99,7 @@ const GameHeader = memo(
 
         {/* Settings Modal */}
         <SettingsModal
+          themeConfig={themeConfig}
           isOpen={isSettingsOpen}
           onClose={() => setIsSettingsOpen(false)}
         />

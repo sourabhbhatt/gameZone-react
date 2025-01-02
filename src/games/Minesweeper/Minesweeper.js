@@ -1,115 +1,160 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import GameSettings from './GameSettings';
-import './Minesweeper.css';
+import React, { useState, useEffect, useCallback, memo } from "react";
+import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import useMinesweeper from "./hooks/useMinesweeper";
+import ResultScreen from "./ResultScreen";
+import GameHeader from "../../components/GameHeader";
+import backgroundCover from "./assets/Minesweeper.png";
+import gameBg from "./assets/gameBg.png";
+import bomb from "./assets/bomb.png";
+import box from "./assets/box.png";
+import diamond from "./assets/diamond.png";
+import clickSound from "./audio/click.wav";
+import explosionSound from "./audio/explosion.mpeg";
+import gameOverSound from "./audio/game-over.wav";
+import winSound from "./audio/win.wav";
+import ExitModal from "./ExitModal";
 
-// Define bomb percentages based on risk level
-const BOMB_PERCENTAGES = {
-  low: 0.1,
-  medium: 0.2,
-  high: 0.3,
-  hard: 0.4,
-};
-
-const createBoard = (size, bombPercentage) => {
-  const totalCells = size * size;
-  const numBombs = Math.floor(totalCells * bombPercentage);
-  const board = Array(totalCells).fill({ isRevealed: false, isStar: false, isBomb: false });
-
-  // Randomly place bombs
-  let bombsPlaced = 0;
-  while (bombsPlaced < numBombs) {
-    const index = Math.floor(Math.random() * totalCells);
-    if (!board[index].isBomb) {
-      board[index] = { ...board[index], isBomb: true };
-      bombsPlaced++;
-    }
-  }
-
-  // Set remaining cells as stars
-  for (let i = 0; i < board.length; i++) {
-    if (!board[i].isBomb) board[i] = { ...board[i], isStar: true };
-  }
-
-  return board;
-};
-
-const Minesweeper = () => {
-  const [gridSize, setGridSize] = useState(4);
-  const [riskLevel, setRiskLevel] = useState('low');
-  const [board, setBoard] = useState([]);
-  const [gameOver, setGameOver] = useState(false);
-  const [gameWon, setGameWon] = useState(false);
-
-  // Rebuild the board whenever gridSize or riskLevel changes
-  useEffect(() => {
-    setBoard(createBoard(gridSize, BOMB_PERCENTAGES[riskLevel]));
-    setGameOver(false);
-    setGameWon(false);
-  }, [gridSize, riskLevel]);
-
-  const handleCellClick = (index) => {
-    if (gameOver || board[index].isRevealed) return;
-
-    const newBoard = [...board];
-    newBoard[index].isRevealed = true;
-
-    if (newBoard[index].isBomb) {
-      setGameOver(true);
-    } else if (newBoard.every(cell => (cell.isStar && cell.isRevealed) || cell.isBomb)) {
-      setGameWon(true);
-      setGameOver(true);
-    }
-
-    setBoard(newBoard);
-  };
-
-  const resetGame = () => {
-    setBoard(createBoard(gridSize, BOMB_PERCENTAGES[riskLevel]));
-    setGameOver(false);
-    setGameWon(false);
+const Tile = memo(({ index, revealed, grid, onClick }) => {
+  const tileContent = () => {
+    if (!revealed.includes(index)) return <img src={box} alt="box" />;
+    if (grid[index] === "diamond") return <img src={diamond} alt="diamond" />;
+    if (grid[index] === "bomb") return <img src={bomb} alt="bomb" />;
   };
 
   return (
-    <div className="minesweeper">
-      <h1>Minesweeper</h1>
-      <GameSettings
-        gridSize={gridSize}
-        setGridSize={setGridSize}
-        riskLevel={riskLevel}
-        setRiskLevel={setRiskLevel}
-      />
-      <button onClick={resetGame} className="start-game-button">Start Game</button>
-
-      <div className="grid" style={{ gridTemplateColumns: `repeat(${gridSize}, 1fr)` }}>
-        {board.map((cell, index) => (
-          <motion.div
-            key={index}
-            className={`cell ${cell.isRevealed || gameOver ? (cell.isStar ? 'star' : 'bomb') : ''}`}
-            onClick={() => handleCellClick(index)}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: cell.isRevealed || gameOver ? 1 : 0.8, scale: cell.isRevealed || gameOver ? 1.1 : 1 }}
-            transition={{ duration: 0.3 }}
-            whileHover={{ scale: cell.isRevealed || gameOver ? 1.1 : 1.05 }}
-          >
-            {(cell.isRevealed || gameOver) ? (cell.isStar ? '⭐' : '💣') : ''}
-          </motion.div>
-        ))}
-      </div>
-
-      {gameOver && (
-        <motion.div
-          className="game-over"
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          {gameWon ? "Congratulations! You won! 🎉" : "Game Over! You hit a bomb. 💣"}
-          <button onClick={resetGame}>Restart</button>
-        </motion.div>
-      )}
+    <div
+      className={`w-16 h-16 hover:scale-105 transition-transform ${
+        revealed.includes(index) ? "opacity-100" : "opacity-75"
+      }`}
+      onClick={() => onClick(index)}
+    >
+      {tileContent()}
     </div>
   );
-};
+});
 
-export default Minesweeper;
+export default function Minesweeper() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { entryFee } = location.state || {};
+  const [modalOpen, setModalOpen] = useState(false);
+  const [isExitModalOpen, setIsExitModalOpen] = useState(false);
+
+  const soundSettings = useSelector((state) => state.app.soundSettings) || {};
+  const {
+    soundEnabled = false,
+    soundVolume = 50,
+    musicEnabled = false,
+    musicVolume = 50,
+  } = soundSettings;
+
+  const { grid, revealed, revealTile, status, resetGame, gridSize } =
+    useMinesweeper(5, entryFee);
+
+  const playSound = useCallback(
+    (sound, type = "music") => {
+      const audio = new Audio(sound);
+      audio.volume = (type === "music" ? musicVolume : soundVolume) / 100;
+      audio.play();
+    },
+    [musicVolume, soundVolume]
+  );
+
+  const handleGameOverSound = useCallback(() => {
+    if (musicEnabled) {
+      playSound(status === "win" ? winSound : gameOverSound, "music");
+    }
+  }, [musicEnabled, status, playSound]);
+
+  const handleTileClick = useCallback(
+    (index) => {
+      if (revealed.includes(index) || status !== "playing") return;
+
+      if (soundEnabled) playSound(clickSound, "sound");
+      revealTile(index);
+
+      if (grid[index] === "bomb" && soundEnabled) {
+        playSound(explosionSound, "sound");
+      }
+    },
+    [revealed, grid, status, soundEnabled, playSound, revealTile]
+  );
+
+  useEffect(() => {
+    if (status !== "playing") {
+      setModalOpen(true);
+      handleGameOverSound();
+    } else setModalOpen(false);
+  }, [status, handleGameOverSound]);
+
+  if (modalOpen) {
+    return (
+      <ResultScreen
+        amount={entryFee}
+        isOpen={modalOpen}
+        isWon={status === "win"}
+        onBack={() => navigate(-1)}
+        onMainMenu={() => navigate(-1)}
+        onRetryOrReplay={() => resetGame()}
+      />
+    );
+  }
+
+  return (
+    <div
+      className="flex flex-col min-h-screen text-white bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage: `url(${backgroundCover})`,
+        // objectFit: "contain",
+        // backgroundSize:"contain"
+      }}
+    >
+      <GameHeader
+        themeConfig={{
+          bg: "#5C59F1",
+          switchTogglerEnabledColor: "gray",
+          switchTogglerDisabledColor: "gray",
+          barColor: "#A4B2FF",
+          titleColor: "#ffffff",
+          headingColor: "#ffffff",
+        }}
+        onBack={() => setIsExitModalOpen(true)}
+      />
+
+      <div className="flex flex-grow items-center justify-center">
+        <div
+          className="flex items-center justify-center p-6 rounded-lg"
+          style={{
+            backgroundImage: `url(${gameBg})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          <div
+            className="grid gap-2"
+            style={{
+              gridTemplateColumns: `repeat(${gridSize}, 1fr)`,
+              gridTemplateRows: `repeat(${gridSize}, 1fr)`,
+            }}
+          >
+            {grid.map((_, index) => (
+              <Tile
+                key={index}
+                index={index}
+                revealed={revealed}
+                grid={grid}
+                onClick={handleTileClick}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+      <ExitModal
+        isOpen={isExitModalOpen}
+        onClose={() => setIsExitModalOpen(false)}
+        onConfirm={() => navigate(-1)}
+      />
+    </div>
+  );
+}
