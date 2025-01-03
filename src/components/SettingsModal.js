@@ -50,14 +50,17 @@ const SettingsModal = ({
         {/* Close Button */}
         <button
           onClick={onClose}
-          className={`absolute top-4 right-4 text-xl text-[${themeConfig.headingColor}]-400 hover:text-black`}
-        >
+          className={`absolute top-4 right-4 text-xl hover:text-black`}
+          style={{ color: themeConfig.headingColor }}
+
+      >
           <FaTimes />
         </button>
 
         {/* Modal Title */}
         <h2
-          className={`text-center text-lg font-semibold text-[${themeConfig.headingColor}] mb-6`}
+          style={{ color: themeConfig.headingColor }}
+          className={`text-center text-lg font-semibold mb-6`}
         >
           Settings
         </h2>
@@ -79,7 +82,8 @@ const SettingsModal = ({
                 )}
               </div>
               <span
-                className={`text-sm font-medium text-[${themeConfig.titleColor}]`}
+                className="text-sm font-medium"
+                style={{ color: themeConfig.titleColor }}
               >
                 Sound
               </span>
@@ -96,11 +100,14 @@ const SettingsModal = ({
                 }}
               />
               <div
-                className={`w-10 h-5 flex items-center bg-gray-300 rounded-full p-1 cursor-pointer transition-all ${
-                  soundEnabled
-                    ? `bg-[${themeConfig.switchTogglerEnabledColor}]`
-                    : `bg-[${themeConfig.switchTogglerDisabledColor}]`
+                 className={`w-10 h-5 flex items-center rounded-full p-1 cursor-pointer transition-all ${
+                  soundEnabled ? "bg-gray-500" : "bg-gray-300"
                 }`}
+                style={{
+                  backgroundColor: soundEnabled
+                    ? themeConfig.switchTogglerEnabledColor
+                    : themeConfig.switchTogglerDisabledColor,
+                }}
               >
                 <motion.div
                   className={`w-4 h-4 bg-white rounded-full shadow ${
@@ -164,7 +171,8 @@ const SettingsModal = ({
                 )}
               </div>
               <span
-                className={`text-sm font-medium text-[${themeConfig.titleColor}]`}
+                style={{ color: themeConfig.titleColor }}
+                className={`text-sm font-medium`}
               >
                 Music
               </span>
@@ -184,11 +192,12 @@ const SettingsModal = ({
                 }}
               />
               <div
-                className={`w-10 h-5 flex items-center bg-gray-300 rounded-full p-1 cursor-pointer transition-all ${
-                  musicEnabled
-                    ? `bg-[${themeConfig.switchTogglerEnabledColor}]`
-                    : `bg-[${themeConfig.switchTogglerDisabledColor}]`
-                }`}
+              className={`w-10 h-5 flex items-center rounded-full p-1 cursor-pointer transition-all`}
+              style={{
+                backgroundColor: musicEnabled
+                  ? themeConfig.switchTogglerEnabledColor
+                  : themeConfig.switchTogglerDisabledColor,
+              }}
               >
                 <motion.div
                   className={`w-4 h-4 bg-white rounded-full shadow ${

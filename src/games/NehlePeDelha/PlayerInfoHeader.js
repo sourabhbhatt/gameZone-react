@@ -13,9 +13,8 @@ const PlayerInfoHeader = ({ currentBetAmount }) => {
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
         }}
-        className="relative w-[90%] aspect-[8/2] flex items-center justify-center"
+        className="relative w-[100%] aspect-[8/2] flex items-center justify-center"
       >
-        {/* Content Inside Background */}
         <div className="flex justify-between items-center w-[60%] max-w-4xl px-6 -mt-4">
           <PlayerInfo
             coinAmount={currentBetAmount}

@@ -50,7 +50,7 @@ export default function Minesweeper() {
   } = soundSettings;
 
   const { grid, revealed, revealTile, status, resetGame, gridSize } =
-    useMinesweeper(5, entryFee);
+    useMinesweeper(3, entryFee);
 
   const playSound = useCallback(
     (sound, type = "music") => {

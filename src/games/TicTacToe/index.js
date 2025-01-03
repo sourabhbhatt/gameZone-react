@@ -22,7 +22,8 @@ const TicTacToeLanding = memo(() => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { initializeSound, playSound, stopSound, updateSound } = useSoundEffects();
+  const { initializeSound, playSound, stopSound, updateSound } =
+    useSoundEffects();
 
   // Retrieve sound settings
   const soundSettings = useSelector((state) => state.app.soundSettings);
@@ -91,7 +92,16 @@ const TicTacToeLanding = memo(() => {
       style={{ backgroundImage: `url(${tictactoeLanding})` }}
     >
       {loading && <Loader size={60} speed={0.8} />}
-      <GameHeader walletAmount={walletAmount?.toLocaleString()} />
+      <GameHeader
+        themeConfig={{
+          bg: "#ffffff",
+          switchTogglerEnabledColor: "#34eb49",
+          switchTogglerDisabledColor: "gray",
+          barColor: "#7A7A7A",
+          titleColor: "#000000",
+          headingColor: "#000000",
+        }}
+      />
       <main className="w-full max-w-lg px-4 mt-12">
         <PlayAndEarnButton className="absolute bottom-4 left-1/2 transform -translate-x-1/2" />
         <section className="text-center mt-5">

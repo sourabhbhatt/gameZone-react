@@ -18,12 +18,12 @@ const index = memo(() => {
   const [currentFee, setCurrentFee] = useState(
     NehlePeDelhaConfig.entryFees.find((fee) => fee.recommended)?.value || 0
   );
-  const minimumAmount = 10;
   const walletAmount = useSelector((state) => state.user?.wallet);
   const { initializeSound, playSound, stopSound, updateSound } =
     useSoundEffects();
   const soundSettings = useSelector((state) => state.app.soundSettings);
   const { musicEnabled = false, musicVolume = 50 } = soundSettings || {};
+  const minimumAmount = (parseInt(walletAmount) || 0) > 10 ? 10 : 0;
 
   useEffect(() => {
     initializeSound("gameMusic", gameMusic, {
@@ -65,17 +65,26 @@ const index = memo(() => {
         style={{ backgroundImage: `url(${bgCards})` }}
         className="h-[40vh]  bg-cover bg-center relative"
       >
-        <GameHeader />
+        <GameHeader
+          themeConfig={{
+            bg: "#ffffff",
+            switchTogglerEnabledColor: "#2E1A4D",
+            switchTogglerDisabledColor: "gray",
+            barColor: "#7A7A7A",
+            titleColor: "#000000",
+            headingColor: "#000000",
+          }}
+        />
       </div>
 
       <div
         style={{
           backgroundImage: `url(${bgBottomCard})`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
+          backgroundSize: `cover`,
+          backgroundRepeat: `no-repeat`,
           backgroundPosition: "center",
         }}
-        className="flex-grow-[6] relative rounded-t-3xl -mt-12"
+        className="flex-grow-[6] relative rounded-t-3xl -mt-12 flex items-center justify-center"
       >
         <main className="w-full max-w-lg mt-10">
           <PlayAndEarnButton />
@@ -85,7 +94,7 @@ const index = memo(() => {
             </h1>
             <p className="text-sm text-gray-300 mt-5">
               Challenge your skills and strategy in this fun card game. Compete
-              to win exciting rewards and enjoy the thrill of victory!{" "}
+              to win exciting rewards and enjoy the thrill of victory!
             </p>
           </section>
           <div className="text-white p-6 rounded-xl mt-3">

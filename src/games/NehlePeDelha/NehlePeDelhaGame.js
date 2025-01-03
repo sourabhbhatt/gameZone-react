@@ -119,6 +119,14 @@ const NehlePeDelhaGame = () => {
       style={{ backgroundImage: `url(${LobbyBg})` }}
     >
       <GameHeader
+         themeConfig={{
+          bg: "#ffffff",
+          switchTogglerEnabledColor: "#2E1A4D",
+          switchTogglerDisabledColor: "gray",
+          barColor: "#7A7A7A",
+          titleColor: "#000000",
+          headingColor: "#000000",
+        }}
         showCrossIcon
         onBack={() => setIsExitModal(true)}
         showSettingsIcon
@@ -133,6 +141,7 @@ const NehlePeDelhaGame = () => {
         winningPlayer={winningPlayer}
       />
       <BottomSection
+        walletAmount={walletAmount}
         currentBetAmount={currentBetAmount}
         setCurrentBetAmount={setCurrentBetAmount}
         revealCards={() => {

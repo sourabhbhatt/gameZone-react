@@ -76,7 +76,19 @@ const TicTacToeGame = memo(() => {
       className="flex flex-col items-center min-h-screen text-white bg-[#001e1c]"
       style={{ backgroundImage: `url(${tictactoegameBg})` }}
     >
-      <GameHeader showCrossIcon showSettingsIcon title="Tic Tac Toe" />
+      <GameHeader
+        showCrossIcon
+        themeConfig={{
+          bg: "#ffffff",
+          switchTogglerEnabledColor: "#34eb49",
+          switchTogglerDisabledColor: "gray",
+          barColor: "#7A7A7A",
+          titleColor: "#000000",
+          headingColor: "#000000",
+        }}
+        showSettingsIcon
+        title="Tic Tac Toe"
+      />
 
       <div className="flex flex-col items-center space-y-4 mt-4">
         <div className="flex justify-center items-center space-x-8">

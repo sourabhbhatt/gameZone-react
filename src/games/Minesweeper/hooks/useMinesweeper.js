@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect, useCallback } from "react";
 import { updateWallet } from "../../../redux/slices/userSlice";
 
-export default function useMinesweeper(gridSize = 5, currentFee = 0) {
+export default function useMinesweeper(gridSize = 3, currentFee = 0) {
   const dispatch = useDispatch();
   const walletAmount = useSelector((state) => state.user?.wallet);
   const [grid, setGrid] = useState([]);
