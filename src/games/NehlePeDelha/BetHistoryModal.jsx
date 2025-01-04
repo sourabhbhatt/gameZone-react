@@ -7,8 +7,8 @@ const BetHistoryModal = ({ isOpen, onClose, betHistory }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50">
-      <div className="w-full max-h-[80vh] bg-gradient-to-t from-[#9C64E2] to-[#623AA2] rounded-t-3xl flex flex-col">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50 ">
+      <div className="w-full max-h-[80vh] min-h-[50vh] bg-gradient-to-t from-[#9C64E2] to-[#623AA2] rounded-t-3xl flex flex-col">
         <div className="sticky top-0 bg-transparent flex flex-col justify-between  p-4">
           <button onClick={onClose} className="text-white text-3xl">
             <IoClose />

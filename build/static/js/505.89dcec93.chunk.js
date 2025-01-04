@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkgamezone=self.webpackChunkgamezone||[]).push([[505],{505:(e,s,a)=>{a.r(s),a.d(s,{default:()=>n});a(5043);var h=a(579);const n=()=>(0,h.jsx)("h2",{children:"This is the Fruit Ninja Game"})}}]);
+//# sourceMappingURL=505.89dcec93.chunk.js.map

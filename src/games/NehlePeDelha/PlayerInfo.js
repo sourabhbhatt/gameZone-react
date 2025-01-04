@@ -27,6 +27,10 @@ const PlayerInfo = ({
   }, [isWinner, isLooser]);
 
   useEffect(() => {
+    setAnimatedCoins(coinAmount);
+  }, [coinAmount]);
+
+  useEffect(() => {
     if (isWinner) {
       setTimeout(() => setAnimatedCoins(coinAmount * 2), 2000);
     }
@@ -184,4 +188,4 @@ const PlayerInfo = ({
   );
 };
 
-export default React.memo(PlayerInfo);
+export default PlayerInfo;

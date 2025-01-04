@@ -31,18 +31,24 @@ const TicTacToeGame = memo(() => {
     winnerDetails,
     timeLeft,
     handleMove,
-    getBotMove,
+    joinGame,
     winningCombination,
+    resetGame,
+    currentPlayer
   } = useTicTacToe(ticTacToeGameConfig, selectedOption, entryFee);
+
+  useEffect(() => {
+    joinGame();
+  }, [joinGame]);
 
   useEffect(() => {
     if (!isPlayerTurn && !status) {
       const botMoveTimeout = setTimeout(() => {
-        handleMove(getBotMove());
+        handleMove(-1); // Backend will handle bot moves
       }, 1000);
       return () => clearTimeout(botMoveTimeout);
     }
-  }, [isPlayerTurn, status, getBotMove, handleMove]);
+  }, [isPlayerTurn, status, handleMove]);
 
   useEffect(() => {
     let modalTimeout;
@@ -57,12 +63,12 @@ const TicTacToeGame = memo(() => {
             winnerDetails,
           });
         }, 1000);
-      } else {
-        setResultModalInfo({
-          visible: true,
-          status,
-          winnerDetails,
-        });
+      // } else {
+      //   setResultModalInfo({
+      //     visible: true,
+      //     status,
+      //     winnerDetails,
+      //   });
       }
     }
 
@@ -116,7 +122,7 @@ const TicTacToeGame = memo(() => {
         />
       </div>
 
-      <Timer timeLeft={timeLeft} warningTimeStartsFrom={5} />
+      {currentPlayer === selectedOption && <Timer timeLeft={timeLeft} warningTimeStartsFrom={5} />}
 
       {showWinnerModal && (
         <WinnerModal isPlayerWinner={winnerDetails?.winner === "user"} />
@@ -132,6 +138,7 @@ const TicTacToeGame = memo(() => {
               : "tie"
           }
           winnerDetails={resultModalInfo.winnerDetails}
+          resetGame={resetGame}
         />
       )}
     </div>

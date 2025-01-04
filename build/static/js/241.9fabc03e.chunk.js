@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkgamezone=self.webpackChunkgamezone||[]).push([[241],{4241:(e,s,a)=>{a.r(s),a.d(s,{default:()=>n});a(5043);var h=a(579);const n=()=>(0,h.jsx)("h2",{children:"This is the Ludo Game"})}}]);
+//# sourceMappingURL=241.9fabc03e.chunk.js.map

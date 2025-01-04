@@ -17,12 +17,21 @@ import collectPointsSound from "./audio/coinsEarned.mp3";
 import useSoundEffects from "../../hooks/useSoundEffects";
 import ExitModal from "./ExitModal";
 import { useNavigate } from "react-router-dom";
+import useSocketTransactions from "./hooks/useSocket";
+import { useLocation } from 'react-router-dom';
+
+
 
 const NehlePeDelhaGame = () => {
   const dispatch = useDispatch();
   const walletAmount = useSelector((state) => state.user?.wallet);
 
-  const [currentBetAmount, setCurrentBetAmount] = useState(10);
+  const { creditBalance, debitBalance, getBalance } = useSocketTransactions();
+
+  const location = useLocation();
+  const { entryFee } = location.state || {}; // Safely access the entryFee
+
+  const [currentBetAmount, setCurrentBetAmount] = useState(entryFee || 0);
   const [botHand, setBotHand] = useState([]);
   const [playerHand, setPlayerHand] = useState([]);
   const [winner, setWinner] = useState(null);
@@ -33,6 +42,8 @@ const NehlePeDelhaGame = () => {
   const [isWinningModalOpen, setIsWinningModalOpen] = useState(false);
   const [winningPlayer, setWinningPlayer] = useState(""); // "You" or "Bot"
   const [isExitModal, setIsExitModal] = useState(false);
+
+  console.log("entryFee:", entryFee);
 
   const { soundEnabled, soundVolume, musicEnabled, musicVolume } = useSelector(
     (state) => state.app.soundSettings
@@ -49,9 +60,15 @@ const NehlePeDelhaGame = () => {
     });
   }, [initializeSound]);
 
+
+
   // Function to start the game
-  const startGame = useCallback(() => {
-    dispatch(updateWallet(walletAmount - currentBetAmount));
+  const startGame = useCallback(async () => {
+    await getBalance()
+    if (walletAmount < currentBetAmount) {
+      alert("Insufficient balance to place the bet.");
+    }
+    // dispatch(updateWallet(walletAmount - currentBetAmount));
     const newDeck = shuffleDeck(createDeck());
     setPlayerHand(dealHand(newDeck, 1));
     setBotHand(dealHand(newDeck, 1));
@@ -61,9 +78,10 @@ const NehlePeDelhaGame = () => {
   }, [dispatch, walletAmount, currentBetAmount]);
 
   // Function to determine the winner based on card rank
-  const determineWinner = useCallback(() => {
+  const determineWinner = useCallback(async () => {
     const playerCard = playerHand[0];
     const botCard = botHand[0];
+    getBalance()
 
     if (!playerCard || !botCard) return;
 
@@ -71,8 +89,10 @@ const NehlePeDelhaGame = () => {
       if (musicEnabled) playSound("collectPoints");
       setWinner("You Won!");
       setWinningPlayer("You");
-      dispatch(updateWallet(currentBetAmount * 2));
+      // dispatch(updateWallet(currentBetAmount * 2));
       updateBetHistory("Won");
+      console.log(">>>>>>>")
+      await creditBalance(currentBetAmount * 2);
     } else if (botCard.rank > playerCard.rank) {
       setWinner("You Lost!");
       setWinningPlayer("Bot");
@@ -83,6 +103,7 @@ const NehlePeDelhaGame = () => {
       updateBetHistory("Tie");
     }
     setIsWinningModalOpen(true);
+    setCurrentBetAmount(0);
   }, [playerHand, botHand, dispatch, currentBetAmount]);
 
   // Update bet history dynamically
@@ -96,7 +117,7 @@ const NehlePeDelhaGame = () => {
   };
 
   // Reveal cards and determine winner
-  const revealCards = () => {
+  const revealCards = async () => {
     if (musicEnabled) playSound("flip");
     setCardsRevealed(true);
     setIsModalOpen(false);
@@ -144,7 +165,16 @@ const NehlePeDelhaGame = () => {
         walletAmount={walletAmount}
         currentBetAmount={currentBetAmount}
         setCurrentBetAmount={setCurrentBetAmount}
-        revealCards={() => {
+        revealCards={async () => {
+          if (currentBetAmount === 0) {
+            alert("Please place a bet before revealing cards.");
+            return;
+          } else if (currentBetAmount > walletAmount) {
+            console.log("??", currentBetAmount, walletAmount, currentBetAmount > walletAmount);
+            alert("Insufficient balance to place the bet.");
+            return;
+          }
+          await debitBalance(currentBetAmount);
           setIsModalOpen(true);
         }}
         onViewHistory={() => setIsHistoryOpen(true)}

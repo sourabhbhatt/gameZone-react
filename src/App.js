@@ -1,6 +1,6 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useEffect } from "react";
 import { Provider } from "react-redux";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 
 import store from "./redux/store";
 import NetworkStatus from "./components/NetworkStatus";
@@ -28,6 +28,7 @@ const NehlePeDelhaGame = lazy(() =>
 
 const env = process.env.NODE_ENV; // Get the environment (development or production)
 
+
 function App() {
   return (
     <Provider store={store}>
@@ -38,15 +39,15 @@ function App() {
               <Routes>
                 <Route path="/" element={<GameZone />} />
 
-                <Route path="/tictactoe" element={<TicTacToe />} />
+                <Route path="/games/tic-tac-toe" element={<TicTacToe />} />
                 <Route path="/tictactoe-game" element={<TicTacToeGame />} />
 
-                <Route path="/nehlepedelha" element={<NehlePeDelha />} />
+                <Route path="/games/nehle-pe-dehla" element={<NehlePeDelha />} />
                 <Route
                   path="/nehlepedelha-game"
                   element={<NehlePeDelhaGame />}
                 />
-                <Route path="/minesweeper" element={<MinesweeperLoading />} />
+                <Route path="/games/mine-sweeper" element={<MinesweeperLoading />} />
                 <Route path="/minesweeper-game" element={<MinesweeperGame />} />
 
                 <Route path="/ludo" element={<Ludo />} />
@@ -54,6 +55,7 @@ function App() {
                 <Route path="/teen-patti" element={<TeenPatti />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
+              <URLDisplay />
             </Suspense>
           </ErrorBoundary>
         </Router>

@@ -28,7 +28,7 @@ const WinningModal = ({ isOpen, onPlayAgain, winnerName }) => {
         {winnerName === "You" ? (
           <>
             <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">
-              🎉 "You Won"
+              🎉 You Won
             </h2>
             <motion.img
               src={trophy}
