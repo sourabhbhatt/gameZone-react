@@ -3,6 +3,7 @@ import lobbyHeader from "./assets/lobbyHeader.png";
 import PlayerInfo from "./PlayerInfo";
 
 const PlayerInfoHeader = ({ currentBetAmount }) => {
+  console.log("currentBetAmount", currentBetAmount);
   return (
     <div className="flex justify-center items-center w-full py-4">
       {/* Background Image Container */}
@@ -35,4 +36,4 @@ const PlayerInfoHeader = ({ currentBetAmount }) => {
   );
 };
 
-export default memo(PlayerInfoHeader);
+export default PlayerInfoHeader;

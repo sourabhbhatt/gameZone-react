@@ -11,12 +11,28 @@ import useSoundEffects from "../../hooks/useSoundEffects";
 import EntryFeeSelector from "../../components/EntryFeeSelector";
 import { updateWallet } from "../../redux/slices/userSlice";
 import { GoInfo } from "react-icons/go";
+import useMinesweeper from "./hooks/useMinesweeper";
+import useUrlParams from "../../hooks/useUrlParams";
 
 const Index = memo(() => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const {getBalance, debitBalance} = useMinesweeper();
+
+  const {setParams} = useUrlParams();
+  
+    useEffect(() => {
+      getBalance();
+    }, [getBalance]);
+
+    useEffect(() => {
+      setParams({  
+      })
+    }, [])
+  
 
   const [currentFee, setCurrentFee] = useState(
     MinesweeperConfig.entryFees.find((fee) => fee.recommended)?.value || 0
@@ -45,7 +61,10 @@ const Index = memo(() => {
 
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
-  const handlePlayClick = () => {
+  const handlePlayClick = async () => {
+    await debitBalance(currentFee).then((data) => {
+      console.log("Debit successful", data);
+    });
     if (loading) return;
     setLoading(true);
     if (musicEnabled) stopSound("gameMusic");
@@ -102,6 +121,7 @@ const Index = memo(() => {
             defaultFee={currentFee}
             onSelectFee={setCurrentFee}
             onPlayClick={handlePlayClick}
+            balance={walletAmount}
           />
         </main>
       </div>

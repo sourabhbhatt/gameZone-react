@@ -11,6 +11,8 @@ import { images } from "../../assets/images";
 import RangeSlider from "../../components/RangeSlider";
 import gameMusic from "./audio/gameMusic.mp3";
 import useSoundEffects from "../../hooks/useSoundEffects";
+import useSocketTransactions from "./hooks/useSocket";
+import useUrlParams from "../../hooks/useUrlParams";
 
 const index = memo(() => {
   const navigate = useNavigate();
@@ -20,6 +22,8 @@ const index = memo(() => {
   );
   const minimumAmount = 10;
   const walletAmount = useSelector((state) => state.user?.wallet);
+
+  const {getBalance, debitBalance, creditBalance} = useSocketTransactions(currentFee);
   const { initializeSound, playSound, stopSound, updateSound } =
     useSoundEffects();
   const soundSettings = useSelector((state) => state.app.soundSettings);
@@ -42,6 +46,10 @@ const index = memo(() => {
 
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
+  const {setParams} = useUrlParams();
+
+
+
   const handleInputChange = (e) => {
     const value = Number(e.target.value);
     setCurrentFee(value);
@@ -51,13 +59,22 @@ const index = memo(() => {
     e.target.style.background = `linear-gradient(to right, #4A2574 ${percentage}%, #ffffff ${percentage}%)`;
   };
 
-  const startGame = () => {
+  const startGame = async () => {
     navigate("/nehlepedelha-game", {
       state: {
         entryFee: currentFee,
       },
     });
   };
+
+    useEffect(() => {
+      getBalance();
+    }, [getBalance]);
+
+    useEffect(() => {
+      setParams({  
+      })
+    }, [])
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -98,6 +115,7 @@ const index = memo(() => {
               max={String(walletAmount)}
               value={currentFee}
               onChange={handleInputChange}
+              walletAmount={walletAmount}
               //  disabled={betLock || autoBetPlaced}
               //  customClasses='your-slider-class-name'
               //  secondaryBgColor='var( - secondary-color)'
@@ -115,7 +133,12 @@ const index = memo(() => {
             </div>
             <div className="w-full h-[1.5px] bg-white my-6" />
             <button
-              onClick={startGame}
+              onClick={() => {
+                if (walletAmount < currentFee) {
+                  alert("Not enough balance");
+                  return;
+                }
+                startGame()} }
               className="w-full mt-1 px-6 py-3 bg-purple-900 text-white rounded-3xl shadow-md hover:scale-105 transition-all flex items-center justify-center space-x-2"
             >
               <span className="text-lg font-medium">Play With</span>

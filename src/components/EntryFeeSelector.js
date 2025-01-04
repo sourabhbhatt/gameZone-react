@@ -2,7 +2,7 @@ import React, { memo, useState } from "react";
 import { images } from "../assets/images";
 
 const EntryFeeSelector = memo(
-  ({ fees, defaultFee, onSelectFee, onPlayClick }) => {
+  ({ fees, defaultFee, onSelectFee, onPlayClick, balance = 0 }) => {
     const [selectedFee, setSelectedFee] = useState(defaultFee);
 
     const handleFeeSelect = (fee) => {
@@ -69,7 +69,13 @@ const EntryFeeSelector = memo(
           <button
             className="flex items-center justify-center w-full px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white 
       rounded-full text-lg font-bold shadow-md hover:from-green-600 hover:to-green-700 transition-all space-x-2"
-            onClick={() => onPlayClick(selectedFee)}
+            onClick={() => {
+              if(balance < selectedFee){
+                alert("Insufficient balance");
+                return;
+              }
+              
+              onPlayClick(selectedFee);}}
           >
             <span>Play With</span>
             <img

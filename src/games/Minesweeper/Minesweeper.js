@@ -34,12 +34,27 @@ const Tile = memo(({ index, revealed, grid, onClick }) => {
   );
 });
 
+const generateGameId = () => {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let gameId = "";
+  for (let i = 0; i < 6; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    gameId += characters.charAt(randomIndex);
+  }
+  return gameId;
+};
+
 export default function Minesweeper() {
   const location = useLocation();
   const navigate = useNavigate();
   const { entryFee } = location.state || {};
   const [modalOpen, setModalOpen] = useState(false);
   const [isExitModalOpen, setIsExitModalOpen] = useState(false);
+
+
+  
+
 
   const soundSettings = useSelector((state) => state.app.soundSettings) || {};
   const {
@@ -50,7 +65,7 @@ export default function Minesweeper() {
   } = soundSettings;
 
   const { grid, revealed, revealTile, status, resetGame, gridSize } =
-    useMinesweeper(5, entryFee);
+    useMinesweeper(3, entryFee, generateGameId());
 
   const playSound = useCallback(
     (sound, type = "music") => {
@@ -96,7 +111,9 @@ export default function Minesweeper() {
         isWon={status === "win"}
         onBack={() => navigate(-1)}
         onMainMenu={() => navigate(-1)}
-        onRetryOrReplay={() => resetGame()}
+        // onRetryOrReplay={() => resetGame()}
+        onRetryOrReplay={() => navigate(-1)}
+
       />
     );
   }
