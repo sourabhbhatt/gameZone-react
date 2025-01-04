@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/241.9fabc03e.chunk.js","mappings":"sJAGA,MAIA,EAJaA,KACJC,EAAAA,EAAAA,KAAA,MAAAC,SAAI,yB","sources":["games/Ludo/Ludo.js"],"sourcesContent":["// src/games/Ludo/Ludo.js\nimport React from 'react';\n\nconst Ludo = () => {\n  return <h2>This is the Ludo Game</h2>;\n};\n\nexport default Ludo;\n"],"names":["Ludo","_jsx","children"],"sourceRoot":""}
