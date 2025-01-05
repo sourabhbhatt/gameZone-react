@@ -13,7 +13,6 @@ import gameMusic from "./audio/gameMusic.mp3";
 import useSoundEffects from "../../hooks/useSoundEffects";
 import useSocketTransactions from "./hooks/useSocket";
 import useUrlParams from "../../hooks/useUrlParams";
-import { toast, ToastContainer } from "react-toastify";
 import { showToastMessage } from "../../utils";
 
 const index = memo(() => {
@@ -41,10 +40,10 @@ const index = memo(() => {
       volume: musicVolume / 100,
       loop: true,
     });
-    if (musicEnabled) playSound("gameMusic");
+    if (musicEnabled) playSound("gameMusic")
     else stopSound("gameMusic");
-    return () => stopSound("gameMusic"); // Cleanup on unmount
-  }, []);
+    return () => { stopSound("gameMusic"); }// Cleanup on unmount
+  }, [document.visibilityState === "visible"]);
 
   useEffect(() => {
     updateSound("gameMusic", { volume: musicVolume / 100 });
@@ -80,7 +79,7 @@ const index = memo(() => {
     <div className="min-h-screen flex flex-col">
       <div
         style={{ backgroundImage: `url(${bgCards})` }}
-        className="h-[40vh]  bg-cover bg-center relative"
+        className="h-[30vh] sm:h-[40vh] bg-cover bg-center relative"
       >
         <GameHeader
           themeConfig={{
@@ -101,22 +100,22 @@ const index = memo(() => {
           backgroundRepeat: `no-repeat`,
           backgroundPosition: "center",
         }}
-        className="flex-grow-[6] relative rounded-t-3xl -mt-12 flex items-center justify-center"
+        className="flex-grow relative rounded-t-3xl -mt-8 sm:-mt-12 flex items-start justify-center"
       >
-        <main className="w-full max-w-lg mt-10">
+        <main className="w-full max-w-sm sm:max-w-lg mt-6 sm:mt-10 px-4 sm:px-8">
           <PlayAndEarnButton />
-          <section className="text-center mt-2 px-8">
-            <h1 className="text-2xl font-bold text-white">
+          <section className="text-center mt-4 sm:mt-6">
+            <h1 className="text-xl sm:text-2xl font-bold text-white">
               {NehlePeDelhaConfig.gameTitle}
             </h1>
-            <p className="text-sm text-gray-300 mt-5">
-              Challenge your skills and strategy in this fun card game. Compete
-              to win exciting rewards and enjoy the thrill of victory!
+            <p className="text-xs sm:text-sm text-gray-300 mt-2 sm:mt-4">
+              Challenge your skills and strategy in this fun card game. Compete to
+              win exciting rewards and enjoy the thrill of victory!
             </p>
           </section>
-          <div className="text-white p-6 rounded-xl mt-3">
-            <p className=" text-lg font-bold ">Select amount to play</p>
-            <div className="font-bold text-xl underline text-white mt-2 mb-3">
+          <div className="text-white p-4 sm:p-6 rounded-xl mt-4 sm:mt-6">
+            <p className="text-base sm:text-lg font-bold">Select amount to play</p>
+            <div className="font-bold text-lg underline text-white mt-2 mb-3">
               {currentFee}
             </div>
             <RangeSlider
@@ -125,39 +124,36 @@ const index = memo(() => {
               value={currentFee}
               onChange={handleInputChange}
               walletAmount={walletAmount}
-            //  disabled={betLock || autoBetPlaced}
-            //  customClasses='your-slider-class-name'
-            //  secondaryBgColor='var( - secondary-color)'
             />
-            <div className="flex justify-between items-center text-sm mb-4">
+            <div className="flex justify-between items-center text-xs sm:text-sm mb-4">
               <span>{minimumAmount}</span>
               <span>{walletAmount}</span>
             </div>
 
             <div
-              className="text-white mt-4 cursor-pointer underline"
+              className="text-white mt-2 sm:mt-4 cursor-pointer underline"
               onClick={toggleModal}
             >
               How to play?
             </div>
-            <div className="w-full h-[1.5px] bg-white my-6" />
+            <div className="w-full h-[1px] bg-white my-4 sm:my-6" />
             <button
               onClick={() => {
                 if (walletAmount < currentFee) {
-                  showToastMessage("error", "Not enough balance")
+                  showToastMessage("error", "Not enough balance");
                   return;
                 }
-                startGame()
+                startGame();
               }}
-              className="w-full mt-1 px-6 py-3 bg-purple-900 text-white rounded-3xl shadow-md hover:scale-105 transition-all flex items-center justify-center space-x-2"
+              className="w-full mt-2 px-4 sm:px-6 py-2 sm:py-3 bg-purple-900 text-white rounded-xl sm:rounded-3xl shadow-md hover:scale-105 transition-all flex items-center justify-center space-x-2"
             >
-              <span className="text-lg font-medium">Play With</span>
+              <span className="text-sm sm:text-lg font-medium">Play With</span>
               <img
                 src={images.coin}
                 alt="Coin"
-                className="w-5 h-5 object-contain animate-spin-slow"
+                className="w-4 sm:w-5 h-4 sm:h-5 object-contain animate-spin-slow"
               />
-              <span className="text-lg font-medium">{currentFee}</span>
+              <span className="text-sm sm:text-lg font-medium">{currentFee}</span>
             </button>
           </div>
         </main>
@@ -174,7 +170,7 @@ const index = memo(() => {
             width: "100%",
             maxWidth: "none",
             borderRadius: "20px 20px 0 0",
-            padding: "1.5rem",
+            padding: "1rem",
             position: "fixed",
             bottom: 0,
             left: 0,
@@ -184,18 +180,19 @@ const index = memo(() => {
         }}
         titleStyles={{
           color: "white",
-          fontSize: "1.5rem",
+          fontSize: "1.25rem",
           fontWeight: "bold",
         }}
         closeButtonStyles={{
           color: "white",
-          fontSize: "1.5rem",
+          fontSize: "1.25rem",
           fontWeight: "bold",
         }}
       >
         <ModalContent />
       </Modal>
     </div>
+
   );
 });
 

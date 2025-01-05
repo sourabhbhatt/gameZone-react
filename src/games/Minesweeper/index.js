@@ -52,8 +52,7 @@ const Index = memo(() => {
     else stopSound("gameMusic");
 
     return () => stopSound("gameMusic"); // Cleanup on unmount
-  }, []);
-  // }, [initializeSound, playSound, stopSound, musicEnabled]);
+  }, [document.visibilityState === "visible"]);
 
   useEffect(() => {
     updateSound("gameMusic", { volume: musicVolume / 100 });

@@ -10,7 +10,6 @@ import successSound from "../audio/success.mp3";
 import collectPointsSound from "../audio/collectPoints.mp3";
 
 const socket = io(process.env.REACT_APP_API_URL);
-; // Update with your backend URL
 
 const useTicTacToe = (config, selectedOption, entryFee) => {
   const dispatch = useDispatch();
@@ -28,7 +27,6 @@ const useTicTacToe = (config, selectedOption, entryFee) => {
   const { initializeSound, playSound } = useSoundEffects();
 
   const resetGame = useCallback((data) => {
-
     console.log("resetGame called", data);
     socket.emit("resetGame", {player: selectedOption || data});
   }, []);

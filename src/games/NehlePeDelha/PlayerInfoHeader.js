@@ -1,22 +1,21 @@
-import React, { memo } from "react";
-import lobbyHeader from "./assets/lobbyHeader.png";
+import React from "react";
 import PlayerInfo from "./PlayerInfo";
+import lobbyHeader from "./assets/lobbyHeader.png";
 
 const PlayerInfoHeader = ({ currentBetAmount }) => {
-  console.log("currentBetAmount", currentBetAmount);
   return (
     <div className="flex justify-center items-center w-full py-4">
-      {/* Background Image Container */}
       <div
         style={{
           backgroundImage: `url(${lobbyHeader})`,
-          backgroundSize: "contain", // Ensure the full image is visible
+          backgroundSize: "contain",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
         }}
-        className="relative w-[100%] aspect-[8/2] flex items-center justify-center"
+        className="relative w-full bg-no-repeat bg-center bg-contain aspect-[8/2] flex items-center justify-center"
       >
-        <div className="flex justify-between items-center w-[60%] max-w-4xl px-6 -mt-4">
+        <div className="flex justify-between items-center w-[80%] 
+         sm:w-[60%] max-w-4xl px-4 sm:px-6 -mt-4 sm:-mt-6">
           <PlayerInfo
             coinAmount={currentBetAmount}
             amountPlacement="right"

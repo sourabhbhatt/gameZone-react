@@ -44,8 +44,6 @@ const NehlePeDelhaGame = () => {
   const [winningPlayer, setWinningPlayer] = useState(""); // "You" or "Bot"
   const [isExitModal, setIsExitModal] = useState(false);
 
-  console.log("entryFee:", entryFee);
-
   const { soundEnabled, soundVolume, musicEnabled, musicVolume } = useSelector(
     (state) => state.app.soundSettings
   );
@@ -59,11 +57,8 @@ const NehlePeDelhaGame = () => {
     initializeSound("collectPoints", collectPointsSound, {
       volume: musicVolume / 100,
     });
-  }, [initializeSound]);
+  }, [document.visibilityState === "visible"]);
 
-
-
-  // Function to start the game
   const startGame = useCallback(async () => {
     await getBalance()
     if (walletAmount < currentBetAmount) {
@@ -78,7 +73,6 @@ const NehlePeDelhaGame = () => {
     setIsWinningModalOpen(false);
   }, [dispatch, walletAmount, currentBetAmount]);
 
-  // Function to determine the winner based on card rank
   const determineWinner = useCallback(async () => {
     const playerCard = playerHand[0];
     const botCard = botHand[0];
@@ -107,7 +101,6 @@ const NehlePeDelhaGame = () => {
     setCurrentBetAmount(0);
   }, [playerHand, botHand, dispatch, currentBetAmount]);
 
-  // Update bet history dynamically
   const updateBetHistory = (status) => {
     const newHistory = {
       status: status,
@@ -117,7 +110,6 @@ const NehlePeDelhaGame = () => {
     setBetHistory((prev) => [newHistory, ...prev]);
   };
 
-  // Reveal cards and determine winner
   const revealCards = async () => {
     if (musicEnabled) playSound("flip");
     setCardsRevealed(true);
@@ -136,75 +128,81 @@ const NehlePeDelhaGame = () => {
   }, []);
 
   return (
-    <div
-      className="flex flex-col items-center min-h-screen text-white bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: `url(${LobbyBg})` }}
-    >
-      <GameHeader
-        themeConfig={{
-          bg: "#ffffff",
-          switchTogglerEnabledColor: "#2E1A4D",
-          switchTogglerDisabledColor: "gray",
-          barColor: "#7A7A7A",
-          titleColor: "#000000",
-          headingColor: "#000000",
+    <div className="relative bg-[#0F0529] ">
+      <div
+        className="flex flex-col items-center min-h-screen text-white bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url(${LobbyBg})`,
+          backgroundSize: 'cover',
         }}
-        showCrossIcon
-        onBack={() => setIsExitModal(true)}
-        showSettingsIcon
-        title="Nehle Pe Dehla"
-      />
-      <PlayerInfoHeader currentBetAmount={currentBetAmount} />
-      <PlayerCardSection
-        botHand={botHand}
-        playerHand={playerHand}
-        cardsRevealed={cardsRevealed}
-        currentBetAmount={currentBetAmount}
-        winningPlayer={winningPlayer}
-      />
-      <BottomSection
-        walletAmount={walletAmount}
-        currentBetAmount={currentBetAmount}
-        setCurrentBetAmount={setCurrentBetAmount}
-        revealCards={async () => {
-          if (currentBetAmount === 0) {
-            showToastMessage("warning", "Please place a bet before revealing cards.");
-            return;
-          } else if (currentBetAmount > walletAmount) {
-            console.log("??", currentBetAmount, walletAmount, currentBetAmount > walletAmount);
-            showToastMessage("error", "Insufficient balance to place the bet.");
-            return;
-          }
-          await debitBalance(currentBetAmount);
-          setIsModalOpen(true);
-        }}
-        onViewHistory={() => setIsHistoryOpen(true)}
-        winner={winner}
-        disabled={cardsRevealed}
-      />
+      >
 
-      <CountdownRevealModal isOpen={isModalOpen} onReveal={revealCards} />
+        <GameHeader
+          themeConfig={{
+            bg: "#ffffff",
+            switchTogglerEnabledColor: "#2E1A4D",
+            switchTogglerDisabledColor: "gray",
+            barColor: "#7A7A7A",
+            titleColor: "#000000",
+            headingColor: "#000000",
+          }}
+          showCrossIcon
+          onBack={() => setIsExitModal(true)}
+          showSettingsIcon
+          title="Nehle Pe Dehla"
+        />
+        <PlayerInfoHeader currentBetAmount={currentBetAmount} />
+        <PlayerCardSection
+          botHand={botHand}
+          playerHand={playerHand}
+          cardsRevealed={cardsRevealed}
+          currentBetAmount={currentBetAmount}
+          winningPlayer={winningPlayer}
+        />
+        <BottomSection
+          walletAmount={walletAmount}
+          currentBetAmount={currentBetAmount}
+          setCurrentBetAmount={setCurrentBetAmount}
+          revealCards={async () => {
+            if (currentBetAmount === 0) {
+              showToastMessage("warning", "Please place a bet before revealing cards.");
+              return;
+            } else if (currentBetAmount > walletAmount) {
+              console.log("??", currentBetAmount, walletAmount, currentBetAmount > walletAmount);
+              showToastMessage("error", "Insufficient balance to place the bet.");
+              return;
+            }
+            await debitBalance(currentBetAmount);
+            setIsModalOpen(true);
+          }}
+          onViewHistory={() => setIsHistoryOpen(true)}
+          winner={winner}
+          disabled={cardsRevealed}
+        />
 
-      <BetHistoryModal
-        isOpen={isHistoryOpen}
-        onClose={() => setIsHistoryOpen(false)}
-        betHistory={betHistory}
-      />
+        <CountdownRevealModal isOpen={isModalOpen} onReveal={revealCards} />
 
-      <WinningModal
-        isOpen={isWinningModalOpen}
-        onPlayAgain={() => {
-          setIsWinningModalOpen(false);
-          startGame();
-        }}
-        winnerName={winningPlayer || "It's a Tie!"}
-      />
+        <BetHistoryModal
+          isOpen={isHistoryOpen}
+          onClose={() => setIsHistoryOpen(false)}
+          betHistory={betHistory}
+        />
 
-      <ExitModal
-        isOpen={isExitModal}
-        onClose={() => setIsExitModal(false)}
-        onConfirm={handleExitConfirm}
-      />
+        <WinningModal
+          isOpen={isWinningModalOpen}
+          onPlayAgain={() => {
+            setIsWinningModalOpen(false);
+            startGame();
+          }}
+          winnerName={winningPlayer || "It's a Tie!"}
+        />
+
+        <ExitModal
+          isOpen={isExitModal}
+          onClose={() => setIsExitModal(false)}
+          onConfirm={handleExitConfirm}
+        />
+      </div>
     </div>
   );
 };

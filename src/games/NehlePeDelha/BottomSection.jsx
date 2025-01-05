@@ -13,14 +13,12 @@ const BottomSection = ({
 }) => {
   return (
     <div
+      className={`relative w-full max-w-lg mt-6 p-4 sm:p-6 bg-[#210F40] bg-cover bg-center bg-no-repeat rounded-t-3xl ${
+        disabled ? "opacity-50 pointer-events-none" : ""
+      }`}
       style={{
         backgroundImage: `url(${bgBottomCard})`,
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
       }}
-      className={`relative w-full max-w-xl mt-6 p-6 bg-[#210F40] justify-center
-        rounded-t-3xl ${disabled ? "opacity-50 pointer-events-none" : ""}`}
     >
       <div className="flex justify-between items-center mb-4">
         <span className="text-white font-medium capitalize">
@@ -33,7 +31,9 @@ const BottomSection = ({
           {`View bet history`}
         </span>
       </div>
-      <p className="text-lg font-bold text-white mb-4">Select amount to play</p>
+      <p className="text-lg sm:text-xl font-bold text-white mb-4">
+        Select amount to play
+      </p>
       <div className="flex flex-wrap gap-3">
         {NehlePeDelhaConfig.entryFees.map((fee, index) => {
           if ((walletAmount || 0) < (parseInt(fee) || 0)) return null;
@@ -41,7 +41,7 @@ const BottomSection = ({
             <button
               key={index}
               onClick={() => !disabled && setCurrentBetAmount(fee.value)}
-              className={`flex items-center justify-center px-4 py-2 bg-white rounded-full shadow-md ${
+              className={`flex items-center justify-center px-3 py-2 sm:px-4 sm:py-2 bg-white rounded-full shadow-md ${
                 fee.value === currentBetAmount
                   ? "border-2 border-green-500"
                   : "border border-gray-300"
@@ -50,20 +50,22 @@ const BottomSection = ({
               <img
                 src={require("../../assets/coin.png")}
                 alt="Coin"
-                className="w-5 h-5 mr-2"
+                className="w-4 sm:w-5 h-4 sm:h-5 mr-2"
               />
-              <span className="text-black font-medium">{fee.value}</span>
+              <span className="text-black text-sm sm:text-base font-medium">
+                {fee.value}
+              </span>
             </button>
           );
         })}
       </div>
       <button
         onClick={!disabled ? revealCards : undefined}
-        className={`w-[80%] mt-6 mx-auto px-6 py-3 rounded-3xl shadow-md transition-all ${
+        className={`w-full sm:w-[80%] mt-6 px-4 sm:px-6 py-3 rounded-2xl sm:rounded-3xl shadow-md transition-all ${
           disabled
-            ? "bg-[#E0E0E0] text-[#040402]  cursor-not-allowed"
-            : "bg-[#EEEEEE] text-[#040404]  hover:scale-105"
-        } flex items-center justify-center`}
+            ? "bg-[#E0E0E0] text-[#040402] cursor-not-allowed"
+            : "bg-[#EEEEEE] text-[#040404] hover:scale-105"
+        } flex items-center justify-center mx-auto`}
       >
         Reveal Cards
       </button>

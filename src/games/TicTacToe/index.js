@@ -37,16 +37,11 @@ const TicTacToeLanding = memo(() => {
   const [selectedOption, setSelectedOption] = useState("X");
 
   useEffect(() => {
-
-    // check if already playting, dont play, it is creating loop 
-
-    // if(isSoundPlaying("gameMusic")) return
-
     initializeSound("gameMusic", gameMusic, { volume: 0.5, loop: true });
     initializeSound("gameStartSound", gameStartSound, { volume: 1.0 });
     playSound("gameMusic");
     // return () => stopSound("gameMusic"); // Cleanup on unmount
-  }, [initializeSound, playSound, stopSound]);
+  }, [document.visibilityState === "visible"]);
 
   const toggleModal = useCallback(() => {
     setIsModalOpen((prev) => !prev);
