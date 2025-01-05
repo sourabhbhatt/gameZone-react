@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FaAngleLeft, FaTimes, FaEllipsisV, FaCog } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { images } from "../assets/images";
-
+import {formatINRLocale} from '../utils'
 const defultThemeConfig = {
   bg: "#5C59F1",
   switchTogglerEnabledColor: "gray",
@@ -43,13 +43,13 @@ const GameHeader = memo(
     // Dynamic Background Style
     const backgroundStyle = bgImage
       ? {
-          backgroundImage: `url(${bgImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }
       : bgColor
-      ? { backgroundColor: bgColor }
-      : {};
+        ? { backgroundColor: bgColor }
+        : {};
 
     return (
       <div
@@ -83,7 +83,7 @@ const GameHeader = memo(
                 className="w-5 h-5 object-contain"
               />
               <span className="ml-2 text-lg font-bold text-white">
-                {amountOnWallet}
+                {formatINRLocale(amountOnWallet)}
               </span>
             </div>
           )}

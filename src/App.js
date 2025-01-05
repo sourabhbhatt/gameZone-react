@@ -55,7 +55,6 @@ function App() {
                 <Route path="/teen-patti" element={<TeenPatti />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
-              <URLDisplay />
             </Suspense>
           </ErrorBoundary>
         </Router>

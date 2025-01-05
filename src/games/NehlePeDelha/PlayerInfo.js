@@ -124,7 +124,7 @@ const PlayerInfo = ({
         />
       )}
       <motion.span
-        className={`font-medium text-white ${selectedSize.amount}`}
+        className={`font-medium text-[9px] md:text-sm text-white ${selectedSize.amount}`}
         initial={{ scale: 1 }}
         animate={{ scale: 1.5 }}
         transition={{ duration: 0.5 }}

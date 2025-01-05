@@ -20,19 +20,18 @@ const Index = memo(() => {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const {getBalance, debitBalance} = useMinesweeper();
+  const { getBalance, debitBalance } = useMinesweeper();
+  const { setParams } = useUrlParams();
 
-  const {setParams} = useUrlParams();
-  
-    useEffect(() => {
-      getBalance();
-    }, [getBalance]);
+  useEffect(() => {
+    getBalance();
+  }, [getBalance]);
 
-    useEffect(() => {
-      setParams({  
-      })
-    }, [])
-  
+  useEffect(() => {
+    setParams({
+    })
+  }, [])
+
 
   const [currentFee, setCurrentFee] = useState(
     MinesweeperConfig.entryFees.find((fee) => fee.recommended)?.value || 0
@@ -53,7 +52,8 @@ const Index = memo(() => {
     else stopSound("gameMusic");
 
     return () => stopSound("gameMusic"); // Cleanup on unmount
-  }, [initializeSound, playSound, stopSound, musicEnabled]);
+  }, []);
+  // }, [initializeSound, playSound, stopSound, musicEnabled]);
 
   useEffect(() => {
     updateSound("gameMusic", { volume: musicVolume / 100 });
@@ -75,12 +75,10 @@ const Index = memo(() => {
 
   return (
     <div
-      className="flex flex-col items-center justify-end min-h-screen text-white bg-cover bg-center bg-no-repeat"
+      className="flex flex-col items-center justify-end min-h-screen text-white bg-cover bg-center bg-no-repeat w-full bg-red-500"
       style={{
         backgroundImage: `url(${landingBg})`,
-        // objectFit: "contain",
-        // backgroundSize: "contain",
-        // scale:1
+        backgroundSize: 'cover',
       }}
     >
       <GameHeader
@@ -94,7 +92,7 @@ const Index = memo(() => {
         }}
       />
 
-      <div className="flex-grow-[6] relative rounded-t-3xl mt-[90px]">
+      <div className="flex-grow-[6] relative rounded-t-3xl mt-[30vh]">
         <PlayAndEarnButton />
         <main className="w-full max-w-lg mt-1">
           <section className="text-center mt-2 px-8">
@@ -131,11 +129,19 @@ const Index = memo(() => {
         title="How to play"
         onClose={toggleModal}
         modalStyles={{
-          backgroundColor: "#f8f9fa",
-          width: "70%",
-          maxWidth: "500px",
-          padding: "2rem",
-          borderRadius: "10px",
+          className: "modal-bottom-sheet",
+          style: {
+            backgroundColor: "#f8f9fa",
+            width: "100%",
+            maxWidth: "none",
+            borderRadius: "20px 20px 0 0",
+            padding: "1.5rem",
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            boxShadow: "0 -2px 10px rgba(0, 0, 0, 0.15)",
+          },
         }}
       >
         <ModalContent />
@@ -145,11 +151,7 @@ const Index = memo(() => {
 });
 
 const ModalContent = () => (
-  <div
-    className="overflow-y-auto p-4 text-justify"
-    style={{ maxHeight: "80vh", borderRadius: "20px" }}
-  >
-    <h2 className="font-bold text-2xl text-black mb-2">How to play</h2>
+  <div className="overflow-y-auto p-4 text-justify tracking-normal">
     <p className="text-base text-black mb-4">
       Find all the diamonds while avoiding the mines.
     </p>
@@ -161,6 +163,7 @@ const ModalContent = () => (
       <li>Each tile will either show a diamond or a mine.</li>
       <li>Keep tapping to uncover all the diamonds without hitting a mine.</li>
     </ul>
+
     <h3 className="font-semibold text-sm text-black mt-6 uppercase">
       Winning & Losing
     </h3>

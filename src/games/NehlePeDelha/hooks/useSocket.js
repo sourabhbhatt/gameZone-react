@@ -6,14 +6,14 @@ import { io } from "socket.io-client";
 import extractQueryParams from "../../../utils/extractQueryParams";
 import useUrlParams from "../../../hooks/useUrlParams";
 
-const socket = io("https://api.gaming.veerastage.com");
+const socket = io(process.env.REACT_APP_API_URL);
 
 export default function useSocketTransactions(currentFee = 0) {
   const dispatch = useDispatch();
 
   const walletAmount = useSelector((state) => state.user?.wallet);
-  
-  const {getUrlParams} = useUrlParams();
+
+  const { getUrlParams } = useUrlParams();
 
   const queryParams = getUrlParams();
 
@@ -28,14 +28,14 @@ export default function useSocketTransactions(currentFee = 0) {
           }
         });
       });
-  
+
       dispatch(updateWallet(response?.balance?.data || 0));
     } catch (error) {
       console.error("Error fetching balance:", error);
       dispatch(updateWallet(0)); // Optional: Reset wallet balance on error
     }
   };
-  
+
 
   const debitBalance = async (entryFee) => {
     socket.emit("debit", {

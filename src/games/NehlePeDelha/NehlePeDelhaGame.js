@@ -19,6 +19,7 @@ import ExitModal from "./ExitModal";
 import { useNavigate } from "react-router-dom";
 import useSocketTransactions from "./hooks/useSocket";
 import { useLocation } from 'react-router-dom';
+import { showToastMessage } from "../../utils";
 
 
 
@@ -66,7 +67,7 @@ const NehlePeDelhaGame = () => {
   const startGame = useCallback(async () => {
     await getBalance()
     if (walletAmount < currentBetAmount) {
-      alert("Insufficient balance to place the bet.");
+      showToastMessage("error", "Insufficient balance to place the bet.");
     }
     // dispatch(updateWallet(walletAmount - currentBetAmount));
     const newDeck = shuffleDeck(createDeck());
@@ -140,7 +141,7 @@ const NehlePeDelhaGame = () => {
       style={{ backgroundImage: `url(${LobbyBg})` }}
     >
       <GameHeader
-         themeConfig={{
+        themeConfig={{
           bg: "#ffffff",
           switchTogglerEnabledColor: "#2E1A4D",
           switchTogglerDisabledColor: "gray",
@@ -167,11 +168,11 @@ const NehlePeDelhaGame = () => {
         setCurrentBetAmount={setCurrentBetAmount}
         revealCards={async () => {
           if (currentBetAmount === 0) {
-            alert("Please place a bet before revealing cards.");
+            showToastMessage("warning", "Please place a bet before revealing cards.");
             return;
           } else if (currentBetAmount > walletAmount) {
             console.log("??", currentBetAmount, walletAmount, currentBetAmount > walletAmount);
-            alert("Insufficient balance to place the bet.");
+            showToastMessage("error", "Insufficient balance to place the bet.");
             return;
           }
           await debitBalance(currentBetAmount);

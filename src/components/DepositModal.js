@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateWallet } from "../redux/slices/userSlice";
+import { showToastMessage } from "../utils";
 
 const DepositModal = ({ isOpen, onClose }) => {
   const [amount, setAmount] = useState(100);
@@ -13,7 +14,7 @@ const DepositModal = ({ isOpen, onClose }) => {
       dispatch(updateWallet(walletAmount + depositAmount));
       onClose();
     } else {
-      alert("Please enter a valid amount.");
+      showToastMessage("error", "Please enter a valid amount");
     }
   };
 

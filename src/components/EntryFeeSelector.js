@@ -1,5 +1,6 @@
 import React, { memo, useState } from "react";
 import { images } from "../assets/images";
+import { formatINRLocale, showToastMessage } from '../utils'
 
 const EntryFeeSelector = memo(
   ({ fees, defaultFee, onSelectFee, onPlayClick, balance = 0 }) => {
@@ -20,11 +21,10 @@ const EntryFeeSelector = memo(
           {fees.map((fee) => (
             <div
               key={fee.value}
-              className={`relative flex flex-col items-center cursor-pointer bg-black-400 ${
-                fee.value === selectedFee
-                  ? "border-[2px] border-gradient-to-r from-green-400 via-green-800 to-green-500 shadow-[0_0_12px_rgba(34,197,94,0.9)]"
-                  : "border-[1px] border-gray-700"
-              } text-white p-4 rounded-lg shadow-md w-28 h-36 transition-all`}
+              className={`relative flex flex-col items-center cursor-pointer bg-black-400 ${fee.value === selectedFee
+                ? "border-[2px] border-gradient-to-r from-green-400 via-green-800 to-green-500 shadow-[0_0_12px_rgba(34,197,94,0.9)]"
+                : "border-[1px] border-gray-700"
+                } text-white p-4 rounded-lg shadow-md w-28 h-36 transition-all`}
               onClick={() => handleFeeSelect(fee)}
             >
               {/* Recommended Badge */}
@@ -68,14 +68,14 @@ const EntryFeeSelector = memo(
         <div className="w-full px-6 mt-6">
           <button
             className="flex items-center justify-center w-full px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white 
-      rounded-full text-lg font-bold shadow-md hover:from-green-600 hover:to-green-700 transition-all space-x-2"
+            rounded-full text-lg font-bold shadow-md hover:from-green-600 hover:to-green-700 transition-all space-x-2"
             onClick={() => {
-              if(balance < selectedFee){
-                alert("Insufficient balance");
+              if (balance < selectedFee) {
+                showToastMessage("error", "Insufficient balance");
                 return;
               }
-              
-              onPlayClick(selectedFee);}}
+              onPlayClick(selectedFee);
+            }}
           >
             <span>Play With</span>
             <img
@@ -83,7 +83,7 @@ const EntryFeeSelector = memo(
               alt="Coin"
               className="w-5 h-5 object-contain animate-spin-slow" // Added spin animation
             />
-            <span className="text-xl font-extrabold">{selectedFee}</span>
+            <span className="text-xl font-extrabold">{formatINRLocale(selectedFee)}</span>
           </button>
         </div>
       </div>

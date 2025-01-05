@@ -9,7 +9,8 @@ import gameOverSound from "../audio/game-over.mp3";
 import successSound from "../audio/success.mp3";
 import collectPointsSound from "../audio/collectPoints.mp3";
 
-const socket = io("https://api.gaming.veerastage.com"); // Update with your backend URL
+const socket = io(process.env.REACT_APP_API_URL);
+; // Update with your backend URL
 
 const useTicTacToe = (config, selectedOption, entryFee) => {
   const dispatch = useDispatch();

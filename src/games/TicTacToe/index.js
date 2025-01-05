@@ -27,7 +27,7 @@ const TicTacToeLanding = memo(() => {
   const { initializeSound, playSound, stopSound } = useSoundEffects();
   const walletAmount = useSelector((state) => state.user?.wallet);
 
-  const {getBalance,resetGame} = useTicTacToe(
+  const { getBalance, resetGame } = useTicTacToe(
 
   );
 
@@ -41,7 +41,7 @@ const TicTacToeLanding = memo(() => {
     // check if already playting, dont play, it is creating loop 
 
     // if(isSoundPlaying("gameMusic")) return
-    
+
     initializeSound("gameMusic", gameMusic, { volume: 0.5, loop: true });
     initializeSound("gameStartSound", gameStartSound, { volume: 1.0 });
     playSound("gameMusic");
@@ -54,11 +54,11 @@ const TicTacToeLanding = memo(() => {
 
   useEffect(() => {
     getBalance();
-  },[])
+  }, [])
 
   useEffect(() => {
     resetGame(selectedOption)
-  },[selectedOption])
+  }, [selectedOption])
 
 
 
@@ -125,11 +125,19 @@ const TicTacToeLanding = memo(() => {
         title="How to play"
         onClose={toggleModal}
         modalStyles={{
-          backgroundColor: "#f8f9fa",
-          width: "70%",
-          maxWidth: "500px",
-          padding: "2rem",
-          style: { borderRadius: "10px" },
+          className: "modal-bottom-sheet",
+          style: {
+            backgroundColor: "#f8f9fa",
+            width: "100%",
+            maxWidth: "none",
+            borderRadius: "20px 20px 0 0",
+            padding: "1.5rem",
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            boxShadow: "0 -2px 10px rgba(0, 0, 0, 0.15)",
+          },
         }}
       >
         <ModalContent />
@@ -150,7 +158,7 @@ const ModalContent = () => (
       <li>Tap on any empty square to place your symbol.</li>
       <li>The bot will then make its move automatically.</li>
     </ul>
-    <h3 className="font-semibold text-lg texst-black mt-6">Winning & Draw</h3>
+    <h3 className="font-semibold text-lg text-black mt-6">Winning & Draw</h3>
     <ul className="list-disc list-inside space-y-2 text-sm text-gray-800">
       <li>Win by making a row of three symbols.</li>
       <li>If all squares are filled without a winner, it’s a draw.</li>

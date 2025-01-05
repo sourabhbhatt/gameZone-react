@@ -13,21 +13,28 @@ import gameMusic from "./audio/gameMusic.mp3";
 import useSoundEffects from "../../hooks/useSoundEffects";
 import useSocketTransactions from "./hooks/useSocket";
 import useUrlParams from "../../hooks/useUrlParams";
+import { toast, ToastContainer } from "react-toastify";
+import { showToastMessage } from "../../utils";
 
 const index = memo(() => {
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentFee, setCurrentFee] = useState(
-    NehlePeDelhaConfig.entryFees.find((fee) => fee.recommended)?.value || 0
-  );
   const walletAmount = useSelector((state) => state.user?.wallet);
-
-  const {getBalance, debitBalance, creditBalance} = useSocketTransactions(currentFee);
   const { initializeSound, playSound, stopSound, updateSound } =
     useSoundEffects();
+
+  const recommendedFee = NehlePeDelhaConfig.entryFees.find((fee) => fee.recommended)?.value || 0
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentFee, setCurrentFee] = useState(
+    (walletAmount >= recommendedFee && walletAmount > 0) ? recommendedFee : 0
+  );
+  const { getBalance, debitBalance, creditBalance } = useSocketTransactions(currentFee);
+
   const soundSettings = useSelector((state) => state.app.soundSettings);
   const { musicEnabled = false, musicVolume = 50 } = soundSettings || {};
-  const minimumAmount = (parseInt(walletAmount) || 0) > 10 ? 10 : 0;
+  const minimumAmount = (parseInt(walletAmount) > 10) ? 10 : 0
+
+  const { setParams } = useUrlParams();
+
 
   useEffect(() => {
     initializeSound("gameMusic", gameMusic, {
@@ -36,19 +43,14 @@ const index = memo(() => {
     });
     if (musicEnabled) playSound("gameMusic");
     else stopSound("gameMusic");
-
     return () => stopSound("gameMusic"); // Cleanup on unmount
-  }, [initializeSound, playSound, stopSound]);
+  }, []);
 
   useEffect(() => {
     updateSound("gameMusic", { volume: musicVolume / 100 });
   }, [musicVolume, updateSound]);
 
   const toggleModal = () => setIsModalOpen(!isModalOpen);
-
-  const {setParams} = useUrlParams();
-
-
 
   const handleInputChange = (e) => {
     const value = Number(e.target.value);
@@ -61,20 +63,18 @@ const index = memo(() => {
 
   const startGame = async () => {
     navigate("/nehlepedelha-game", {
-      state: {
-        entryFee: currentFee,
-      },
+      state: { entryFee: currentFee, },
     });
   };
 
-    useEffect(() => {
-      getBalance();
-    }, [getBalance]);
+  useEffect(() => {
+    getBalance();
+  }, [getBalance]);
 
-    useEffect(() => {
-      setParams({  
-      })
-    }, [])
+  useEffect(() => {
+    setParams({
+    })
+  }, [])
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -125,9 +125,9 @@ const index = memo(() => {
               value={currentFee}
               onChange={handleInputChange}
               walletAmount={walletAmount}
-              //  disabled={betLock || autoBetPlaced}
-              //  customClasses='your-slider-class-name'
-              //  secondaryBgColor='var( - secondary-color)'
+            //  disabled={betLock || autoBetPlaced}
+            //  customClasses='your-slider-class-name'
+            //  secondaryBgColor='var( - secondary-color)'
             />
             <div className="flex justify-between items-center text-sm mb-4">
               <span>{minimumAmount}</span>
@@ -144,10 +144,11 @@ const index = memo(() => {
             <button
               onClick={() => {
                 if (walletAmount < currentFee) {
-                  alert("Not enough balance");
+                  showToastMessage("error", "Not enough balance")
                   return;
                 }
-                startGame()} }
+                startGame()
+              }}
               className="w-full mt-1 px-6 py-3 bg-purple-900 text-white rounded-3xl shadow-md hover:scale-105 transition-all flex items-center justify-center space-x-2"
             >
               <span className="text-lg font-medium">Play With</span>
@@ -167,11 +168,29 @@ const index = memo(() => {
         title="How to play"
         onClose={toggleModal}
         modalStyles={{
-          backgroundColor: "#f8f9fa",
-          width: "70%",
-          maxWidth: "500px",
-          padding: "2rem",
-          style: { borderRadius: "10px" },
+          className: "modal-bottom-sheet bg-gradient-to-b from-purple-500 to-purple-700",
+          style: {
+            backgroundColor: "#f8f9fa",
+            width: "100%",
+            maxWidth: "none",
+            borderRadius: "20px 20px 0 0",
+            padding: "1.5rem",
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            boxShadow: "0 -2px 10px rgba(0, 0, 0, 0.15)",
+          },
+        }}
+        titleStyles={{
+          color: "white",
+          fontSize: "1.5rem",
+          fontWeight: "bold",
+        }}
+        closeButtonStyles={{
+          color: "white",
+          fontSize: "1.5rem",
+          fontWeight: "bold",
         }}
       >
         <ModalContent />
@@ -181,37 +200,23 @@ const index = memo(() => {
 });
 
 const ModalContent = () => (
-  <div
-    className="h-[80vh] overflow-y-auto p-4 bg-gray-100"
-    style={{
-      maxHeight: "80vh",
-    }}
-  >
-    <p className="text-sm text-black mb-4 leading-relaxed">
-      Compete with your opponent to win the round by holding the highest card.
-      It's a simple and fun game of chance!
-    </p>
-    <h3 className="font-semibold text-lg text-black mt-4">Instructions</h3>
-    <ul className="list-disc list-inside space-y-2 text-sm text-gray-800">
-      <li>The game is played between 2 players.</li>
-      <li>Each player is dealt 1 card per round.</li>
-      <li>The player with the higher card wins the round.</li>
+  <div className="overflow-y-auto pt-4 text-left tracking-normal ">
+    <h3 className="text-sm font-semibold text-white tracking-widest uppercase mb-4">
+      Instructions
+    </h3>
+    <ul className="list-disc pl-5 space-y-4 text-sm text-white leading-relaxed">
+      <li>You and the bot will each receive one card.</li>
+      <li>Place your bet on whether your card will be bigger than the bot's card.</li>
       <li>
-        If both players get cards of the same rank, it’s a tie for that round.
+        After the betting, both cards will be revealed. If your card is bigger,
+        you win the round and earn real money.
       </li>
-    </ul>
-    <h3 className="font-semibold text-lg text-black mt-6">Winning & Scoring</h3>
-    <ul className="list-disc list-inside space-y-2 text-sm text-gray-800">
-      <li>Each round's winner earns a point.</li>
-      <li>
-        The game continues for a set number of rounds or until one player
-        reaches the target score.
-      </li>
-      <li>
-        The player with the most points at the end of the game is the winner.
-      </li>
+      <li>If the bot's card is bigger, you lose the bet.</li>
     </ul>
   </div>
 );
+
+
+
 
 export default index;
