@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Lottie from "lottie-react";
 import winAnimation from "./assets/tictactoeSuccessAnimation.json";
 
-const WinnerModal = ({ isPlayerWinner }) => {
+const WinnerModal = ({ isPlayerWinner}) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50">
       <motion.div

@@ -26,6 +26,9 @@ const getCardImage = (suit, value) => {
 };
 
 const CardFront = ({ value, suit, isPlayerCard }) => {
+
+  // console.log("CardFront", value, suit, isPlayerCard);
+  
   const cardImage = getCardImage(suit, value);
 
   return (

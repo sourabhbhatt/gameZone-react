@@ -14,6 +14,7 @@ import useSoundEffects from "../../hooks/useSoundEffects";
 import useSocketTransactions from "./hooks/useSocket";
 import useUrlParams from "../../hooks/useUrlParams";
 import { showToastMessage } from "../../utils";
+import Loader from "../../components/Loader";
 
 const index = memo(() => {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ const index = memo(() => {
 
   const recommendedFee = NehlePeDelhaConfig.entryFees.find((fee) => fee.recommended)?.value || 0
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [currentFee, setCurrentFee] = useState(
     (walletAmount >= recommendedFee && walletAmount > 0) ? recommendedFee : 0
   );
@@ -40,10 +42,13 @@ const index = memo(() => {
       volume: musicVolume / 100,
       loop: true,
     });
-    if (musicEnabled) playSound("gameMusic")
-    else stopSound("gameMusic");
-    return () => { stopSound("gameMusic"); }// Cleanup on unmount
   }, [document.visibilityState === "visible"]);
+
+  useEffect(() => {
+    if (musicEnabled) playSound("gameMusic");
+    else stopSound("gameMusic");
+    return () => stopSound("gameMusic");
+  }, [musicEnabled])
 
   useEffect(() => {
     updateSound("gameMusic", { volume: musicVolume / 100 });
@@ -61,9 +66,12 @@ const index = memo(() => {
   };
 
   const startGame = async () => {
-    navigate("/nehlepedelha-game", {
-      state: { entryFee: currentFee, },
-    });
+    setLoading(true)
+    setTimeout(() => {
+      navigate("/nehlepedelha-game", {
+        state: { entryFee: currentFee, },
+      });
+    }, 700);
   };
 
   useEffect(() => {
@@ -77,6 +85,7 @@ const index = memo(() => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      {loading && <Loader color={'#ffffff'} size={60} speed={0.8} />}
       <div
         style={{ backgroundImage: `url(${bgCards})` }}
         className="h-[30vh] sm:h-[40vh] bg-cover bg-center relative"
@@ -100,7 +109,7 @@ const index = memo(() => {
           backgroundRepeat: `no-repeat`,
           backgroundPosition: "center",
         }}
-        className="flex-grow relative rounded-t-3xl -mt-8 sm:-mt-12 flex items-start justify-center"
+        className="flex-grow relative rounded-t-3xl -mt-5 sm:-mt-12 flex items-start justify-center"
       >
         <main className="w-full max-w-sm sm:max-w-lg mt-6 sm:mt-10 px-4 sm:px-8">
           <PlayAndEarnButton />

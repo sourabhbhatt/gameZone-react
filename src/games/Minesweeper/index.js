@@ -13,6 +13,7 @@ import { updateWallet } from "../../redux/slices/userSlice";
 import { GoInfo } from "react-icons/go";
 import useMinesweeper from "./hooks/useMinesweeper";
 import useUrlParams from "../../hooks/useUrlParams";
+import Loader from "../../components/Loader";
 
 const Index = memo(() => {
   const navigate = useNavigate();
@@ -48,11 +49,14 @@ const Index = memo(() => {
       volume: musicVolume / 100,
       loop: true,
     });
+  }, [document.visibilityState === "visible"]);
+
+  useEffect(() => {
     if (musicEnabled) playSound("gameMusic");
     else stopSound("gameMusic");
-
     return () => stopSound("gameMusic"); // Cleanup on unmount
-  }, [document.visibilityState === "visible"]);
+  }, [musicEnabled])
+
 
   useEffect(() => {
     updateSound("gameMusic", { volume: musicVolume / 100 });
@@ -80,6 +84,7 @@ const Index = memo(() => {
         backgroundSize: 'cover',
       }}
     >
+      {loading && <Loader size={60} speed={0.8} />}
       <GameHeader
         themeConfig={{
           bg: "#5C59F1",

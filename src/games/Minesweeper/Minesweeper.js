@@ -21,13 +21,10 @@ const Tile = memo(({ index, revealed, grid, onClick }) => {
     if (grid[index] === "diamond") return <img src={diamond} alt="diamond" />;
     if (grid[index] === "bomb") return <img src={bomb} alt="bomb" />;
   };
-
   return (
     <div
-      className={`w-16 h-16 hover:scale-105 transition-transform ${revealed.includes(index) ? "opacity-100" : "opacity-75"
-        }`}
-      onClick={() => onClick(index)}
-    >
+      className={`w-16 h-16 hover:scale-105 transition-transform ${revealed.includes(index) ? "opacity-100" : "opacity-75"}`}
+      onClick={() => onClick(index)}>
       {tileContent()}
     </div>
   );
@@ -50,10 +47,6 @@ export default function Minesweeper() {
   const { entryFee } = location.state || {};
   const [modalOpen, setModalOpen] = useState(false);
   const [isExitModalOpen, setIsExitModalOpen] = useState(false);
-
-
-
-
 
   const soundSettings = useSelector((state) => state.app.soundSettings) || {};
   const {

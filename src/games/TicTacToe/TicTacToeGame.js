@@ -34,7 +34,8 @@ const TicTacToeGame = memo(() => {
     joinGame,
     winningCombination,
     resetGame,
-    currentPlayer
+    currentPlayer,
+    isClickBlocked
   } = useTicTacToe(ticTacToeGameConfig, selectedOption, entryFee);
 
   useEffect(() => {
@@ -53,7 +54,7 @@ const TicTacToeGame = memo(() => {
   useEffect(() => {
     let modalTimeout;
     if (status) {
-      if (["win", "lose"].includes(status)) {
+      if (["win", "lose", "tie"].includes(status)) {
         setShowWinnerModal(true);
         modalTimeout = setTimeout(() => {
           setShowWinnerModal(false);
@@ -63,12 +64,12 @@ const TicTacToeGame = memo(() => {
             winnerDetails,
           });
         }, 1000);
-      // } else {
-      //   setResultModalInfo({
-      //     visible: true,
-      //     status,
-      //     winnerDetails,
-      //   });
+        // } else {
+        //   setResultModalInfo({
+        //     visible: true,
+        //     status,
+        //     winnerDetails,
+        //   });
       }
     }
 
@@ -77,9 +78,11 @@ const TicTacToeGame = memo(() => {
     };
   }, [status, winnerDetails]);
 
+  console.log("winnerDetails?.winner", winnerDetails?.winner);
+
   return (
     <div
-      className="flex flex-col items-center min-h-screen text-white bg-[#001e1c]"
+      className="flex flex-col items-center min-h-screen text-white "
       style={{ backgroundImage: `url(${tictactoegameBg})` }}
     >
       <GameHeader
@@ -118,14 +121,18 @@ const TicTacToeGame = memo(() => {
         <TicTacToeBoard
           gameState={gameState}
           winningCombination={winningCombination}
-          onMove={handleMove}
+          onMove={(index) => {
+            if (!isClickBlocked) handleMove(index);
+          }}
         />
       </div>
 
       {currentPlayer === selectedOption && <Timer timeLeft={timeLeft} warningTimeStartsFrom={5} />}
 
       {showWinnerModal && (
-        <WinnerModal isPlayerWinner={winnerDetails?.winner === "user"} />
+        <WinnerModal
+          winnerDetails={winnerDetails}
+          isPlayerWinner={winnerDetails?.winner === "user"} />
       )}
 
       {resultModalInfo.visible && (
@@ -134,8 +141,8 @@ const TicTacToeGame = memo(() => {
             winnerDetails?.winner === "user"
               ? "win"
               : winnerDetails?.winner === "bot"
-              ? "lose"
-              : "tie"
+                ? "lose"
+                : "tie"
           }
           winnerDetails={resultModalInfo.winnerDetails}
           resetGame={resetGame}

@@ -20,15 +20,18 @@ const useTicTacToe = (config, selectedOption, entryFee) => {
   const [status, setStatus] = useState(null);
   const [winnerDetails, setWinnerDetails] = useState(null);
   const [winningCombination, setWinningCombination] = useState(null);
-  const [currentPlayer , setCurrentPlayer] = useState(selectedOption);
+  const [currentPlayer, setCurrentPlayer] = useState(selectedOption);
+  const [isClickBlocked, setIsClickBlocked] = useState(false);
 
   const walletAmount = useSelector((state) => state.user?.wallet);
-
+  const { soundEnabled = false, soundVolume = 50, musicEnabled = false, musicVolume = 50 } = useSelector(
+    (state) => state.app.soundSettings
+  );
   const { initializeSound, playSound } = useSoundEffects();
 
   const resetGame = useCallback((data) => {
     console.log("resetGame called", data);
-    socket.emit("resetGame", {player: selectedOption || data});
+    socket.emit("resetGame", { player: selectedOption || data });
   }, []);
 
 
@@ -52,48 +55,38 @@ const useTicTacToe = (config, selectedOption, entryFee) => {
 
 
   useEffect(() => {
-    initializeSound("click", clickSound, { volume: 0.5 });
-    initializeSound("gameOver", gameOverSound, { volume: 0.7 });
-    initializeSound("success", successSound, { volume: 0.7 });
-    initializeSound("collectPoints", collectPointsSound, { volume: 0.7 });
+    initializeSound("click", clickSound, { volume: soundVolume / 100 });
+    initializeSound("gameOver", gameOverSound, { volume: musicVolume / 100 });
+    initializeSound("success", successSound, { volume: musicVolume / 100 });
+    initializeSound("collectPoints", collectPointsSound, { volume: soundVolume / 100 });
   }, [initializeSound]);
 
   useEffect(() => {
     socket.on("balance", balance => {
-      console.log(balance)
       dispatch(updateWallet(balance?.data || 0));
     });
-
     socket.on("gameUpdate", (updatedGameState) => {
-      console.log(updatedGameState);
+      console.log("updatedGameState::::", updatedGameState);
       setGameState(updatedGameState.board);
       setIsPlayerTurn(updatedGameState.currentPlayer === selectedOption);
       setStatus(getGameSatus(updatedGameState.winner, updatedGameState.playerSymbol));
       setWinnerDetails(updatedGameState.winnerDetails);
       setWinningCombination(updatedGameState.winningCombination);
       setCurrentPlayer(updatedGameState.currentPlayer)
-
+      setIsClickBlocked(updatedGameState.currentPlayer !== selectedOption);
       if (updatedGameState.currentPlayer === selectedOption) {
-  
         setTimeLeft(15);
-      } 
-
-      
+      }
     });
-
-    return () => {
-      socket.off("gameUpdate");
-    };
+    return () => { socket.off("gameUpdate"); };
   }, [selectedOption]);
-
-
 
   const handleMove = useCallback(
     (index) => {
-      if (gameState[index] || status) return;
-
+      if (gameState[index] || status || isClickBlocked) return;
+      setIsClickBlocked(true); // Block further clicks until the next update
       socket.emit("makeMove", { index });
-      playSound("click");
+      if (soundEnabled) playSound("click");
     },
     [gameState, status, playSound]
   );
@@ -124,7 +117,7 @@ const useTicTacToe = (config, selectedOption, entryFee) => {
     socket.emit("getBalance", (response) => {
       console.log(response);
       dispatch(updateWallet(response?.balance?.data || 0));
-      
+
     });
   }, []);
 
@@ -138,6 +131,7 @@ const useTicTacToe = (config, selectedOption, entryFee) => {
   }, [timeLeft, status, handleTimeOut]);
 
   return {
+    isClickBlocked,
     gameState,
     isPlayerTurn,
     currentPlayer,

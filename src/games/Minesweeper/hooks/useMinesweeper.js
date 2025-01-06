@@ -62,7 +62,7 @@ export default function useMinesweeper(gridSize = 3, currentFee = 0, id) {
       if (grid[index] === "diamond") {
         const newScore = score + 1;
         setScore(newScore);
-        if (newRevealed.length === gridSize * gridSize - totalBombs) {
+        if (newScore === 4) {
           setStatus("win");
 
           // Emit a credit event for winning

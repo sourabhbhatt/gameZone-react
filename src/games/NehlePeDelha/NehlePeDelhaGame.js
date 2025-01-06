@@ -123,6 +123,11 @@ const NehlePeDelhaGame = () => {
     navigate(-1);
   };
 
+  // console.log('playerHand', playerHand);
+  // console.log('botHand', botHand);
+  // console.log('shuffleDeck(createDeck())::::', shuffleDeck(createDeck()));
+
+
   useEffect(() => {
     startGame();
   }, []);
@@ -164,10 +169,7 @@ const NehlePeDelhaGame = () => {
           currentBetAmount={currentBetAmount}
           setCurrentBetAmount={setCurrentBetAmount}
           revealCards={async () => {
-            if (currentBetAmount === 0) {
-              showToastMessage("warning", "Please place a bet before revealing cards.");
-              return;
-            } else if (currentBetAmount > walletAmount) {
+            if (currentBetAmount > walletAmount) {
               console.log("??", currentBetAmount, walletAmount, currentBetAmount > walletAmount);
               showToastMessage("error", "Insufficient balance to place the bet.");
               return;
