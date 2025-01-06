@@ -55,7 +55,9 @@ const ResultScreen = ({
   return (
     <div className="relative flex flex-col min-h-screen text-white">
       <div style={getStyle(result.backgroundImage)} />
-
+      <div className="z-20">
+      <GameHeader onBack={onBack} menuButton={false}/>
+      </div>
       {isWon && (
         <div className="absolute inset-0 z-10">
           <Lottie
@@ -65,7 +67,7 @@ const ResultScreen = ({
           />
         </div>
       )}
-      <GameHeader onBack={onBack} />
+    
       <div className="flex flex-col flex-grow items-center justify-center text-center px-4 z-20">
         <img
           className="h-24 w-24 mb-4"
@@ -96,12 +98,12 @@ const ResultScreen = ({
         >
           {result.actionButtonText}
         </button>
-        <button
+        {/* <button
           onClick={onMainMenu}
           className="w-full max-w-md py-3 border border-white text-white font-medium rounded-2xl shadow-lg text-lg bg-black bg-opacity-15 transition-transform transform hover:scale-105"
         >
-          Back to Main Menu
-        </button>
+          Back to Game Menu
+        </button> */}
       </div>
     </div>
   );

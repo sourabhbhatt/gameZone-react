@@ -91,6 +91,7 @@ const index = memo(() => {
         className="h-[30vh] sm:h-[40vh] bg-cover bg-center relative"
       >
         <GameHeader
+          isBackButton={false}
           themeConfig={{
             bg: "#ffffff",
             switchTogglerEnabledColor: "#2E1A4D",

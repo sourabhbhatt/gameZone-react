@@ -78,14 +78,17 @@ const Index = memo(() => {
 
   return (
     <div
-      className="flex flex-col items-center justify-end min-h-screen text-white bg-cover bg-center bg-no-repeat w-full bg-red-500"
+      className="flex flex-col items-center justify-end min-h-screen 
+    text-white bg-cover bg-center bg-no-repeat w-full bg-black pb-5"
       style={{
         backgroundImage: `url(${landingBg})`,
         backgroundSize: 'cover',
       }}
     >
+
       {loading && <Loader size={60} speed={0.8} />}
       <GameHeader
+        isBackButton={false}
         themeConfig={{
           bg: "#5C59F1",
           switchTogglerEnabledColor: "gray",

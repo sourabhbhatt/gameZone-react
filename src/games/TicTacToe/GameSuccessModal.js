@@ -96,9 +96,9 @@ const GameSuccessModal = ({
       </div>
 
       {/* Personal Best */}
-      <p className="mt-7 text-sm text-gray-400 px-4 py-2 border border-gray-600 rounded-full bg-gradient-to-br from-gray-800 to-gray-900">
+      {/* <p className="mt-7 text-sm text-gray-400 px-4 py-2 border border-gray-600 rounded-full bg-gradient-to-br from-gray-800 to-gray-900">
         Your personal best is <span className="font-bold">{winnerDetails?.personalBest}</span>
-      </p>
+      </p> */}
 
       <button
         className="w-[90%] flex justify-center items-center mt-10 px-8 py-4 bg-gradient-to-r from-green-500 via-green-600 to-green-500 text-white 

@@ -84,6 +84,7 @@ const TicTacToeLanding = memo(() => {
     >
       {loading && <Loader size={60} speed={0.8} />}
       <GameHeader
+        isBackButton={false}
         themeConfig={{
           bg: "#ffffff",
           switchTogglerEnabledColor: "#34eb49",
@@ -120,6 +121,7 @@ const TicTacToeLanding = memo(() => {
           defaultFee={currentFee}
           onSelectFee={setCurrentFee}
           onPlayClick={handlePlayClick}
+          balance={walletAmount}
         />
       </main>
       <Modal

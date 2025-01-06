@@ -24,9 +24,12 @@
     "start": "dotenv -e .env react-scripts start",
     "start-stage": "dotenv -e .env.stage react-scripts start",
     "start-dev": "dotenv -e .env.dev react-scripts start",
-    "build": "react-scripts build",
+    "build": "dotenv -e .env react-scripts build",
+    "build-stage": "dotenv -e .env.stage react-scripts build",
+    "build-dev": "dotenv -e .env.dev react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "deploy": "scp -i ~/Downloads/veera.pem -r build/* ubuntu@api.gaming.veerastage.com:/home/ubuntu/frontend",
     "clean-project": "rm -rf node_modules package-lock.json npm cache clean --force npm install"
   },
   "eslintConfig": {

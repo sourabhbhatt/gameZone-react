@@ -44,6 +44,7 @@ const NehlePeDelhaGame = () => {
   const [winningPlayer, setWinningPlayer] = useState(""); // "You" or "Bot"
   const [isExitModal, setIsExitModal] = useState(false);
 
+  const isOnline = useSelector((state) => state.app.connectionStatus.isOnline);
   const { soundEnabled, soundVolume, musicEnabled, musicVolume } = useSelector(
     (state) => state.app.soundSettings
   );
@@ -132,6 +133,21 @@ const NehlePeDelhaGame = () => {
     startGame();
   }, []);
 
+  const onRevealCards = async () => {
+    if (!isOnline) {
+      showToastMessage("error",
+        "You are offline. Please check your internet connection.");
+      return
+    }
+    if (currentBetAmount > walletAmount) {
+      console.log("??", currentBetAmount, walletAmount, currentBetAmount > walletAmount);
+      showToastMessage("error", "Insufficient balance to place the bet.");
+      return;
+    }
+    await debitBalance(currentBetAmount);
+    setIsModalOpen(true);
+  }
+
   return (
     <div className="relative bg-[#0F0529] ">
       <div
@@ -168,15 +184,7 @@ const NehlePeDelhaGame = () => {
           walletAmount={walletAmount}
           currentBetAmount={currentBetAmount}
           setCurrentBetAmount={setCurrentBetAmount}
-          revealCards={async () => {
-            if (currentBetAmount > walletAmount) {
-              console.log("??", currentBetAmount, walletAmount, currentBetAmount > walletAmount);
-              showToastMessage("error", "Insufficient balance to place the bet.");
-              return;
-            }
-            await debitBalance(currentBetAmount);
-            setIsModalOpen(true);
-          }}
+          revealCards={onRevealCards}
           onViewHistory={() => setIsHistoryOpen(true)}
           winner={winner}
           disabled={cardsRevealed}
@@ -194,7 +202,8 @@ const NehlePeDelhaGame = () => {
           isOpen={isWinningModalOpen}
           onPlayAgain={() => {
             setIsWinningModalOpen(false);
-            startGame();
+            // startGame();
+            navigate(-1)
           }}
           winnerName={winningPlayer || "It's a Tie!"}
         />

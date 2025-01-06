@@ -8,11 +8,14 @@ import clickSound from "../audio/click.mp3";
 import gameOverSound from "../audio/game-over.mp3";
 import successSound from "../audio/success.mp3";
 import collectPointsSound from "../audio/collectPoints.mp3";
+import useUrlParams from "../../../hooks/useUrlParams";
 
 const socket = io(process.env.REACT_APP_API_URL);
 
 const useTicTacToe = (config, selectedOption, entryFee) => {
   const dispatch = useDispatch();
+  const {getUrlParams} = useUrlParams();
+  const queryParams = getUrlParams();
 
   const [gameState, setGameState] = useState(Array(9).fill(null));
   const [isPlayerTurn, setIsPlayerTurn] = useState(true);
@@ -94,7 +97,7 @@ const useTicTacToe = (config, selectedOption, entryFee) => {
   const joinGame = useCallback(() => {
     socket.emit(
       "joinGame",
-      { playerName: "Player", entryFee, player: selectedOption, botMode: true },
+      { playerName: "Player", entryFee, player: selectedOption, botMode: true , queryParams },
       (response) => {
 
         console.log(response);
@@ -113,13 +116,12 @@ const useTicTacToe = (config, selectedOption, entryFee) => {
     }
   }, [isPlayerTurn]);
 
-  const getBalance = useCallback(() => {
-    socket.emit("getBalance", (response) => {
-      console.log(response);
+  const getBalance = () => {
+    socket.emit("getBalance", { queryParams }, (response) => {
       dispatch(updateWallet(response?.balance?.data || 0));
 
     });
-  }, []);
+  }
 
   useEffect(() => {
     if (timeLeft > 0 && !status) {

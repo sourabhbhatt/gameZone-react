@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
  * @param {object} options - Optional configuration for the toast notification.
  */
 export const showToastMessage = (type, message, options = {}) => {
+  toast.dismiss();
   const toastConfig = {
     ...options,
     position: options.position || "top-right",

@@ -19,6 +19,7 @@ const GameHeader = memo(
     title,
     onBack,
     onMenuClick,
+    isBackButton = true,
     menuButton = true,
     showCrossIcon = false,
     showSettingsIcon = false,
@@ -57,12 +58,12 @@ const GameHeader = memo(
         style={backgroundStyle}
       >
         {/* Back Button */}
-        <button
+        {!!isBackButton && <button
           onClick={onBackPress}
           className="text-2xl text-white flex items-center justify-center w-10 h-10 bg-white bg-opacity-10 rounded-full"
         >
           {showCrossIcon ? <FaTimes /> : <FaAngleLeft />}
-        </button>
+        </button>}
 
         {!!title ? (
           <h1 className="flex-1 text-center text-lg font-bold text-white">
