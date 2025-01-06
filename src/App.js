@@ -33,32 +33,32 @@ function App() {
   return (
     <Provider store={store}>
       <NotificationProvider>
-        <Router>
-          <ErrorBoundary env={env}>
-            <Suspense fallback={<Fallback />}>
-              <Routes>
-                <Route path="/" element={<GameZone />} />
+          <Router>
+            <ErrorBoundary env={env}>
+              <Suspense fallback={<Fallback />}>
+                <Routes>
+                  <Route path="/" element={<GameZone />} />
 
-                <Route path="/games/tic-tac-toe" element={<TicTacToe />} />
-                <Route path="/tictactoe-game" element={<TicTacToeGame />} />
+                  <Route path="/games/tic-tac-toe" element={<TicTacToe />} />
+                  <Route path="/tictactoe-game" element={<TicTacToeGame />} />
 
-                <Route path="/games/nehle-pe-dehla" element={<NehlePeDelha />} />
-                <Route
-                  path="/nehlepedelha-game"
-                  element={<NehlePeDelhaGame />}
-                />
-                <Route path="/games/mine-sweeper" element={<MinesweeperLoading />} />
-                <Route path="/minesweeper-game" element={<MinesweeperGame />} />
+                  <Route path="/games/nehle-pe-dehla" element={<NehlePeDelha />} />
+                  <Route
+                    path="/nehlepedelha-game"
+                    element={<NehlePeDelhaGame />}
+                  />
+                  <Route path="/games/mine-sweeper" element={<MinesweeperLoading />} />
+                  <Route path="/minesweeper-game" element={<MinesweeperGame />} />
 
-                <Route path="/ludo" element={<Ludo />} />
-                <Route path="/fruit-ninja" element={<FruitNinja />} />
-                <Route path="/teen-patti" element={<TeenPatti />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
-          </ErrorBoundary>
-        </Router>
-        <NetworkStatus />
+                  <Route path="/ludo" element={<Ludo />} />
+                  <Route path="/fruit-ninja" element={<FruitNinja />} />
+                  <Route path="/teen-patti" element={<TeenPatti />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
+            </ErrorBoundary>
+          </Router>
+        <NetworkStatus/>
       </NotificationProvider>
     </Provider>
   );

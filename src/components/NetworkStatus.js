@@ -1,9 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-const NetworkStatus = ({ children }) => {
+const NetworkStatus = ({ }) => {
   const isOnline = useSelector((state) => state.app.connectionStatus.isOnline);
-
   if (!isOnline) {
     return (
       <div className="fixed bottom-0 w-full bg-white text-black text-center py-2 shadow-md">
@@ -11,8 +10,7 @@ const NetworkStatus = ({ children }) => {
       </div>
     );
   }
-
-  return children;
+  return null;
 };
 
 export default NetworkStatus;
