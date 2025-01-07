@@ -4,6 +4,7 @@ import NehlePeDelhaConfig from "./NehlePeDelhaConfig.json";
 
 const BottomSection = ({
   walletAmount,
+  playingBetAmount,
   currentBetAmount,
   setCurrentBetAmount,
   revealCards,
@@ -12,11 +13,12 @@ const BottomSection = ({
   onViewHistory = () => { },
 }) => {
 
-  const playingAmount = currentBetAmount < walletAmount ? currentBetAmount : walletAmount
+  const playingAmount = playingBetAmount < walletAmount ? playingBetAmount : walletAmount
 
   return (
     <div
-      className={`relative w-full max-w-lg mt-6 p-4 sm:p-6 bg-[#210F40] bg-cover bg-center bg-no-repeat rounded-t-3xl ${disabled ? "opacity-50 pointer-events-none" : ""
+      className={`relative w-full max-w-lg mt-6 p-4 sm:p-6 bg-[#210F40] 
+        bg-cover bg-center bg-no-repeat rounded-t-3xl ${disabled ? "opacity-50 pointer-events-none" : ""
         }`}
       style={{
         backgroundImage: `url(${bgBottomCard})`,

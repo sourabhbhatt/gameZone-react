@@ -149,71 +149,70 @@ const NehlePeDelhaGame = () => {
   }
 
   return (
-    <div className="relative bg-[#0F0529] ">
-      <div
-        className="flex flex-col items-center min-h-screen text-white bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url(${LobbyBg})`,
-          backgroundSize: 'cover',
+    <div
+      className="relative bg-[#0F0529] flex flex-col items-center min-h-screen text-white bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage: `url(${LobbyBg})`,
+        backgroundSize: 'cover',
+      }}
+    >
+
+      <GameHeader
+        themeConfig={{
+          bg: "#ffffff",
+          switchTogglerEnabledColor: "#2E1A4D",
+          switchTogglerDisabledColor: "gray",
+          barColor: "#7A7A7A",
+          titleColor: "#000000",
+          headingColor: "#000000",
         }}
-      >
+        showCrossIcon
+        onBack={() => setIsExitModal(true)}
+        showSettingsIcon
+        title="Nehle Pe Dehla"
+      />
+      <PlayerInfoHeader currentBetAmount={currentBetAmount} />
+      <PlayerCardSection
+        botHand={botHand}
+        playerHand={playerHand}
+        cardsRevealed={cardsRevealed}
+        currentBetAmount={currentBetAmount}
+        winningPlayer={winningPlayer}
+      />
+      <BottomSection
+        walletAmount={walletAmount}
+        playingBetAmount={entryFee}
+        currentBetAmount={currentBetAmount}
+        setCurrentBetAmount={setCurrentBetAmount}
+        revealCards={onRevealCards}
+        onViewHistory={() => setIsHistoryOpen(true)}
+        winner={winner}
+        disabled={cardsRevealed}
+      />
 
-        <GameHeader
-          themeConfig={{
-            bg: "#ffffff",
-            switchTogglerEnabledColor: "#2E1A4D",
-            switchTogglerDisabledColor: "gray",
-            barColor: "#7A7A7A",
-            titleColor: "#000000",
-            headingColor: "#000000",
-          }}
-          showCrossIcon
-          onBack={() => setIsExitModal(true)}
-          showSettingsIcon
-          title="Nehle Pe Dehla"
-        />
-        <PlayerInfoHeader currentBetAmount={currentBetAmount} />
-        <PlayerCardSection
-          botHand={botHand}
-          playerHand={playerHand}
-          cardsRevealed={cardsRevealed}
-          currentBetAmount={currentBetAmount}
-          winningPlayer={winningPlayer}
-        />
-        <BottomSection
-          walletAmount={walletAmount}
-          currentBetAmount={currentBetAmount}
-          setCurrentBetAmount={setCurrentBetAmount}
-          revealCards={onRevealCards}
-          onViewHistory={() => setIsHistoryOpen(true)}
-          winner={winner}
-          disabled={cardsRevealed}
-        />
+      <CountdownRevealModal isOpen={isModalOpen} onReveal={revealCards} />
 
-        <CountdownRevealModal isOpen={isModalOpen} onReveal={revealCards} />
+      <BetHistoryModal
+        isOpen={isHistoryOpen}
+        onClose={() => setIsHistoryOpen(false)}
+        betHistory={betHistory}
+      />
 
-        <BetHistoryModal
-          isOpen={isHistoryOpen}
-          onClose={() => setIsHistoryOpen(false)}
-          betHistory={betHistory}
-        />
+      <WinningModal
+        isOpen={isWinningModalOpen}
+        onPlayAgain={() => {
+          setIsWinningModalOpen(false);
+          // startGame();
+          navigate(-1)
+        }}
+        winnerName={winningPlayer || "It's a Tie!"}
+      />
 
-        <WinningModal
-          isOpen={isWinningModalOpen}
-          onPlayAgain={() => {
-            setIsWinningModalOpen(false);
-            // startGame();
-            navigate(-1)
-          }}
-          winnerName={winningPlayer || "It's a Tie!"}
-        />
-
-        <ExitModal
-          isOpen={isExitModal}
-          onClose={() => setIsExitModal(false)}
-          onConfirm={handleExitConfirm}
-        />
-      </div>
+      <ExitModal
+        isOpen={isExitModal}
+        onClose={() => setIsExitModal(false)}
+        onConfirm={handleExitConfirm}
+      />
     </div>
   );
 };
