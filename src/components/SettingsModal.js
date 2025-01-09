@@ -1,7 +1,9 @@
 import React from "react";
-import { FaVolumeUp, FaVolumeMute, FaMusic, FaTimes } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { FaTimes } from "react-icons/fa";
+import { TbMusic, TbMusicOff } from "react-icons/tb"
 import { useSelector, useDispatch } from "react-redux";
+import { PiSpeakerSimpleHighFill,PiSpeakerSimpleSlashFill } from "react-icons/pi";
 import {
   toggleSound,
   toggleMusic,
@@ -52,8 +54,7 @@ const SettingsModal = ({
           onClick={onClose}
           className={`absolute top-4 right-4 text-xl hover:text-black`}
           style={{ color: themeConfig.headingColor }}
-
-      >
+        >
           <FaTimes />
         </button>
 
@@ -62,7 +63,7 @@ const SettingsModal = ({
           style={{ color: themeConfig.headingColor }}
           className={`text-center text-lg font-semibold mb-6`}
         >
-          Settings
+          {'Settings'}
         </h2>
 
         {/* Sound Settings */}
@@ -76,9 +77,9 @@ const SettingsModal = ({
             <div className="flex items-center space-x-3">
               <div className="bg-gray-200 w-8 h-8 flex items-center justify-center rounded-lg">
                 {soundEnabled ? (
-                  <FaVolumeUp className="text-black text-lg" />
+                  <PiSpeakerSimpleHighFill className="text-black text-lg" />
                 ) : (
-                  <FaVolumeMute className="text-gray-500 text-lg" />
+                  <PiSpeakerSimpleSlashFill className="text-gray-500 text-lg" />
                 )}
               </div>
               <span
@@ -100,7 +101,7 @@ const SettingsModal = ({
                 }}
               />
               <div
-                 className={`w-10 h-5 flex items-center rounded-full p-1 cursor-pointer transition-all ${
+                className={`w-10 h-5 flex items-center rounded-full p-1 cursor-pointer transition-all ${
                   soundEnabled ? "bg-gray-500" : "bg-gray-300"
                 }`}
                 style={{
@@ -152,22 +153,9 @@ const SettingsModal = ({
             <div className="flex items-center space-x-3">
               <div className="bg-gray-200 w-8 h-8 flex items-center justify-center rounded-lg">
                 {musicEnabled ? (
-                  <FaMusic className="text-black text-lg" />
+                  <TbMusic className="text-black text-lg" />
                 ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-5 h-5 text-gray-500"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 19V6l12-2v13M9 13l-4 4m0 0l-4-4m4 4V6"
-                    />
-                  </svg>
+                  <TbMusicOff className="text-gray-500 text-lg" />
                 )}
               </div>
               <span
@@ -192,12 +180,12 @@ const SettingsModal = ({
                 }}
               />
               <div
-              className={`w-10 h-5 flex items-center rounded-full p-1 cursor-pointer transition-all`}
-              style={{
-                backgroundColor: musicEnabled
-                  ? themeConfig.switchTogglerEnabledColor
-                  : themeConfig.switchTogglerDisabledColor,
-              }}
+                className={`w-10 h-5 flex items-center rounded-full p-1 cursor-pointer transition-all`}
+                style={{
+                  backgroundColor: musicEnabled
+                    ? themeConfig.switchTogglerEnabledColor
+                    : themeConfig.switchTogglerDisabledColor,
+                }}
               >
                 <motion.div
                   className={`w-4 h-4 bg-white rounded-full shadow ${

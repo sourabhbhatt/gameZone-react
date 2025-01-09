@@ -7,7 +7,6 @@ import extractQueryParams from "../../../utils/extractQueryParams";
 import useUrlParams from "../../../hooks/useUrlParams";
 
 const socket = io(process.env.REACT_APP_API_URL);
-;
 
 export default function useMinesweeper(gridSize = 3, currentFee = 0, id) {
   const dispatch = useDispatch();
