@@ -18,7 +18,6 @@ export default function useMinesweeper(gridSize = 3, currentFee = 0, id) {
 
   const {getUrlParams} = useUrlParams();
   const queryParams = getUrlParams();
-  console.log("Query params:", queryParams);
 
   const totalDiamonds = Math.floor(gridSize * gridSize * 0.8);
   const totalBombs = gridSize * gridSize - totalDiamonds;
@@ -67,8 +66,8 @@ export default function useMinesweeper(gridSize = 3, currentFee = 0, id) {
           // Emit a credit event for winning
           socket.emit("credit", {
             points: currentFee * 2,
-            event_name: "Game Win",
-            display_text: "Winning reward",
+            event_name: "Minesweeper Game Win",
+            display_text: "Minesweeper game reward",
             params: queryParams,
             resolve: (response) => {
               console.log("Credit response:", response);
@@ -105,7 +104,7 @@ export default function useMinesweeper(gridSize = 3, currentFee = 0, id) {
   const debitBalance = async (entryFee) => {
     socket.emit("debit", {
       points: entryFee,
-      ledgerText: "Game entry fee",
+      ledgerText: "Minesweeper entry fee",
       id: "direct",
       params: queryParams,
       resolve: (response) => {

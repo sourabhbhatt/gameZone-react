@@ -40,7 +40,7 @@ export default function useSocketTransactions(currentFee = 0) {
   const debitBalance = async (entryFee) => {
     socket.emit("debit", {
       points: entryFee,
-      ledgerText: "Game entry fee",
+      ledgerText: "Nehle Pe Delha entry fee",
       id: "direct",
       params: queryParams,
       resolve: (response) => {
@@ -60,8 +60,8 @@ export default function useSocketTransactions(currentFee = 0) {
   const creditBalance = async (balance) => {
     socket.emit("credit", {
       points: balance,
-      event_name: "Game Win",
-      display_text: "Winning reward",
+      event_name: "NehlePeDelha Game Win",
+      display_text: "NehlePeDelha game reward",
       params: queryParams,
       resolve: (response) => {
         console.log("Credit response:", response);
