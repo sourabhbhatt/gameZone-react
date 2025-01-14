@@ -18,10 +18,8 @@ import useSoundEffects from "../../hooks/useSoundEffects";
 import ExitModal from "./ExitModal";
 import { useNavigate } from "react-router-dom";
 import useSocketTransactions from "./hooks/useSocket";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import { showToastMessage } from "../../utils";
-
-
 
 const NehlePeDelhaGame = () => {
   const dispatch = useDispatch();
@@ -32,7 +30,13 @@ const NehlePeDelhaGame = () => {
   const location = useLocation();
   const { entryFee } = location.state || {}; // Safely access the entryFee
 
-  const [currentBetAmount, setCurrentBetAmount] = useState(entryFee || 0);
+  const [toalAmountForTheGame, setToalAmountForTheGame] = useState(
+    JSON.parse(JSON.stringify(entryFee)) || 0
+  );
+
+  const [currentBetAmount, setCurrentBetAmount] = useState(
+    JSON.parse(JSON.stringify(entryFee)) || 0
+  );
   const [botHand, setBotHand] = useState([]);
   const [playerHand, setPlayerHand] = useState([]);
   const [winner, setWinner] = useState(null);
@@ -43,6 +47,7 @@ const NehlePeDelhaGame = () => {
   const [isWinningModalOpen, setIsWinningModalOpen] = useState(false);
   const [winningPlayer, setWinningPlayer] = useState(""); // "You" or "Bot"
   const [isExitModal, setIsExitModal] = useState(false);
+  const [isRevealing, setIsRevealing] = useState(false);
 
   const isOnline = useSelector((state) => state.app.connectionStatus.isOnline);
   const { soundEnabled, soundVolume, musicEnabled, musicVolume } = useSelector(
@@ -61,7 +66,7 @@ const NehlePeDelhaGame = () => {
   }, [document.visibilityState === "visible"]);
 
   const startGame = useCallback(async () => {
-    await getBalance()
+    await getBalance();
     if (walletAmount < currentBetAmount) {
       showToastMessage("error", "Insufficient balance to place the bet.");
     }
@@ -74,24 +79,34 @@ const NehlePeDelhaGame = () => {
     setIsWinningModalOpen(false);
   }, [dispatch, walletAmount, currentBetAmount]);
 
-  const determineWinner = useCallback(async () => {
+  console.log("currentBetAmount", currentBetAmount);
+
+  const determineWinner = async () => {
+    console.log("determineWinner called");
+
     const playerCard = playerHand[0];
     const botCard = botHand[0];
-    getBalance()
-
+    getBalance();
     if (!playerCard || !botCard) return;
-
     if (playerCard.rank > botCard.rank) {
+      console.log("step 01");
       if (musicEnabled) playSound("collectPoints");
       setWinner("You Won!");
       setWinningPlayer("You");
-      // dispatch(updateWallet(currentBetAmount * 2));
+      setToalAmountForTheGame((prev) => {
+        console.log("prev amount", prev, currentBetAmount);
+        return prev + currentBetAmount;
+      });
+      await creditBalance(currentBetAmount);
       updateBetHistory("Won");
-      console.log(">>>>>>>")
-      await creditBalance(currentBetAmount * 2);
     } else if (botCard.rank > playerCard.rank) {
+      console.log("step 02");
       setWinner("You Lost!");
       setWinningPlayer("Bot");
+      setToalAmountForTheGame((prev) => {
+        if (prev > 0) return prev - currentBetAmount;
+        return 0;
+      });
       updateBetHistory("Loss");
     } else {
       setWinner("It's a Tie!");
@@ -100,7 +115,7 @@ const NehlePeDelhaGame = () => {
     }
     setIsWinningModalOpen(true);
     setCurrentBetAmount(0);
-  }, [playerHand, botHand, dispatch, currentBetAmount]);
+  };
 
   const updateBetHistory = (status) => {
     const newHistory = {
@@ -111,12 +126,20 @@ const NehlePeDelhaGame = () => {
     setBetHistory((prev) => [newHistory, ...prev]);
   };
 
+  let timeoutId;
+
   const revealCards = async () => {
+    if (isRevealing) return; // Prevent multiple calls
+    setIsRevealing(true);
+
     if (musicEnabled) playSound("flip");
     setCardsRevealed(true);
     setIsModalOpen(false);
-    setTimeout(() => {
+
+    clearTimeout(timeoutId); // Clear previous timeout
+    timeoutId = setTimeout(() => {
       determineWinner();
+      setIsRevealing(false); // Allow future calls
     }, 1000);
   };
 
@@ -128,35 +151,40 @@ const NehlePeDelhaGame = () => {
   // console.log('botHand', botHand);
   // console.log('shuffleDeck(createDeck())::::', shuffleDeck(createDeck()));
 
-
   useEffect(() => {
     startGame();
   }, []);
 
   const onRevealCards = async () => {
     if (!isOnline) {
-      showToastMessage("error",
-        "You are offline. Please check your internet connection.");
-      return
+      showToastMessage(
+        "error",
+        "You are offline. Please check your internet connection."
+      );
+      return;
     }
+    if (toalAmountForTheGame < currentBetAmount && currentBetAmount !== 0) {
+      showToastMessage(
+        "error",
+        "Insufficient funds! Please ensure your betting amount meets the required minimum for the game."
+      );
+      return;
+    }
+
     if (currentBetAmount > walletAmount) {
-      console.log("??", currentBetAmount, walletAmount, currentBetAmount > walletAmount);
       showToastMessage("error", "Insufficient balance to place the bet.");
       return;
     }
     await debitBalance(currentBetAmount);
     setIsModalOpen(true);
-  }
+  };
 
   return (
     <div
-      className="relative bg-[#0F0529] flex flex-col items-center min-h-screen text-white bg-cover bg-center bg-no-repeat"
-      style={{
-        backgroundImage: `url(${LobbyBg})`,
-        backgroundSize: 'cover',
-      }}
+      className="relative bg-[#0F0529] flex flex-col items-center justify-between 
+    h-[100vh] overflow-y-auto text-white bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: `url(${LobbyBg})`, backgroundSize: "cover" }}
     >
-
       <GameHeader
         themeConfig={{
           bg: "#ffffff",
@@ -171,6 +199,7 @@ const NehlePeDelhaGame = () => {
         showSettingsIcon
         title="Nehle Pe Dehla"
       />
+
       <PlayerInfoHeader currentBetAmount={currentBetAmount} />
       <PlayerCardSection
         botHand={botHand}
@@ -181,7 +210,7 @@ const NehlePeDelhaGame = () => {
       />
       <BottomSection
         walletAmount={walletAmount}
-        playingBetAmount={entryFee}
+        playingBetAmount={toalAmountForTheGame}
         currentBetAmount={currentBetAmount}
         setCurrentBetAmount={setCurrentBetAmount}
         revealCards={onRevealCards}
@@ -200,10 +229,10 @@ const NehlePeDelhaGame = () => {
 
       <WinningModal
         isOpen={isWinningModalOpen}
+        onClose={() => setIsExitModal(true)}
         onPlayAgain={() => {
           setIsWinningModalOpen(false);
-          // startGame();
-          navigate(-1)
+          startGame();
         }}
         winnerName={winningPlayer || "It's a Tie!"}
       />

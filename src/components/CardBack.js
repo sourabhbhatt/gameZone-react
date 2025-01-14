@@ -1,10 +1,14 @@
 import React from "react";
 import CardBackImage from "../assets/cardBack.png";
 
-const CardBack = ({}) => {
+const CardBack = () => {
   return (
-    <div>
-      <img src={CardBackImage} alt="Card Back" className="w-24 h-36" />
+    <div className="flex items-center justify-center">
+      <img
+        src={CardBackImage}
+        alt="Card Back"
+        className="w-16 h-24 sm:w-20 sm:h-28 md:w-24 md:h-36 lg:w-28 lg:h-40 object-cover"
+      />
     </div>
   );
 };

@@ -1,11 +1,17 @@
-import React, { memo } from "react";
-import PropTypes from "prop-types";
 import Lottie from "lottie-react";
-import winningAnimation from "./assets/nehlePeDehlaAnimation.json";
-import trophy from "./assets/Trophy.png";
+import PropTypes from "prop-types";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
+import trophy from "./assets/Trophy.png";
+import { FaTimes } from "react-icons/fa";
+import winningAnimation from "./assets/nehlePeDehlaAnimation.json";
 
-const WinningModal = ({ isOpen, onPlayAgain, winnerName }) => {
+const WinningModal = ({
+  isOpen,
+  onPlayAgain = () => {},
+  winnerName,
+  onClose = () => {},
+}) => {
   if (!isOpen) return null;
 
   const trophyAnimation = {
@@ -23,7 +29,14 @@ const WinningModal = ({ isOpen, onPlayAgain, winnerName }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-50 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 z-50">
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 text-2xl text-black p-2 rounded-full bg-gray-200 transition-all z-50"
+        aria-label="Close"
+      >
+        <FaTimes />
+      </button>
       <div className="flex flex-col items-center justify-center p-8 w-[90%] max-w-md">
         {winnerName === "You" ? (
           <>

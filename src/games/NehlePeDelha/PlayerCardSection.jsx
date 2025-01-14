@@ -11,7 +11,7 @@ const PlayerCardSection = ({
   winningPlayer = null,
 }) => {
   return (
-    <div className="flex flex-col items-center mt-6 space-y-6">
+    <div className="flex flex-col items-center  space-y-6">
       <PlayerInfo
         name="Bot"
         isBot={true}

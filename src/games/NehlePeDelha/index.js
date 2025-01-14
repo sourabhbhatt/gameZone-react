@@ -1,20 +1,21 @@
 import React, { memo, useEffect, useState } from "react";
-import bgCards from "./assets/cardsBg.png";
-import bgBottomCard from "./assets/cardBottomBg.png";
-import Modal from "../../components/Modal";
-import GameHeader from "../../components/GameHeader";
-import NehlePeDelhaConfig from "./NehlePeDelhaConfig.json";
-import PlayAndEarnButton from "../../components/PlayAndEarnButton";
 import { useNavigate } from "react-router-dom";
+
+import bgCards from "./assets/cardsBg.png";
+import Modal from "../../components/Modal";
 import { useSelector } from "react-redux";
 import { images } from "../../assets/images";
-import RangeSlider from "../../components/RangeSlider";
-import gameMusic from "./audio/gameMusic.mp3";
-import useSoundEffects from "../../hooks/useSoundEffects";
-import useSocketTransactions from "./hooks/useSocket";
-import useUrlParams from "../../hooks/useUrlParams";
-import { showToastMessage } from "../../utils";
 import Loader from "../../components/Loader";
+import gameMusic from "./audio/gameMusic.mp3";
+import { showToastMessage } from "../../utils";
+import useUrlParams from "../../hooks/useUrlParams";
+import bgBottomCard from "./assets/cardBottomBg.png";
+import GameHeader from "../../components/GameHeader";
+import useSocketTransactions from "./hooks/useSocket";
+import RangeSlider from "../../components/RangeSlider";
+import useSoundEffects from "../../hooks/useSoundEffects";
+import NehlePeDelhaConfig from "./NehlePeDelhaConfig.json";
+import PlayAndEarnButton from "../../components/PlayAndEarnButton";
 
 const index = memo(() => {
   const navigate = useNavigate();
@@ -22,20 +23,21 @@ const index = memo(() => {
   const { initializeSound, playSound, stopSound, updateSound } =
     useSoundEffects();
 
-  const recommendedFee = NehlePeDelhaConfig.entryFees.find((fee) => fee.recommended)?.value || 0
+  const recommendedFee =
+    NehlePeDelhaConfig.entryFees.find((fee) => fee.recommended)?.value || 0;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentFee, setCurrentFee] = useState(
-    (walletAmount >= recommendedFee && walletAmount > 0) ? recommendedFee : 0
+    walletAmount >= recommendedFee && walletAmount > 0 ? recommendedFee : 0
   );
-  const { getBalance, debitBalance, creditBalance } = useSocketTransactions(currentFee);
+  const { getBalance, debitBalance, creditBalance } =
+    useSocketTransactions(currentFee);
 
   const soundSettings = useSelector((state) => state.app.soundSettings);
   const { musicEnabled = false, musicVolume = 50 } = soundSettings || {};
-  const minimumAmount = (parseInt(walletAmount) > 10) ? 10 : 0
+  const minimumAmount = parseInt(walletAmount) > 10 ? 10 : 0;
 
   const { setParams } = useUrlParams();
-
 
   useEffect(() => {
     initializeSound("gameMusic", gameMusic, {
@@ -48,7 +50,7 @@ const index = memo(() => {
     if (musicEnabled) playSound("gameMusic");
     else stopSound("gameMusic");
     return () => stopSound("gameMusic");
-  }, [musicEnabled])
+  }, [musicEnabled]);
 
   useEffect(() => {
     updateSound("gameMusic", { volume: musicVolume / 100 });
@@ -66,10 +68,10 @@ const index = memo(() => {
   };
 
   const startGame = async () => {
-    setLoading(true)
+    setLoading(true);
     setTimeout(() => {
       navigate("/nehlepedelha-game", {
-        state: { entryFee: currentFee, },
+        state: { entryFee: currentFee },
       });
     }, 700);
   };
@@ -79,13 +81,12 @@ const index = memo(() => {
   }, [getBalance]);
 
   useEffect(() => {
-    setParams({
-    })
-  }, [])
+    setParams({});
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
-      {loading && <Loader color={'#ffffff'} size={60} speed={0.8} />}
+      {loading && <Loader color={"#ffffff"} size={60} speed={0.8} />}
       <div
         style={{ backgroundImage: `url(${bgCards})` }}
         className="h-[30vh] sm:h-[40vh] bg-cover bg-center relative"
@@ -119,12 +120,14 @@ const index = memo(() => {
               {NehlePeDelhaConfig.gameTitle}
             </h1>
             <p className="text-xs sm:text-sm text-gray-300 mt-2 sm:mt-4">
-              Challenge your skills and strategy in this fun card game. Compete to
-              win exciting rewards and enjoy the thrill of victory!
+              Challenge your skills and strategy in this fun card game. Compete
+              to win exciting rewards and enjoy the thrill of victory!
             </p>
           </section>
           <div className="text-white p-4 sm:p-6 rounded-xl mt-4 sm:mt-6">
-            <p className="text-base sm:text-lg font-bold">Select amount to play</p>
+            <p className="text-base sm:text-lg font-bold">
+              Select amount to play
+            </p>
             <div className="font-bold text-lg underline text-white mt-2 mb-3">
               {currentFee}
             </div>
@@ -163,7 +166,9 @@ const index = memo(() => {
                 alt="Coin"
                 className="w-4 sm:w-5 h-4 sm:h-5 object-contain animate-spin-slow"
               />
-              <span className="text-sm sm:text-lg font-medium">{currentFee}</span>
+              <span className="text-sm sm:text-lg font-medium">
+                {currentFee}
+              </span>
             </button>
           </div>
         </main>
@@ -174,7 +179,8 @@ const index = memo(() => {
         title="How to play"
         onClose={toggleModal}
         modalStyles={{
-          className: "modal-bottom-sheet bg-gradient-to-b from-purple-500 to-purple-700",
+          className:
+            "modal-bottom-sheet bg-gradient-to-b from-purple-500 to-purple-700",
           style: {
             backgroundColor: "#f8f9fa",
             width: "100%",
@@ -202,7 +208,6 @@ const index = memo(() => {
         <ModalContent />
       </Modal>
     </div>
-
   );
 });
 
@@ -213,7 +218,9 @@ const ModalContent = () => (
     </h3>
     <ul className="list-disc pl-5 space-y-4 text-sm text-white leading-relaxed">
       <li>You and the bot will each receive one card.</li>
-      <li>Place your bet on whether your card will be bigger than the bot's card.</li>
+      <li>
+        Place your bet on whether your card will be bigger than the bot's card.
+      </li>
       <li>
         After the betting, both cards will be revealed. If your card is bigger,
         you win the round and earn real money.
@@ -222,8 +229,5 @@ const ModalContent = () => (
     </ul>
   </div>
 );
-
-
-
 
 export default index;
