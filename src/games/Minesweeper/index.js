@@ -29,10 +29,8 @@ const Index = memo(() => {
   }, [getBalance]);
 
   useEffect(() => {
-    setParams({
-    })
-  }, [])
-
+    setParams({});
+  }, []);
 
   const [currentFee, setCurrentFee] = useState(
     MinesweeperConfig.entryFees.find((fee) => fee.recommended)?.value || 0
@@ -55,8 +53,7 @@ const Index = memo(() => {
     if (musicEnabled) playSound("gameMusic");
     else stopSound("gameMusic");
     return () => stopSound("gameMusic"); // Cleanup on unmount
-  }, [musicEnabled])
-
+  }, [musicEnabled]);
 
   useEffect(() => {
     updateSound("gameMusic", { volume: musicVolume / 100 });
@@ -78,82 +75,80 @@ const Index = memo(() => {
 
   return (
     <div
-    className="flex flex-col items-center justify-between h-screen w-screen text-white bg-cover bg-center bg-no-repeat bg-black"
-    style={{
-      backgroundImage: `url(${landingBg})`,
-      backgroundSize: 'cover',
-    }}
-  >
-    {loading && <Loader size={60} speed={0.8} />}
-  
-    <GameHeader
-      isBackButton={false}
-      themeConfig={{
-        bg: "#5C59F1",
-        switchTogglerEnabledColor: "gray",
-        switchTogglerDisabledColor: "gray",
-        barColor: "#A4B2FF",
-        titleColor: "#ffffff",
-        headingColor: "#ffffff",
-      }}
-    />
-  
-    <div className="flex-grow flex flex-col items-center justify-center w-full px-4">
-      <PlayAndEarnButton />
-      <main className="w-full max-w-lg mt-2">
-        <section className="text-center px-4">
-          <h1 className="text-2xl font-bold text-white">
-            {MinesweeperConfig.gameTitle}
-          </h1>
-          <p className="text-sm text-gray-300 mt-2">
-            Uncover safe squares, avoid hidden mines – that’s all you need to
-            master the thrilling challenge of Minesweeper!
-          </p>
-          <div className="flex items-center justify-center mt-3 cursor-pointer">
-            <span className="text-gray-300 text-sm mr-2">How to play</span>
-            <GoInfo
-              className="text-white text-lg hover:scale-110 transition"
-              onClick={toggleModal}
-            />
-          </div>
-        </section>
-  
-        <div className="w-full h-[1px] bg-gradient-to-r from-green-200 via-green-600 to-green-200 my-4" />
-  
-        <EntryFeeSelector
-          fees={MinesweeperConfig.entryFees}
-          defaultFee={currentFee}
-          onSelectFee={setCurrentFee}
-          onPlayClick={handlePlayClick}
-          balance={walletAmount}
-        />
-      </main>
-    </div>
-  
-    <Modal
-      isOpen={isModalOpen}
-      title="How to play"
-      onClose={toggleModal}
-      modalStyles={{
-        className: "modal-bottom-sheet",
-        style: {
-          backgroundColor: "#f8f9fa",
-          width: "100%",
-          maxWidth: "none",
-          borderRadius: "20px 20px 0 0",
-          padding: "1.5rem",
-          position: "fixed",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          boxShadow: "0 -2px 10px rgba(0, 0, 0, 0.15)",
-        },
+      className="flex flex-col items-center justify-between h-screen w-screen text-white bg-cover bg-center bg-no-repeat bg-black"
+      style={{
+        backgroundImage: `url(${landingBg})`,
+        backgroundSize: "cover",
       }}
     >
-      <ModalContent />
-    </Modal>
-  </div>
-  
+      {loading && <Loader color={"#615EEE"} size={60} speed={0.8} />}
+      <GameHeader
+        isBackButton={false}
+        themeConfig={{
+          bg: "#5C59F1",
+          switchTogglerEnabledColor: "gray",
+          switchTogglerDisabledColor: "gray",
+          barColor: "#A4B2FF",
+          titleColor: "#ffffff",
+          headingColor: "#ffffff",
+        }}
+      />
+
+      <div className="flex-grow flex flex-col items-center justify-center w-full px-4">
+        <PlayAndEarnButton />
+        <main className="w-full max-w-lg mt-2">
+          <section className="text-center px-4">
+            <h1 className="text-2xl font-bold text-white font-outfit">
+              {MinesweeperConfig.gameTitle}
+            </h1>
+            <p className="text-sm text-gray-300 mt-2 font-outfit font-semibold">
+              Uncover safe squares, avoid hidden mines – that’s all you need to
+              master the thrilling challenge of Minesweeper!
+            </p>
+            <div className="flex items-center justify-center mt-3 cursor-pointer">
+              <span className="text-gray-300 text-sm mr-2 font-outfit">How to play</span>
+              <GoInfo
+                className="text-white text-lg hover:scale-110 transition"
+                onClick={toggleModal}
+              />
+            </div>
+          </section>
+
+          <div className="w-full h-[1px] bg-gradient-to-r from-green-200 via-green-600 to-green-200 my-4" />
+
+          <EntryFeeSelector
+            fees={MinesweeperConfig.entryFees}
+            defaultFee={currentFee}
+            onSelectFee={setCurrentFee}
+            onPlayClick={handlePlayClick}
+            balance={walletAmount}
+          />
+        </main>
+      </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        title="How to play"
+        onClose={toggleModal}
+        modalStyles={{
+          className: "modal-bottom-sheet",
+          style: {
+            backgroundColor: "#f8f9fa",
+            width: "100%",
+            maxWidth: "none",
+            borderRadius: "20px 20px 0 0",
+            padding: "1.5rem",
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            boxShadow: "0 -2px 10px rgba(0, 0, 0, 0.15)",
+          },
+        }}
+      >
+        <ModalContent />
+      </Modal>
+    </div>
   );
 });
 

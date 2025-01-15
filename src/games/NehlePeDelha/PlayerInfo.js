@@ -120,11 +120,11 @@ const PlayerInfo = ({
         <img
           src={images.coin}
           alt="Coin"
-          className="w-5 h-5 object-contain animate-spin-slow relative z-10"
+          className="w-[22px] h-[22px] mx-1 object-contain relative z-10"
         />
       )}
       <motion.span
-        className={`font-medium text-[9px] md:text-sm text-white ${selectedSize.amount}`}
+        className={`font-outfit font-semibold text-[14px] md:text-sm text-white ${selectedSize.amount}`}
         initial={{ scale: 1 }}
         animate={{ scale: 1.5 }}
         transition={{ duration: 0.5 }}
@@ -174,7 +174,7 @@ const PlayerInfo = ({
           }`}
         >
           <span
-            className={`font-semibold ${
+            className={`font-outfit font-semibold ${
               isActive ? "text-green-400" : "text-gray-400"
             }`}
           >

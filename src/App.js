@@ -1,6 +1,11 @@
 import React, { Suspense, lazy, useEffect } from "react";
 import { Provider } from "react-redux";
-import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 
 import store from "./redux/store";
 import NetworkStatus from "./components/NetworkStatus";
@@ -12,11 +17,6 @@ const GameZone = lazy(() => import("./components/GameZone"));
 const NotFound = lazy(() => import("./components/NotFound"));
 const Fallback = lazy(() => import("./components/Fallback"));
 
-const Ludo = lazy(() => import("./games/Ludo/Ludo"));
-const MinesweeperLoading = lazy(() => import("./games/Minesweeper"));
-const MinesweeperGame = lazy(() => import("./games/Minesweeper/Minesweeper"));
-const FruitNinja = lazy(() => import("./games/FruitNinja/FruitNinja"));
-const TeenPatti = lazy(() => import("./games/TeenPatti/TeenPatti"));
 
 const TicTacToe = lazy(() => import("./games/TicTacToe"));
 const TicTacToeGame = lazy(() => import("./games/TicTacToe/TicTacToeGame"));
@@ -26,39 +26,61 @@ const NehlePeDelhaGame = lazy(() =>
   import("./games/NehlePeDelha/NehlePeDelhaGame")
 );
 
-const env = process.env.NODE_ENV; // Get the environment (development or production)
+const MinesweeperLoading = lazy(() => import("./games/Minesweeper"));
+const MinesweeperGame = lazy(() => import("./games/Minesweeper/Minesweeper"));
 
+const PattepePattaLandingLoading = lazy(() => import("./games/PattepePatta"));
+const PattepePattaLandingGame = lazy(() => import("./games/PattepePatta/PattepePattaGame"));
+
+
+const Ludo = lazy(() => import("./games/Ludo/Ludo"));
+const FruitNinja = lazy(() => import("./games/FruitNinja/FruitNinja"));
+const TeenPatti = lazy(() => import("./games/TeenPatti/TeenPatti"));
+
+const env = process.env.NODE_ENV; // Get the environment (development or production)
 
 function App() {
   return (
     <Provider store={store}>
       <NotificationProvider>
-          <Router>
-            <ErrorBoundary env={env}>
-              <Suspense fallback={<Fallback />}>
-                <Routes>
-                  <Route path="/" element={<GameZone />} />
+        <Router>
+          <ErrorBoundary env={env}>
+            <Suspense fallback={<Fallback />}>
+              <Routes>
+                <Route path="/" element={<GameZone />} />
 
-                  <Route path="/games/tic-tac-toe" element={<TicTacToe />} />
-                  <Route path="/tictactoe-game" element={<TicTacToeGame />} />
+                <Route path="/games/tic-tac-toe" element={<TicTacToe />} />
+                <Route path="/tictactoe-game" element={<TicTacToeGame />} />
 
-                  <Route path="/games/nehle-pe-dehla" element={<NehlePeDelha />} />
-                  <Route
-                    path="/nehlepedelha-game"
-                    element={<NehlePeDelhaGame />}
-                  />
-                  <Route path="/games/mine-sweeper" element={<MinesweeperLoading />} />
-                  <Route path="/minesweeper-game" element={<MinesweeperGame />} />
+                <Route
+                  path="/games/nehle-pe-dehla"
+                  element={<NehlePeDelha />}
+                />
+                <Route
+                  path="/nehlepedelha-game"
+                  element={<NehlePeDelhaGame />}
+                />
+                <Route
+                  path="/games/mine-sweeper"
+                  element={<MinesweeperLoading />}
+                />
+                <Route path="/minesweeper-game" element={<MinesweeperGame />} />
 
-                  <Route path="/ludo" element={<Ludo />} />
-                  <Route path="/fruit-ninja" element={<FruitNinja />} />
-                  <Route path="/teen-patti" element={<TeenPatti />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Suspense>
-            </ErrorBoundary>
-          </Router>
-        <NetworkStatus/>
+                <Route
+                  path="/games/Patte-pe-Patta"
+                  element={<PattepePattaLandingLoading />}
+                />
+                <Route path="/Patte-pe-Patta-game" element={<PattepePattaLandingGame />} />
+
+                <Route path="/ludo" element={<Ludo />} />
+                <Route path="/fruit-ninja" element={<FruitNinja />} />
+                <Route path="/teen-patti" element={<TeenPatti />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </ErrorBoundary>
+        </Router>
+        <NetworkStatus />
       </NotificationProvider>
     </Provider>
   );

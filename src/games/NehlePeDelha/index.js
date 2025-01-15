@@ -116,7 +116,7 @@ const index = memo(() => {
         <main className="w-full max-w-sm sm:max-w-lg mt-6 sm:mt-10 px-4 sm:px-8">
           <PlayAndEarnButton />
           <section className="text-center mt-4 sm:mt-6">
-            <h1 className="text-xl sm:text-2xl font-bold text-white">
+            <h1 className="text-xl sm:text-2xl font-bold text-white font-outfit">
               {NehlePeDelhaConfig.gameTitle}
             </h1>
             <p className="text-xs sm:text-sm text-gray-300 mt-2 sm:mt-4">
@@ -158,7 +158,7 @@ const index = memo(() => {
                 }
                 startGame();
               }}
-              className="w-full mt-2 px-4 sm:px-6 py-2 sm:py-3 bg-purple-900 text-white rounded-xl sm:rounded-3xl shadow-md hover:scale-105 transition-all flex items-center justify-center space-x-2"
+              className="w-full h-[48px] mt-2 px-4 sm:px-6 py-2 sm:py-3 bg-purple-900 text-white rounded-[12px] sm:rounded-3xl shadow-md hover:scale-105 transition-all flex items-center justify-center space-x-2"
             >
               <span className="text-sm sm:text-lg font-medium">Play With</span>
               <img
@@ -166,9 +166,7 @@ const index = memo(() => {
                 alt="Coin"
                 className="w-4 sm:w-5 h-4 sm:h-5 object-contain animate-spin-slow"
               />
-              <span className="text-sm sm:text-lg font-medium">
-                {currentFee}
-              </span>
+              <span className="text-[16px] font-semibold">{currentFee}</span>
             </button>
           </div>
         </main>

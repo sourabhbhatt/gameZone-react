@@ -14,8 +14,8 @@
     ],
      "entryFees" : [
       { "value": 0, "description": "Free Game" },
-      { "value": 10, "description": "Win upto", "winUpto": 50,"recommended":true },
-      { "value": 50, "description": "Win upto", "winUpto": 100 }
+      { "value": 10, "description": "Win", "winUpto": 10,"recommended":true },
+      { "value": 50, "description": "Win", "winUpto": 50 }
     ]
   }
   

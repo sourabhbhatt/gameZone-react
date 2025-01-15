@@ -14,7 +14,7 @@ function PlayAndEarnButton() {
           alt="Coin"
           className="w-5 h-5 object-contain animate-spin-slow"
         />
-        <span className="ml-2 text-sm font-bold tracking-wide">
+        <span className="ml-2 text-sm font-bold tracking-wide font-outfit">
           PLAY & EARN
         </span>
       </button>

@@ -1,5 +1,6 @@
 import React from "react";
 import Lottie from "lottie-react";
+import { motion } from "framer-motion";
 import { images } from "../../assets/images";
 import FailureBg from "./assets/Failure.png";
 import SuccessBg from "./assets/Minesweeper.png";
@@ -41,6 +42,25 @@ const getStyle = (backgroundImage) => ({
   zIndex: -1,
 });
 
+const fadeInVariants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 0.5, // Adjust the duration for smoothness
+      ease: "easeInOut", // Use an easing function for a smoother effect
+    },
+  },
+  exit: {
+    opacity: 0,
+    transition: {
+      duration: 0.5,
+    },
+  },
+};
+
 const ResultScreen = ({
   isOpen,
   amount = 0,
@@ -53,10 +73,16 @@ const ResultScreen = ({
 
   const result = isWon ? resultConfig.won : resultConfig.lost;
   return (
-    <div className="relative flex flex-col min-h-screen text-white">
+    <motion.div
+      className="relative flex flex-col min-h-screen text-white"
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      variants={fadeInVariants}
+    >
       <div style={getStyle(result.backgroundImage)} />
       <div className="z-20">
-      <GameHeader onBack={onBack} menuButton={false}/>
+        <GameHeader onBack={onBack} menuButton={false} />
       </div>
       {isWon && (
         <div className="absolute inset-0 z-10">
@@ -67,7 +93,7 @@ const ResultScreen = ({
           />
         </div>
       )}
-    
+
       <div className="flex flex-col flex-grow items-center justify-center text-center px-4 z-20">
         <img
           className="h-24 w-24 mb-4"
@@ -105,7 +131,7 @@ const ResultScreen = ({
           Back to Game Menu
         </button> */}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

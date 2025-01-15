@@ -18,6 +18,7 @@ const RangeSlider = (props) => {
       }`}
       style={rangerStyle}
       type="range"
+      step={props?.step || 10}
       value={props.value}
       min={props.min}
       max={props.max}

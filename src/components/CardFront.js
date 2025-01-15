@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion"; // Import Framer Motion
 
 // Map suits to their names in the image paths
 const suitMap = {
@@ -25,27 +26,50 @@ const getCardImage = (suit, value) => {
   return require(`../assets/New deck/Suit=${suitName}, ${cardValue}.png`);
 };
 
-const CardFront = ({ value, suit, isPlayerCard }) => {
+const CardFront = ({
+  value,
+  suit,
+  animation = "none", // Animation type: 'flip', 'slide', etc.
+}) => {
   const cardImage = getCardImage(suit, value);
 
+  // Define animation variants
+  const animationVariants = {
+    none: {}, // No animation
+    flip: {
+      initial: { rotateY: 180 },
+      animate: { rotateY: 0 },
+      transition: { duration: 0.6 },
+    },
+    slide: {
+      initial: { x: -200, opacity: 0 },
+      animate: { x: 0, opacity: 1 },
+      transition: { duration: 0.6 },
+    },
+    fade: {
+      initial: { opacity: 0 },
+      animate: { opacity: 1 },
+      transition: { duration: 0.6 },
+    },
+  };
+
+  const selectedAnimation = animationVariants[animation] || animationVariants.none;
+
   return (
-    <div
+    <motion.div
+      initial={selectedAnimation.initial}
+      animate={selectedAnimation.animate}
+      transition={selectedAnimation.transition}
       className={`flex flex-col items-center justify-center rounded-lg shadow-md
                   w-26 h-36 sm:w-26 sm:h-24 md:w-26 md:h-32 lg:w-26 lg:h-40 object-cover
         `}
-      // style={{
-      //   // width: isPlayerCard ? "clamp(80px, 15vw, 120px)" : "clamp(60px, 12vw, 100px)",
-      //   // height: isPlayerCard ? "clamp(100px, 20vw, 160px)" : "clamp(80px, 18vw, 140px)",
-      //   width: "clamp(60px, 12vw, 100px)",
-      //   height: "clamp(80px, 18vw, 140px)",
-      // }}
     >
       <img
         src={cardImage}
         alt={`${value} of ${suitMap[suit]}`}
         className="w-full h-full object-cover rounded-lg"
       />
-    </div>
+    </motion.div>
   );
 };
 

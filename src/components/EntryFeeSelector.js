@@ -1,6 +1,6 @@
 import React, { memo, useState } from "react";
 import { images } from "../assets/images";
-import { formatINRLocale, showToastMessage } from '../utils'
+import { formatINRLocale, showToastMessage } from "../utils";
 
 const EntryFeeSelector = memo(
   ({ fees, defaultFee, onSelectFee, onPlayClick, balance = 0 }) => {
@@ -13,7 +13,7 @@ const EntryFeeSelector = memo(
 
     return (
       <div className="w-full max-w-lg mt-8 px-4">
-        <h2 className="text-lg font-semibold mb-6 text-center text-gray-100">
+        <h2 className="text-lg mb-6 text-center text-gray-100 font-outfit font-semibold">
           Select Entry Fee
         </h2>
 
@@ -21,15 +21,16 @@ const EntryFeeSelector = memo(
           {fees.map((fee) => (
             <div
               key={fee.value}
-              className={`relative flex flex-col items-center cursor-pointer bg-black-400 ${fee.value === selectedFee
-                ? "border-[2px] border-gradient-to-r from-green-400 via-green-800 to-green-500 shadow-[0_0_12px_rgba(34,197,94,0.9)]"
-                : "border-[1px] border-gray-700"
-                } text-white p-4 rounded-lg shadow-md w-28 h-36 transition-all`}
+              className={`relative flex flex-col items-center cursor-pointer bg-black-400 ${
+                fee.value === selectedFee
+                  ? "border-[2px] border-gradient-to-r from-green-400 via-green-800 to-green-500 shadow-[0_0_12px_rgba(34,197,94,0.9)]"
+                  : "border-[1px] border-gray-700"
+              } text-white p-4 rounded-lg shadow-md w-28 h-36 transition-all`}
               onClick={() => handleFeeSelect(fee)}
             >
               {/* Recommended Badge */}
               {fee.recommended && (
-                <div className="absolute -top-3 px-2 py-1 text-xs bg-gradient-to-r from-green-500 to-green-400 text-white rounded-full shadow-md">
+                <div className="absolute -top-3 px-2 py-1 text-xs bg-gradient-to-r from-green-500 to-green-400 text-white rounded-full shadow-md font-outfit">
                   Recommended
                 </div>
               )}
@@ -40,12 +41,12 @@ const EntryFeeSelector = memo(
                   alt="Coin"
                   className="w-5 h-5 object-contain"
                 />
-                <span className="text-lg font-bold">{fee.value}</span>
+                <span className="text-lg font-bold font-outfit">{fee.value}</span>
               </div>
 
               <div className="w-full h-[1px] bg-gradient-to-r from-green-200 via-green-600 to-green-200 my-2"></div>
 
-              <p className="text-sm text-gray-300 font-semibold">
+              <p className="text-sm text-center  text-gray-300 font-semibold font-outfit">
                 {fee.description}
               </p>
 
@@ -56,7 +57,7 @@ const EntryFeeSelector = memo(
                     alt="Coin"
                     className="w-5 h-5 object-contain"
                   />
-                  <p className="text-lg text-gray-200 font-bold">
+                  <p className="text-lg text-gray-200 text-center font-bold font-outfit">
                     {fee.winUpto}
                   </p>
                 </div>
@@ -77,13 +78,15 @@ const EntryFeeSelector = memo(
               onPlayClick(selectedFee);
             }}
           >
-            <span>Play With</span>
+            <span className="font-outfit font-semibold">Play With</span>
             <img
               src={images.coin}
               alt="Coin"
               className="w-5 h-5 object-contain animate-spin-slow" // Added spin animation
             />
-            <span className="text-xl font-extrabold">{formatINRLocale(selectedFee)}</span>
+            <span className="text-xl font-extrabold font-outfit">
+              {formatINRLocale(selectedFee)}
+            </span>
           </button>
         </div>
       </div>

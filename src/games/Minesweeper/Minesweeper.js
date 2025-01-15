@@ -14,6 +14,7 @@ import explosionSound from "./audio/explosion.mpeg";
 import gameOverSound from "./audio/game-over.wav";
 import winSound from "./audio/win.wav";
 import ExitModal from "./ExitModal";
+import Loader from "../../components/Loader";
 
 const Tile = memo(({ index, revealed, grid, onClick }) => {
   const tileContent = () => {
@@ -23,8 +24,11 @@ const Tile = memo(({ index, revealed, grid, onClick }) => {
   };
   return (
     <div
-      className={`w-16 h-16 hover:scale-105 transition-transform ${revealed.includes(index) ? "opacity-100" : "opacity-75"}`}
-      onClick={() => onClick(index)}>
+      className={`w-16 h-16 hover:scale-105 transition-transform ${
+        revealed.includes(index) ? "opacity-100" : "opacity-75"
+      }`}
+      onClick={() => onClick(index)}
+    >
       {tileContent()}
     </div>
   );
@@ -46,6 +50,7 @@ export default function Minesweeper() {
   const navigate = useNavigate();
   const { entryFee } = location.state || {};
   const [modalOpen, setModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [isExitModalOpen, setIsExitModalOpen] = useState(false);
 
   const soundSettings = useSelector((state) => state.app.soundSettings) || {};
@@ -77,10 +82,8 @@ export default function Minesweeper() {
   const handleTileClick = useCallback(
     (index) => {
       if (revealed.includes(index) || status !== "playing") return;
-
       if (soundEnabled) playSound(clickSound, "sound");
       revealTile(index);
-
       if (grid[index] === "bomb" && soundEnabled) {
         playSound(explosionSound, "sound");
       }
@@ -89,10 +92,19 @@ export default function Minesweeper() {
   );
 
   useEffect(() => {
+    let timerId;
     if (status !== "playing") {
-      setModalOpen(true);
+      timerId = setTimeout(() => {
+        setModalOpen(true);
+      }, 1300);
       handleGameOverSound();
     } else setModalOpen(false);
+
+    return () => {
+      if (timerId) {
+        clearTimeout(timerId);
+      }
+    };
   }, [status, handleGameOverSound]);
 
   if (modalOpen) {
@@ -105,7 +117,6 @@ export default function Minesweeper() {
         onMainMenu={() => navigate(-1)}
         // onRetryOrReplay={() => resetGame()}
         onRetryOrReplay={() => navigate(-1)}
-
       />
     );
   }
@@ -113,12 +124,9 @@ export default function Minesweeper() {
   return (
     <div
       className="flex flex-col min-h-screen text-white bg-cover bg-center bg-no-repeat"
-      style={{
-        backgroundImage: `url(${backgroundCover})`,
-        // objectFit: "contain",
-        // backgroundSize:"contain"
-      }}
+      style={{ backgroundImage: `url(${backgroundCover})` }}
     >
+      {loading && <Loader color={"#615EEE"} size={60} speed={0.8} />}
       <GameHeader
         themeConfig={{
           bg: "#5C59F1",
@@ -162,7 +170,12 @@ export default function Minesweeper() {
       <ExitModal
         isOpen={isExitModalOpen}
         onClose={() => setIsExitModalOpen(false)}
-        onConfirm={() => navigate(-1)}
+        onConfirm={() => {
+          setLoading(true);
+          setTimeout(() => {
+            navigate(-1);
+          }, 200);
+        }}
       />
     </div>
   );

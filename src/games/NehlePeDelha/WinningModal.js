@@ -11,6 +11,7 @@ const WinningModal = ({
   onPlayAgain = () => {},
   winnerName,
   onClose = () => {},
+  winLossAmount = 0,
 }) => {
   if (!isOpen) return null;
 
@@ -28,8 +29,18 @@ const WinningModal = ({
     },
   };
 
+  const renderWinLossMessage = () => {
+    if (winnerName === "You") {
+      return `Coins Earned ₹${winLossAmount}!`;
+    } else if (winnerName === "Bot") {
+      return `You lost ₹${Math.abs(winLossAmount)}.`;
+    } else {
+      return "No amount was won or lost.";
+    }
+  };
+
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-70 z-50">
       <button
         onClick={onClose}
         className="absolute top-4 right-4 text-2xl text-black p-2 rounded-full bg-gray-200 transition-all z-50"
@@ -37,10 +48,10 @@ const WinningModal = ({
       >
         <FaTimes />
       </button>
-      <div className="flex flex-col items-center justify-center p-8 w-[90%] max-w-md">
-        {winnerName === "You" ? (
+      <div className="flex flex-col items-center justify-center p-8 w-[90%] max-w-md  rounded-lg">
+        {winnerName === "You" && (
           <>
-            <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">
+            <h2 className="text-3xl font-bold font-outfit text-gray-800 mb-4 text-center">
               🎉 You Won
             </h2>
             <motion.img
@@ -52,9 +63,11 @@ const WinningModal = ({
               className="w-48 h-48 object-contain"
             />
           </>
-        ) : (
+        )}
+
+        {winnerName === "Bot" && (
           <>
-            <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">
+            <h2 className="text-3xl font-outfit font-bold text-gray-800 mb-4 text-center">
               Bot Wins!
             </h2>
             <Lottie
@@ -65,6 +78,26 @@ const WinningModal = ({
             />
           </>
         )}
+
+        {winnerName === "It's a Tie!" && (
+          <>
+            <h2 className="text-3xl font-outfit  font-bold text-gray-800 mb-4 text-center">
+              It's a Tie!
+            </h2>
+            <Lottie
+              animationData={winningAnimation}
+              loop
+              autoplay
+              className="w-48 h-48"
+            />
+          </>
+        )}
+
+        {/* Win/Loss Amount Message */}
+        <p className="text-[20px] font-semibold font-outfit text-gray-700 mt-4 text-center">
+          {renderWinLossMessage()}
+        </p>
+
         <button
           onClick={onPlayAgain}
           className="mt-6 px-6 py-2 bg-purple-600 text-white text-lg font-semibold rounded-full hover:bg-purple-700 transition-all"
@@ -80,6 +113,8 @@ WinningModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onPlayAgain: PropTypes.func.isRequired,
   winnerName: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
+  winLossAmount: PropTypes.number,
 };
 
 export default memo(WinningModal);

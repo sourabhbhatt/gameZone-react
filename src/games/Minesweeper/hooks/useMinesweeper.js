@@ -16,7 +16,7 @@ export default function useMinesweeper(gridSize = 3, currentFee = 0, id) {
   const [status, setStatus] = useState("playing");
   const [score, setScore] = useState(0);
 
-  const {getUrlParams} = useUrlParams();
+  const { getUrlParams } = useUrlParams();
   const queryParams = getUrlParams();
 
   const totalDiamonds = Math.floor(gridSize * gridSize * 0.8);
@@ -44,62 +44,58 @@ export default function useMinesweeper(gridSize = 3, currentFee = 0, id) {
     setRevealed([]);
     setStatus("playing");
     setScore(0);
-
-
   }, [generateGrid, currentFee, dispatch, walletAmount]);
-
-
 
   const revealTile = useCallback(
     (index) => {
       if (revealed.includes(index) || status !== "playing") return;
-
       const newRevealed = [...revealed, index];
       setRevealed(newRevealed);
-
       if (grid[index] === "diamond") {
         const newScore = score + 1;
         setScore(newScore);
         if (newScore === 4) {
           setStatus("win");
-
-          // Emit a credit event for winning
+          setRevealed(grid.map((_, idx) => idx));
           socket.emit("credit", {
             points: currentFee * 2,
             event_name: "Minesweeper Game Win",
             display_text: "Minesweeper game reward",
             params: queryParams,
             resolve: (response) => {
-              console.log("Credit response:", response);
               if (response.success) {
-                // Update the wallet state in Redux
                 dispatch(updateWallet(walletAmount + currentFee * 2));
-              } else {
-                console.error("Credit failed");
-              }
+              } else console.error("Credit failed");
             },
           });
         }
       } else if (grid[index] === "bomb") {
         setStatus("lose");
+        setRevealed(grid.map((_, idx) => idx));
       }
     },
-    [revealed, status, grid, score, gridSize, totalBombs, currentFee, dispatch, walletAmount]
+    [
+      revealed,
+      status,
+      grid,
+      score,
+      gridSize,
+      totalBombs,
+      currentFee,
+      dispatch,
+      walletAmount,
+    ]
   );
 
   useEffect(() => {
     startGame();
-
-
   }, [gridSize, startGame]);
-
 
   const getBalance = () => {
     socket.emit("getBalance", { queryParams }, (response) => {
       dispatch(updateWallet(response?.balance?.data || 0));
-
     });
-  }
+  };
 
   const debitBalance = async (entryFee) => {
     socket.emit("debit", {
@@ -115,11 +111,11 @@ export default function useMinesweeper(gridSize = 3, currentFee = 0, id) {
         } else {
           console.error("Debit failed");
         }
-        return true
+        return true;
       },
     });
-    return false
-  }
+    return false;
+  };
 
   const creditBalance = async (balance) => {
     socket.emit("credit", {
@@ -137,7 +133,7 @@ export default function useMinesweeper(gridSize = 3, currentFee = 0, id) {
         }
       },
     });
-  }
+  };
 
   // useEffect(() => {
   //   getBalance();
@@ -152,6 +148,6 @@ export default function useMinesweeper(gridSize = 3, currentFee = 0, id) {
     resetGame: startGame,
     gridSize,
     getBalance,
-    debitBalance
+    debitBalance,
   };
 }
