@@ -94,7 +94,8 @@ const Index = memo(() => {
         }}
       />
 
-      <div className="flex-grow flex flex-col items-center justify-center w-full px-4">
+      {/* Bottom content */}
+      <div className="flex-grow flex flex-col items-center justify-end w-full px-4 mb-6">
         <PlayAndEarnButton />
         <main className="w-full max-w-lg mt-2">
           <section className="text-center px-4">
@@ -106,7 +107,9 @@ const Index = memo(() => {
               master the thrilling challenge of Minesweeper!
             </p>
             <div className="flex items-center justify-center mt-3 cursor-pointer">
-              <span className="text-gray-300 text-sm mr-2 font-outfit">How to play</span>
+              <span className="text-gray-300 text-sm mr-2 font-outfit">
+                How to play
+              </span>
               <GoInfo
                 className="text-white text-lg hover:scale-110 transition"
                 onClick={toggleModal}

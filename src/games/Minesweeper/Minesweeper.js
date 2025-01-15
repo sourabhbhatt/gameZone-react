@@ -16,23 +16,31 @@ import winSound from "./audio/win.wav";
 import ExitModal from "./ExitModal";
 import Loader from "../../components/Loader";
 
-const Tile = memo(({ index, revealed, grid, onClick }) => {
-  const tileContent = () => {
-    if (!revealed.includes(index)) return <img src={box} alt="box" />;
-    if (grid[index] === "diamond") return <img src={diamond} alt="diamond" />;
-    if (grid[index] === "bomb") return <img src={bomb} alt="bomb" />;
-  };
-  return (
-    <div
-      className={`w-16 h-16 hover:scale-105 transition-transform ${
-        revealed.includes(index) ? "opacity-100" : "opacity-75"
-      }`}
-      onClick={() => onClick(index)}
-    >
-      {tileContent()}
-    </div>
-  );
-});
+const Tile = memo(
+  ({ index, revealed, grid, onClick, showOtherRevealedCards = false }) => {
+    const tileContent = () => {
+      if (!revealed.some((tile) => tile.index === index))
+        return <img src={box} alt="box" />;
+      if (grid[index] === "diamond") return <img src={diamond} alt="diamond" />;
+      if (grid[index] === "bomb") return <img src={bomb} alt="bomb" />;
+    };
+
+    const tileClass = revealed.some(
+      (tile) => tile.index === index && tile.userOpened
+    )
+      ? "opacity-60"
+      : "";
+
+    return (
+      <div
+        className={`w-16 h-16 hover:scale-105 transition-transform ${tileClass}`}
+        onClick={() => onClick(index)}
+      >
+        {tileContent()}
+      </div>
+    );
+  }
+);
 
 const generateGameId = () => {
   const characters =
@@ -160,6 +168,7 @@ export default function Minesweeper() {
                 key={index}
                 index={index}
                 revealed={revealed}
+                showOtherRevealedCards={modalOpen}
                 grid={grid}
                 onClick={handleTileClick}
               />

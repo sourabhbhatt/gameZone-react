@@ -31,13 +31,16 @@ const PlayerInfo = ({
   }, [coinAmount]);
 
   useEffect(() => {
+    let firstTimeout, secondTimeout;
     if (isWinner) {
-      setTimeout(() => setAnimatedCoins(coinAmount * 2), 2000);
+      firstTimeout = setTimeout(() => setAnimatedCoins(coinAmount * 2), 2000);
     }
-    if (isLooser) {
-      setTimeout(() => setAnimatedCoins(0), 2000);
-    }
-  }, [isWinner, isLooser]);
+    secondTimeout = setTimeout(() => setAnimatedCoins(coinAmount), 1000);
+    return () => {
+      clearTimeout(firstTimeout);
+      clearTimeout(secondTimeout);
+    };
+  }, [isWinner, coinAmount]);
 
   const sizes = {
     small: {

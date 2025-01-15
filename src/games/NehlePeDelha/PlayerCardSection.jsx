@@ -12,31 +12,43 @@ const PlayerCardSection = ({
 }) => {
   const [revealBotCard, setRevealBotCard] = useState(false);
   const [revealPlayerCard, setRevealPlayerCard] = useState(false);
+  const [isWinnerBot, setIsWinnerBot] = useState(null);
+  const [isWinnerPlayer, setIsWinnerPlayer] = useState(null);
 
   useEffect(() => {
     if (cardsRevealed) {
-      setRevealPlayerCard(true);
-      const timer = setTimeout(() => {
-        setRevealBotCard(true);
-      }, 1000);
-      return () => clearTimeout(timer);
+      const playerCardTimer = setTimeout(() => setRevealPlayerCard(true), 500);
+      const botCardTimer = setTimeout(() => setRevealBotCard(true), 1500);
+
+      return () => {
+        clearTimeout(playerCardTimer);
+        clearTimeout(botCardTimer);
+      };
     } else {
-      setRevealBotCard(false);
       setRevealPlayerCard(false);
+      setRevealBotCard(false);
     }
   }, [cardsRevealed]);
 
+  useEffect(() => {
+    setIsWinnerBot(winningPlayer === "Bot" );
+    setIsWinnerPlayer(winningPlayer === "You" );
+  }, [winningPlayer]);
+
   return (
-    <div className="flex flex-col items-center  space-y-6">
+    <div className="flex flex-col items-center space-y-6">
+      {/* Bot Player Info */}
       <PlayerInfo
         name="Bot"
         isBot={true}
         isCoinImage={false}
         coinAmount={currentBetAmount}
         amountPlacement={null}
-        isWinner={winningPlayer === "Bot"}
-        isLooser={winningPlayer === "You"}
+        isWinner={isWinnerBot}
+        isLooser={isWinnerPlayer}
       />
+
+      {/* Bot Card */}
       {revealBotCard ? (
         <CardFront
           animation={"fade"}
@@ -47,6 +59,8 @@ const PlayerCardSection = ({
       ) : (
         <CardBack />
       )}
+
+      {/* Player Card */}
       {revealPlayerCard ? (
         <CardFront
           animation={"fade"}
@@ -57,14 +71,16 @@ const PlayerCardSection = ({
       ) : (
         <CardBack />
       )}
+
+      {/* Player Info */}
       <PlayerInfo
+        name="You"
+        avatar={require("../../assets/avatar.png")}
         isCoinImage={true}
         coinAmount={currentBetAmount}
         amountPlacement="bottom"
-        name="You"
-        avatar={require("../../assets/avatar.png")}
-        isLooser={winningPlayer === "Bot"}
-        isWinner={winningPlayer === "You"}
+        isWinner={isWinnerPlayer}
+        isLooser={isWinnerBot}
       />
     </div>
   );

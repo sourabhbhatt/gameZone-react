@@ -44,7 +44,7 @@ const NehlePeDelhaGame = () => {
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [betHistory, setBetHistory] = useState([]);
   const [isWinningModalOpen, setIsWinningModalOpen] = useState(false);
-  const [winningPlayer, setWinningPlayer] = useState(""); // "You" or "Bot"
+  const [winningPlayer, setWinningPlayer] = useState(null); // "You" or "Bot"
   const [isExitModal, setIsExitModal] = useState(false);
   const [isRevealing, setIsRevealing] = useState(false);
   const [amountForPlayAgain, setAmountForPlayAgain] = useState(0);
@@ -106,7 +106,7 @@ const NehlePeDelhaGame = () => {
         setWinLossAmount(currentBetAmount);
       } else {
         setWinner("It's a Tie!");
-        setWinningPlayer("");
+        setWinningPlayer(null);
         updateBetHistory("Tie");
         setWinLossAmount(0);
       }
@@ -185,24 +185,21 @@ const NehlePeDelhaGame = () => {
     setIsModalOpen(true);
   };
 
-  const fetchHistory = async () => {
+  const fetchHistory = useCallback(async () => {
     const { response, error } = await getHistory();
-    setIsHistoryOpen(true);
     if (error) {
-      console.error("Failed to fetch history:", error);
+      showToastMessage("error", "Failed to fetch history.");
     } else {
-      console.log("Fetched history:", response);
-
-      setBetHistory((prev) => {
-        return response?.map((el) => ({
-          status: el?.won ? "won" : "lose",
+      setBetHistory(
+        response?.map((el) => ({
+          status: el?.won ? "Won" : "Loss",
           amount: el?.betAmount,
-          timestamp: el?.timestamp,
           betDetails: el?.description,
-        }));
-      });
+        })) || []
+      );
+      setIsHistoryOpen(true);
     }
-  };
+  }, [getHistory]);
 
   return (
     <div
@@ -233,6 +230,7 @@ const NehlePeDelhaGame = () => {
         currentBetAmount={currentBetAmount}
         winningPlayer={winningPlayer}
       />
+
       <BottomSection
         walletAmount={walletAmount}
         playingBetAmount={toalAmountForTheGame}
@@ -264,6 +262,7 @@ const NehlePeDelhaGame = () => {
         }}
         onPlayAgain={() => {
           setIsWinningModalOpen(false);
+          setWinningPlayer(null);
           startGame();
         }}
         winnerName={winningPlayer || "It's a Tie!"}

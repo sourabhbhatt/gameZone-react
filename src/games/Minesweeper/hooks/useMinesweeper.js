@@ -48,15 +48,23 @@ export default function useMinesweeper(gridSize = 3, currentFee = 0, id) {
 
   const revealTile = useCallback(
     (index) => {
-      if (revealed.includes(index) || status !== "playing") return;
-      const newRevealed = [...revealed, index];
+      if (revealed.some((tile) => tile.index === index) || status !== "playing")
+        return;
+
+      const newRevealed = [...revealed, { index, userOpened: true }];
       setRevealed(newRevealed);
+
       if (grid[index] === "diamond") {
         const newScore = score + 1;
         setScore(newScore);
         if (newScore === 4) {
           setStatus("win");
-          setRevealed(grid.map((_, idx) => idx));
+          setRevealed(
+            grid.map((_, idx) => ({
+              index: idx,
+              userOpened: revealed.some((tile) => tile.index === idx),
+            }))
+          );
           socket.emit("credit", {
             points: currentFee * 2,
             event_name: "Minesweeper Game Win",
@@ -71,7 +79,12 @@ export default function useMinesweeper(gridSize = 3, currentFee = 0, id) {
         }
       } else if (grid[index] === "bomb") {
         setStatus("lose");
-        setRevealed(grid.map((_, idx) => idx));
+        setRevealed(
+          grid.map((_, idx) => ({
+            index: idx,
+            userOpened: revealed.some((tile) => tile.index === idx),
+          }))
+        );
       }
     },
     [
