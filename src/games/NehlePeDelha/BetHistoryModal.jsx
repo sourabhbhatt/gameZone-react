@@ -7,18 +7,31 @@ const BetHistoryModal = ({ isOpen, onClose, betHistory }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50">
-      <div className="w-full min-h-[40vh] max-h-[80vh] bg-gradient-to-t from-[#9C64E2] to-[#623AA2] rounded-t-3xl flex flex-col">
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50"
+      style={{ touchAction: "none" }} // Prevent mobile gestures from interfering
+    >
+      <div
+        className="w-full h-full max-h-[60vh] bg-gradient-to-t from-[#9C64E2] to-[#623AA2] rounded-t-3xl flex flex-col"
+        style={{
+          WebkitOverflowScrolling: "touch", // Enable smooth scrolling for iOS
+        }}
+      >
         {/* Header */}
-        <div className="sticky top-0 bg-transparent flex items-center justify-between p-4 z-10">
+        <div className="sticky top-0 bg-transparent  items-center justify-between p-4 z-10">
           <button onClick={onClose} className="text-white text-3xl">
             <IoClose />
           </button>
-          <h2 className="text-white text-2xl font-bold">Bet History</h2>
+          <h2 className="text-white text-[24px] font-semiBold font-outfit">Bet History</h2>
         </div>
 
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto px-4 py-2 space-y-4">
+        <div
+          className="flex-1 overflow-y-auto px-4 py-2 space-y-4"
+          style={{
+            maxHeight: "calc(80vh - 60px)", // Deduct header height from the total height
+          }}
+        >
           {betHistory.length > 0 ? (
             betHistory.map((history, index) => (
               <HistoryCard
@@ -42,7 +55,7 @@ BetHistoryModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   betHistory: PropTypes.arrayOf(
     PropTypes.shape({
-      status: PropTypes.oneOf(["Won", "Loss"]),
+      status: PropTypes.oneOf(["Won", "Loss"]).isRequired,
       amount: PropTypes.number.isRequired,
       betDetails: PropTypes.string.isRequired,
     })
