@@ -201,6 +201,7 @@ const NehlePeDelhaGame = () => {
     }
   }, [getHistory]);
 
+
   return (
     <div
       className="relative bg-[#0F0529] flex flex-col items-center justify-between 
