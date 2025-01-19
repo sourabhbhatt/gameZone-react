@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FaAngleLeft, FaTimes, FaEllipsisV, FaCog } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { images } from "../assets/images";
-import { formatINRLocale } from '../utils'
+import { formatINRLocale } from "../utils";
 const defultThemeConfig = {
   bg: "#5C59F1",
   switchTogglerEnabledColor: "gray",
@@ -26,6 +26,7 @@ const GameHeader = memo(
     bgColor = null,
     bgImage = null,
     themeConfig = defultThemeConfig,
+    className = "",
   }) => {
     const navigate = useNavigate();
     const [isSettingsOpen, setIsSettingsOpen] = useState(false); // Modal visibility
@@ -44,29 +45,31 @@ const GameHeader = memo(
     // Dynamic Background Style
     const backgroundStyle = bgImage
       ? {
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }
       : bgColor
-        ? { backgroundColor: bgColor }
-        : {};
+      ? { backgroundColor: bgColor }
+      : {};
 
     return (
       <div
-        className="flex items-center justify-between w-full px-4 py-3"
+        className={`flex items-center justify-between w-full px-4 py-3 ${className}`}
         style={backgroundStyle}
       >
         {/* Back Button */}
-        {!!isBackButton && <button
-          onClick={onBackPress}
-          className="text-2xl text-white flex items-center justify-center w-10 h-10 bg-white bg-opacity-10 rounded-full"
-        >
-          {showCrossIcon ? <FaTimes /> : <FaAngleLeft />}
-        </button>}
+        {!!isBackButton && (
+          <button
+            onClick={onBackPress}
+            className="text-2xl text-white flex items-center justify-center w-10 h-10 bg-black bg-opacity-20 rounded-full"
+          >
+            {showCrossIcon ? <FaTimes /> : <FaAngleLeft />}
+          </button>
+        )}
 
         {!!title ? (
-          <h1 className="flex-1 text-center text-lg font-bold text-white">
+          <h1 className="flex-1 text-center text-lg font-bold font-outfit text-white">
             {title}
           </h1>
         ) : (
@@ -75,13 +78,13 @@ const GameHeader = memo(
 
         <div className="flex items-center space-x-3">
           {!title && (
-            <div className="flex items-center px-3 py-1 bg-white bg-opacity-10 rounded-full">
+            <div className="flex items-center px-3 py-1 bg-black bg-opacity-20 rounded-full">
               <img
                 src={images.coin}
                 alt="Coin"
                 className="w-5 h-5 object-contain"
               />
-              <span className="ml-2 text-lg font-bold text-white">
+              <span className="ml-2 text-lg font-bold text-white font-outfit">
                 {formatINRLocale(amountOnWallet)}
               </span>
             </div>
@@ -89,8 +92,8 @@ const GameHeader = memo(
           {!!menuButton && (
             <button
               onClick={onMenuPress}
-              className="flex items-center justify-center w-10 h-10 bg-white 
-              bg-opacity-10 rounded-full text-white text-2xl ml-4"
+              className="flex items-center justify-center w-10 h-10 bg-black 
+              bg-opacity-20 rounded-full text-white text-2xl ml-4"
             >
               {showSettingsIcon ? <FaCog /> : <FaEllipsisV />}
             </button>

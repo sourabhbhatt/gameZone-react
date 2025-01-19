@@ -85,13 +85,15 @@ const index = memo(() => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex flex-col h-screen">
       {loading && <Loader color={"#ffffff"} size={60} speed={0.8} />}
       <div
+        className="relative h-[458px] w-full bg-black/10 bg-cover bg-center"
         style={{ backgroundImage: `url(${bgCards})` }}
-        className="h-[30vh] sm:h-[40vh] bg-cover bg-center relative"
       >
+        <div className="absolute inset-0 bg-black/20" />
         <GameHeader
+          className="relative z-10"
           isBackButton={false}
           themeConfig={{
             bg: "#ffffff",
@@ -107,69 +109,68 @@ const index = memo(() => {
       <div
         style={{
           backgroundImage: `url(${bgBottomCard})`,
-          backgroundSize: `cover`,
-          backgroundRepeat: `no-repeat`,
+          backgroundSize: "cover",
           backgroundPosition: "center",
         }}
-        className="flex-grow relative rounded-t-3xl -mt-5 sm:-mt-12 flex items-start justify-center"
+        className="relative h-[35.625rem] w-full bg-purple-900 rounded-t-3xl px-2 py-8 text-white -mt-[4.2rem] md:-mt-[3.125rem] lg:-mt-[2.5rem]"
       >
-        <main className="w-full max-w-sm sm:max-w-lg mt-6 sm:mt-10 px-4 sm:px-8">
-          <PlayAndEarnButton />
-          <section className="text-center mt-4 sm:mt-6">
-            <h1 className="text-xl sm:text-2xl font-bold text-white font-outfit">
-              {NehlePeDelhaConfig.gameTitle}
-            </h1>
-            <p className="text-xs sm:text-sm text-gray-300 mt-2 sm:mt-4">
-              Challenge your skills and strategy in this fun card game. Compete
-              to win exciting rewards and enjoy the thrill of victory!
-            </p>
-          </section>
-          <div className="text-white p-4 sm:p-6 rounded-xl mt-4 sm:mt-6">
-            <p className="text-base sm:text-lg font-bold">
-              Select amount to play
-            </p>
-            <div className="font-bold text-lg underline text-white mt-2 mb-3">
-              {currentFee}
-            </div>
-            <RangeSlider
-              min={String(minimumAmount)}
-              max={String(walletAmount)}
-              value={currentFee}
-              onChange={handleInputChange}
-              walletAmount={walletAmount}
-            />
-            <div className="flex justify-between items-center text-xs sm:text-sm mb-4">
-              <span>{minimumAmount}</span>
-              <span>{walletAmount}</span>
-            </div>
-
-            <div
-              className="text-white mt-2 sm:mt-4 cursor-pointer underline"
-              onClick={toggleModal}
-            >
-              How to play?
-            </div>
-            <div className="w-full h-[1px] bg-white my-4 sm:my-6" />
-            <button
-              onClick={() => {
-                if (walletAmount < currentFee) {
-                  showToastMessage("error", "Not enough balance");
-                  return;
-                }
-                startGame();
-              }}
-              className="w-full h-[48px] mt-2 px-4 sm:px-6 py-2 sm:py-3 bg-purple-900 text-white rounded-[12px] sm:rounded-3xl shadow-md hover:scale-105 transition-all flex items-center justify-center space-x-2"
-            >
-              <span className="text-sm sm:text-lg font-medium">Play With</span>
-              <img
-                src={images.coin}
-                alt="Coin"
-                className="w-4 sm:w-5 h-4 sm:h-5 object-contain animate-spin-slow"
-              />
-              <span className="text-[16px] font-semibold">{currentFee}</span>
-            </button>
+        <PlayAndEarnButton />
+        <section className="text-center mt-4">
+          <h3 className="text-[23px] font-bold text-[#ffffff] font-outfit">
+            {NehlePeDelhaConfig.gameTitle}
+          </h3>
+          <p className="text-[12px] font-outfit text-[#FFFFFF] mt-2">
+            {`Challenge your skills and strategy in this fun card game. Compete to
+            win exciting rewards and enjoy the thrill of victory!`}
+          </p>
+        </section>
+        <div className="p-2 mt-4 justify-end">
+          <p className="text-[18px] font-bold font-outfit">
+            {`Select amount to play`}
+          </p>
+          <div className="font-bold text-lg underline text-white/80 mt-2 mb-3 ">
+            {currentFee}
           </div>
-        </main>
+          <RangeSlider
+            min={String(minimumAmount)}
+            max={String(walletAmount)}
+            value={currentFee}
+            onChange={handleInputChange}
+            walletAmount={walletAmount}
+          />
+          <div className="flex justify-between items-center text-[18px]  mb-4">
+            <span>{minimumAmount}</span>
+            <span>{walletAmount}</span>
+          </div>
+
+          <div
+            className="text-white/60 mt-2 cursor-pointer underline"
+            onClick={toggleModal}
+          >
+            {`How to play?`}
+          </div>
+          <div className="w-full h-[1px] bg-white/50 my-4 sm:my-6" />
+          <button
+            onClick={() => {
+              if (walletAmount < currentFee) {
+                showToastMessage("error", "Not enough balance");
+                return;
+              }
+              startGame();
+            }}
+            className="w-full h-[48px] mt-2 px-4 sm:px-6 py-2 sm:py-3 bg-purple-900 text-white rounded-[12px] sm:rounded-3xl shadow-md hover:scale-105 transition-all flex items-center justify-center space-x-2"
+          >
+            <span className="text-[18px] sm:text-lg font-medium">
+              Play With
+            </span>
+            <img
+              src={images.coin}
+              alt="Coin"
+              className="w-4 sm:w-5 h-4 sm:h-5 object-contain animate-spin-slow"
+            />
+            <span className="text-[18px] font-semibold">{currentFee}</span>
+          </button>
+        </div>
       </div>
 
       <Modal

@@ -9,6 +9,7 @@ const RangeSlider = (props) => {
     background: `linear-gradient(90deg, var( - primary-600) 0, var( - orange-500) ${percentage}%, ${
       props.secondaryBgColor ? props.secondaryBgColor : "var( - defaut-color)"
     } ${percentage + 0.1}%)`,
+    height: props.barHeight || "10px",
   };
 
   return (
