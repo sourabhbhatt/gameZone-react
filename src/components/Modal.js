@@ -1,5 +1,6 @@
 import React from "react";
 import { FaTimes } from "react-icons/fa";
+import { images } from "../assets/images";
 
 const Modal = ({
   isOpen,
@@ -16,8 +17,9 @@ const Modal = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div
-        className={`relative rounded-lg shadow-lg transition-transform transform ${modalStyles.className || ""
-          }`}
+        className={`relative rounded-lg shadow-lg transition-transform transform ${
+          modalStyles.className || ""
+        }`}
         style={{
           backgroundColor: modalStyles.backgroundColor || "white",
           width: modalStyles.width || "90%", // Default for mobile
@@ -30,10 +32,10 @@ const Modal = ({
         }}
       >
         {/* Close Button */}
-        <div className="flex justify-between items-center">
+        <div className="mt-[32px]">
           <button
             onClick={onClose}
-            className={`absolute top-3 left-3 text-gray-600 hover:text-red-500 transition-transform transform hover:scale-110 
+            className={`text-gray-600 hover:text-red-500 transition-transform transform hover:scale-110 
               ${closeButtonStyles.className || ""}`}
             style={{
               fontSize: closeButtonStyles.fontSize || "1.5rem",
@@ -42,20 +44,23 @@ const Modal = ({
             }}
             aria-label="Close"
           >
-            <FaTimes />
+            <img src={images.cross} className="h-[24px] w-[24px]" />
           </button>
-        </div>
-
-        {/* Title */}
-        {title && (
-          <h2
-            className={`text-xl font-bold mt-6 text-left ${titleStyles.className || ""
+          {/* Title */}
+          {title && (
+            <h2
+              className={`text-[24px] font-outfit font-semibold mt-1 text-left ${
+                titleStyles.className || ""
               }`}
-            style={{ color: titleStyles.color || "#333", ...titleStyles.style }}
-          >
-            {title}
-          </h2>
-        )}
+              style={{
+                color: titleStyles.color || "#333",
+                ...titleStyles.style,
+              }}
+            >
+              {title}
+            </h2>
+          )}
+        </div>
 
         {/* Modal Content */}
         <div

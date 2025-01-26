@@ -1,9 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { FaTimes } from "react-icons/fa";
-import { TbMusic, TbMusicOff } from "react-icons/tb"
+import { IoCloseOutline } from "react-icons/io5";
+import { TbMusic, TbMusicOff } from "react-icons/tb";
 import { useSelector, useDispatch } from "react-redux";
-import { PiSpeakerSimpleHighFill,PiSpeakerSimpleSlashFill } from "react-icons/pi";
+import {
+  PiSpeakerSimpleHighFill,
+  PiSpeakerSimpleSlashFill,
+} from "react-icons/pi";
 import {
   toggleSound,
   toggleMusic,
@@ -19,6 +22,8 @@ const defultThemeConfig = {
   barColor: "gray",
   titleColor: "#ffffff",
   headingColor: "#ffffff",
+  thumbEnabledColor: "#ffffff",
+  thumbDisabledColor: "#ffffff",
 };
 
 const SettingsModal = ({
@@ -52,10 +57,10 @@ const SettingsModal = ({
         {/* Close Button */}
         <button
           onClick={onClose}
-          className={`absolute top-4 right-4 text-xl hover:text-black`}
+          className={`absolute top-[27px] left-4 text-xl hover:text-black`}
           style={{ color: themeConfig.headingColor }}
         >
-          <FaTimes />
+          <IoCloseOutline className="h-[26px] w-[26px] text-black" />
         </button>
 
         {/* Modal Title */}
@@ -63,7 +68,7 @@ const SettingsModal = ({
           style={{ color: themeConfig.headingColor }}
           className={`text-center text-lg font-semibold mb-6`}
         >
-          {'Settings'}
+          {"Settings"}
         </h2>
 
         {/* Sound Settings */}
@@ -89,7 +94,7 @@ const SettingsModal = ({
                 Sound
               </span>
             </div>
-            <label className="inline-flex items-center">
+            <label className="inline-flex items-center ">
               <input
                 type="checkbox"
                 className="hidden"
@@ -101,19 +106,27 @@ const SettingsModal = ({
                 }}
               />
               <div
-                className={`w-10 h-5 flex items-center rounded-full p-1 cursor-pointer transition-all ${
+                className={`w-[47px] h-[24px] flex items-center rounded-full p-1 cursor-pointer transition-all ${
                   soundEnabled ? "bg-gray-500" : "bg-gray-300"
                 }`}
                 style={{
+                  borderWidth: "1.5px",
+                  borderStyle: "solid",
+                  borderColor: "#D1D5DB",
                   backgroundColor: soundEnabled
                     ? themeConfig.switchTogglerEnabledColor
                     : themeConfig.switchTogglerDisabledColor,
                 }}
               >
                 <motion.div
-                  className={`w-4 h-4 bg-white rounded-full shadow ${
+                  className={`w-[20px] h-[20px] bg-white rounded-full shadow ${
                     soundEnabled ? "translate-x-5" : ""
                   }`}
+                  style={{
+                    backgroundColor: soundEnabled
+                      ? themeConfig.thumbEnabledColor
+                      : themeConfig.thumbDisabledColor,
+                  }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 />
               </div>
@@ -131,7 +144,7 @@ const SettingsModal = ({
               style={{
                 "--slider-fill-color": soundEnabled
                   ? themeConfig.barColor
-                  : "gray",
+                  : "#CCC7C7",
                 "--slider-value": `${soundEnabled ? soundVolume : 0}%`,
               }}
               disabled={!soundEnabled}
@@ -180,17 +193,25 @@ const SettingsModal = ({
                 }}
               />
               <div
-                className={`w-10 h-5 flex items-center rounded-full p-1 cursor-pointer transition-all`}
+                className={`w-[47px] h-[24px] flex items-center rounded-full p-1 cursor-pointer transition-all`}
                 style={{
+                  borderWidth: "1.5px",
+                  borderStyle: "solid",
+                  borderColor: "#D1D5DB",
                   backgroundColor: musicEnabled
                     ? themeConfig.switchTogglerEnabledColor
                     : themeConfig.switchTogglerDisabledColor,
                 }}
               >
                 <motion.div
-                  className={`w-4 h-4 bg-white rounded-full shadow ${
+                  className={`w-[20px] h-[20px] bg-white rounded-full shadow ${
                     musicEnabled ? "translate-x-5" : ""
                   }`}
+                  style={{
+                    backgroundColor: soundEnabled
+                      ? themeConfig.thumbEnabledColor
+                      : themeConfig.thumbDisabledColor,
+                  }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 />
               </div>

@@ -53,14 +53,14 @@ const CountdownRevealModal = ({ isOpen, onReveal }) => {
   return (
     <AnimatePresence>
       <div className="fixed inset-0 bg-black bg-opacity-80 flex flex-col justify-center items-center z-50">
-        <h3 className="text-white text-[30px] font-outfit font-bold">{`Revealing card in`}</h3>
+        <h3 className="text-white text-[32px] font-outfit font-medium">{`Revealing card in`}</h3>
         <motion.div
           key={`count-number-${count}`}
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0, opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-white text-[72px] font-bold leading-none"
+          className="text-white text-[60px] font-outfit font-medium leading-none"
         >
           {count}
         </motion.div>

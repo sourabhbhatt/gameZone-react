@@ -10,6 +10,8 @@ const RangeSlider = (props) => {
       props.secondaryBgColor ? props.secondaryBgColor : "var( - defaut-color)"
     } ${percentage + 0.1}%)`,
     height: props.barHeight || "10px",
+    "--thumb-color": props.thumbColor || "var(--default-thumb-color)",
+
   };
 
   return (

@@ -1,7 +1,8 @@
 import React, { memo, useCallback, useState } from "react";
 import SettingsModal from "./SettingsModal";
 import { useNavigate } from "react-router-dom";
-import { FaAngleLeft, FaTimes, FaEllipsisV, FaCog } from "react-icons/fa";
+import { FaAngleLeft, FaEllipsisV, FaCog } from "react-icons/fa";
+import { IoCloseOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import { images } from "../assets/images";
 import { formatINRLocale } from "../utils";
@@ -12,6 +13,8 @@ const defultThemeConfig = {
   barColor: "gray",
   titleColor: "#ffffff",
   headingColor: "#ffffff",
+  thumbEnabledColor: "#ffffff",
+  thumbDisabledColor: "#ffffff",
 };
 
 const GameHeader = memo(
@@ -62,14 +65,17 @@ const GameHeader = memo(
         {!!isBackButton && (
           <button
             onClick={onBackPress}
-            className="text-2xl text-white flex items-center justify-center w-10 h-10 bg-black bg-opacity-20 rounded-full"
+            className={`text-2xl text-white flex items-center justify-center 
+              w-[32px] h-[32px] bg-black bg-opacity-20 rounded-full ${
+                isBackButton ? "rounded-sm" : "rounded-full"
+              }`}
           >
-            {showCrossIcon ? <FaTimes /> : <FaAngleLeft />}
+            {showCrossIcon ? <IoCloseOutline /> : <FaAngleLeft />}
           </button>
         )}
 
         {!!title ? (
-          <h1 className="flex-1 text-center text-lg font-bold font-outfit text-white">
+          <h1 className="flex-1 text-center tracking-[2px] text-lg font-bold font-outfit text-white">
             {title}
           </h1>
         ) : (
@@ -92,10 +98,10 @@ const GameHeader = memo(
           {!!menuButton && (
             <button
               onClick={onMenuPress}
-              className="flex items-center justify-center w-10 h-10 bg-black 
+              className="flex items-center justify-center w-[35px] h-[35px] bg-black 
               bg-opacity-20 rounded-full text-white text-2xl ml-4"
             >
-              {showSettingsIcon ? <FaCog /> : <FaEllipsisV />}
+              {showSettingsIcon ? <FaCog className="w-[18px] h-[18px]" /> : <FaEllipsisV />}
             </button>
           )}
         </div>

@@ -210,17 +210,20 @@ const NehlePeDelhaGame = () => {
     >
       <GameHeader
         themeConfig={{
-          bg: "#ffffff",
+          bg: "#D1D5DB",
           switchTogglerEnabledColor: "#2E1A4D",
-          switchTogglerDisabledColor: "gray",
+          switchTogglerDisabledColor: "#ffffff",
           barColor: "#7A7A7A",
+          // barColor: "#CCC7C7",
           titleColor: "#000000",
           headingColor: "#000000",
+          thumbEnabledColor: "#ffffff",
+          thumbDisabledColor: "#D1D5DB",
         }}
         showCrossIcon
         onBack={() => setIsExitModal(true)}
         showSettingsIcon
-        title="Nehle Pe Dehla"
+        title="NEHLE PE DEHLA"
       />
 
       {/* <PlayerInfoHeader currentBetAmount={currentBetAmount} /> */}

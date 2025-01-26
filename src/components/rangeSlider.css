@@ -20,7 +20,7 @@
   width: 20px; /* Ensure the thumb has a width */
   height: 20px; /* Ensure the thumb has a height */
   border-radius: 50%;
-  background: #4A2574; /* Use a valid color for visibility */
+  background: #C09BFF; /* Use a valid color for visibility */
   border: 1px solid #fff; /* Optional border for visibility */
   cursor: pointer;
   transition: background 0.15s ease-in-out;
@@ -39,7 +39,7 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #4A2574;
+  background: #C09BFF;
   border: 1px solid #fff;
   cursor: pointer;
   transition: background 0.15s ease-in-out;
@@ -50,7 +50,7 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #4A2574;
+  background: #C09BFF;
   border: 1px solid #fff;
   cursor: pointer;
   transition: background 0.15s ease-in-out;

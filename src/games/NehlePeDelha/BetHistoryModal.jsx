@@ -42,7 +42,7 @@ const BetHistoryModal = ({ isOpen, onClose, betHistory }) => {
               />
             ))
           ) : (
-            <p className="text-white text-center">No bet history found.</p>
+            <p className="text-white font-outfit font-regular text-center">No bet history found.</p>
           )}
         </div>
       </div>

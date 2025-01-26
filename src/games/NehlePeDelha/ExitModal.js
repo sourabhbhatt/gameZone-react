@@ -33,20 +33,20 @@ const ExitModal = ({ isOpen, onClose, onConfirm }) => {
             </button>
           </div>
 
-          <h3 className="text-white text-lg font-semibold mb-6">
+          <h3 className="text-white text-[16px] font-outfit font-semibold mb-6">
             Are you sure you want to end the game?
           </h3>
           <div className="space-y-4">
             <button
               onClick={onClose}
-              className="w-full py-3 bg-white text-[#4A2574] font-medium rounded-xl border border-[#4A2574] hover:bg-[#3A1C5F] transition"
+              className="w-full py-3 bg-white text-[#4A2574] font-medium font-outfit rounded-xl border border-[#4A2574] hover:bg-[#3A1C5F] transition"
               style={{ borderWidth: "1px" }}
             >
               No
             </button>
             <button
               onClick={onConfirm}
-              className="w-full py-3 text-white font-medium rounded-xl border border-white hover:bg-white hover:text-[#4A2574] transition"
+              className="w-full py-3 text-white font-medium font-outfit rounded-xl border border-white hover:bg-white hover:text-[#4A2574] transition"
               style={{ borderWidth: "1px" }}
             >
               Yes, end the game

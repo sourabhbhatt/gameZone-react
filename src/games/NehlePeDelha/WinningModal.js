@@ -43,7 +43,7 @@ const WinningModal = ({
     <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-70 z-50">
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 text-2xl text-black p-2 rounded-full bg-gray-200 transition-all z-50"
+        className="absolute top-4 right-4 text-2xl text-black p-1 rounded-md bg-gray-200/60 transition-all z-50"
         aria-label="Close"
       >
         <FaTimes />
@@ -51,7 +51,7 @@ const WinningModal = ({
       <div className="flex flex-col items-center justify-center p-8 w-[90%] max-w-md  rounded-lg">
         {winnerName === "You" && (
           <>
-            <h2 className="text-3xl font-bold font-outfit text-gray-800 mb-4 text-center">
+            <h2 className="text-[40px] font-bold font-outfit text-gray-800 mb-4 text-center">
               🎉 You Won
             </h2>
             <motion.img
@@ -67,7 +67,7 @@ const WinningModal = ({
 
         {winnerName === "Bot" && (
           <>
-            <h2 className="text-3xl font-outfit font-bold text-gray-800 mb-4 text-center">
+            <h2 className="text-[40px] font-outfit font-bold text-gray-800 mb-4 text-center">
               Bot Wins!
             </h2>
             <Lottie
@@ -81,7 +81,7 @@ const WinningModal = ({
 
         {winnerName === "It's a Tie!" && (
           <>
-            <h2 className="text-3xl font-outfit  font-bold text-gray-800 mb-4 text-center">
+            <h2 className="text-[40px] font-outfit font-bold text-gray-800  text-center">
               It's a Tie!
             </h2>
             <Lottie
@@ -100,7 +100,7 @@ const WinningModal = ({
 
         <button
           onClick={onPlayAgain}
-          className="mt-6 px-6 py-2 bg-purple-600 text-white text-lg font-semibold rounded-full hover:bg-purple-700 transition-all"
+          className="mt-6 px-6 py-2 bg-purple-600 font-outfit text-white text-lg font-semibold rounded-full hover:bg-purple-700 transition-all"
         >
           Play Again
         </button>
