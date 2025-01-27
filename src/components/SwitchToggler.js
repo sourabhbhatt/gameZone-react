@@ -1,4 +1,6 @@
 import React from "react";
+import cross from "../assets/Cross.png";
+import zero from "../assets/Zero.png";
 
 const SwitchToggler = ({ options, selectedOption, onToggle }) => {
   return (
@@ -9,17 +11,17 @@ const SwitchToggler = ({ options, selectedOption, onToggle }) => {
         {options.map((option) => (
           <div
             key={option}
-            className={`relative flex items-center justify-center w-26 h-9 px-4 rounded-full cursor-pointer transition-all
+            className={`relative flex items-center justify-center w-26 h-9 px-3 rounded-full cursor-pointer transition-all feeselector-border
               ${
                 selectedOption === option
-                  ? "bg-gradient-to-b from-black via-[#0f1b0f] to-green-900 shadow-[0_-2px_8px_rgba(255,255,255,0.1)]"
+                  ? "feeselector-bg "
                   : "bg-gradient-to-b from-black via-[#0f1b0f] to-gray-800"
               }`}
             style={{
               boxShadow:
                 selectedOption === option
                   ? "0 0 15px rgba(20, 255, 0, 0.3)"
-                  : "0 0 5px rgba(0, 0, 0, 0.5)", // Shadow adjustments
+                  : "0 0 5px rgba(0, 0, 0, 0.5)",
             }}
             onClick={() => onToggle(option)}
           >
@@ -34,7 +36,7 @@ const SwitchToggler = ({ options, selectedOption, onToggle }) => {
               {selectedOption === option ? (
                 <div className="w-1 h-1 rounded-full bg-black"></div>
               ) : (
-                <div className="w-2.5 h-2.5 rounded-full bg-black"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-white"></div>
               )}
 
               {/* White Shadow at the Top */}
@@ -43,12 +45,15 @@ const SwitchToggler = ({ options, selectedOption, onToggle }) => {
               )}
             </div>
 
-            <span
-              className={`ml-3 text-[25px] font-bold bg-gradient-to-r from-green-400 
-                to-green-600 text-transparent bg-clip-text transition-all scale-100`}
-            >
-              {option}
-            </span>
+            <img 
+              src={option === "X" ? cross : zero} 
+              alt={option}
+              className={`ml-3 w-8 h-8 transition-all ${
+                selectedOption === option 
+                  ? "opacity-100" 
+                  : "opacity-50"
+              }`}
+            />
           </div>
         ))}
       </div>

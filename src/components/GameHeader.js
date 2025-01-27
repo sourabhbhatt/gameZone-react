@@ -5,6 +5,8 @@ import { FaAngleLeft, FaTimes, FaEllipsisV, FaCog } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { images } from "../assets/images";
 import { formatINRLocale } from '../utils'
+import close from "../assets/Close.png";
+import settings from "../assets/settings.png";
 const defultThemeConfig = {
   bg: "#5C59F1",
   switchTogglerEnabledColor: "gray",
@@ -54,19 +56,19 @@ const GameHeader = memo(
 
     return (
       <div
-        className="flex items-center justify-between w-full px-4 py-3"
+        className="relative flex items-center justify-between w-screen px-4 py-3"
         style={backgroundStyle}
       >
         {/* Back Button */}
         {!!isBackButton && <button
           onClick={onBackPress}
-          className="text-2xl text-white flex items-center justify-center w-10 h-10 bg-white bg-opacity-10 rounded-full"
+          className="text-2xl text-white flex items-center justify-center w-10 h-10 bg-white bg-opacity-10 rounded-xl"
         >
-          {showCrossIcon ? <FaTimes /> : <FaAngleLeft />}
+          {showCrossIcon ? <img src={close} alt="Close" className="w-6 h-6 object-contain" /> : <FaAngleLeft />}
         </button>}
 
         {!!title ? (
-          <h1 className="flex-1 text-center text-lg font-bold text-white">
+          <h1 className="flex-1 text-center text-sm font-bold text-white">
             {title}
           </h1>
         ) : (
@@ -89,10 +91,10 @@ const GameHeader = memo(
           {!!menuButton && (
             <button
               onClick={onMenuPress}
-              className="flex items-center justify-center w-10 h-10 bg-white 
-              bg-opacity-10 rounded-full text-white text-2xl ml-4"
+              className="text-2xl text-white flex items-center justify-center w-10 h-10 bg-white bg-opacity-10 rounded-xl"
+
             >
-              {showSettingsIcon ? <FaCog /> : <FaEllipsisV />}
+              {showSettingsIcon ? <img src={settings} alt="Settings" className="w-6 h-6 object-contain" /> : <FaEllipsisV />}
             </button>
           )}
         </div>

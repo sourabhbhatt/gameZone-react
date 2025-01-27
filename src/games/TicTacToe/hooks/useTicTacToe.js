@@ -69,7 +69,9 @@ const useTicTacToe = (config, selectedOption, entryFee) => {
       dispatch(updateWallet(balance?.data || 0));
     });
     socket.on("gameUpdate", (updatedGameState) => {
-      console.log("updatedGameState::::", updatedGameState);
+      console.log("Game Update Received:", updatedGameState);
+      console.log("Winning Combination:", updatedGameState.winningCombination);
+      
       setGameState(updatedGameState.board);
       setIsPlayerTurn(updatedGameState.currentPlayer === selectedOption);
       setStatus(getGameSatus(updatedGameState.winner, updatedGameState.playerSymbol));

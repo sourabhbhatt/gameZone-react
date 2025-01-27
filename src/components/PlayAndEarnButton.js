@@ -6,8 +6,8 @@ function PlayAndEarnButton() {
   return (
     <div className="flex justify-center items-center">
       <button
-        className="flex items-center px-6 py-2 bg-gradient-to-r from-pink-500 via-orange-400 to-pink-500 
-      text-white rounded-full text-sm font-semibold shadow-md hover:scale-105 transition-transform"
+        className="flex items-center px-4 py-2 bg-gradient-to-r from-pink-500 via-orange-400 to-pink-500 
+      text-white rounded-full text-sm font-semibold shadow-md border-2 border-[#ffffff50]"
       >
         <img
           src={images.coin}

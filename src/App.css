@@ -99,3 +99,31 @@
   cursor: not-allowed;
   background: #e0e0e0;
 }
+
+
+.full-screen-container {
+  height: var(--app-height, 100vh);
+  max-height: var(--app-height, 100vh);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-top: env(safe-area-inset-top);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-content {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 0.5rem;
+}
+
+.game-content > div {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
