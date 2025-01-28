@@ -77,11 +77,11 @@
 
 .range-slider::-webkit-slider-thumb {
   appearance: none;
-  width: 16px;
-  height: 16px;
-  background: white;
+  width: 18px;
+  height: 18px;
+  background: #C09BFF;
   border-radius: 50%;
-  border: 2px solid var(--slider-fill-color, gray);
+  border: 2px solid var(--slider-fill-color, #C09BFF);
   cursor: pointer;
   position: relative;
 }
@@ -89,9 +89,9 @@
 .range-slider::-moz-range-thumb {
   width: 16px;
   height: 16px;
-  background: white;
+  background: #C09BFF;
   border-radius: 50%;
-  border: 2px solid var(--slider-fill-color, gray);
+  border: 2px solid var(--slider-fill-color, #C09BFF);
   cursor: pointer;
 }
 

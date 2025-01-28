@@ -24,7 +24,8 @@ import { use } from "react";
 const TicTacToeLanding = memo(() => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { initializeSound, playSound, stopSound, updateSound } = useSoundEffects();
+  const { initializeSound, playSound, stopSound, updateSound } =
+    useSoundEffects();
   const walletAmount = useSelector((state) => state.user?.wallet);
 
   const { getBalance, resetGame } = useTicTacToe();
@@ -34,18 +35,23 @@ const TicTacToeLanding = memo(() => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("X");
   const soundSettings = useSelector((state) => state.app.soundSettings) || {};
-  const { musicEnabled = false, musicVolume = 50, } = soundSettings;
+  const { musicEnabled = false, musicVolume = 50 } = soundSettings;
 
   useEffect(() => {
-    initializeSound("gameMusic", gameMusic, { volume: musicVolume / 100, loop: true, });
-    initializeSound("gameStartSound", gameStartSound, { volume: musicVolume / 100 });
+    initializeSound("gameMusic", gameMusic, {
+      volume: musicVolume / 100,
+      loop: true,
+    });
+    initializeSound("gameStartSound", gameStartSound, {
+      volume: musicVolume / 100,
+    });
   }, [document.visibilityState === "visible"]);
 
   useEffect(() => {
     if (musicEnabled) playSound("gameMusic");
     else stopSound("gameMusic");
     return () => stopSound("gameMusic"); // Cleanup on unmount
-  }, [musicEnabled])
+  }, [musicEnabled]);
 
   useEffect(() => {
     updateSound("gameMusic", { volume: musicVolume / 100 });
@@ -57,20 +63,20 @@ const TicTacToeLanding = memo(() => {
 
   useEffect(() => {
     getBalance();
-  }, [])
+  }, []);
 
   useEffect(() => {
-    resetGame(selectedOption)
-  }, [selectedOption])
+    resetGame(selectedOption);
+  }, [selectedOption]);
   const handlePlayClick = () => {
-    setLoading(true)
+    setLoading(true);
     if (musicEnabled) {
       stopSound("gameMusic");
       playSound("gameStartSound");
     }
     setTimeout(() => {
       dispatch(updateWallet(walletAmount - currentFee));
-      setLoading(false)
+      setLoading(false);
       navigate("/tictactoe-game", {
         state: { selectedOption, entryFee: currentFee },
       });
@@ -84,6 +90,7 @@ const TicTacToeLanding = memo(() => {
     >
       {loading && <Loader size={60} speed={0.8} />}
       <GameHeader
+        isGameScreen={false}
         isBackButton={false}
         themeConfig={{
           bg: "#ffffff",

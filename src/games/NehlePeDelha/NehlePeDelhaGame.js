@@ -208,6 +208,7 @@ const NehlePeDelhaGame = () => {
       style={{ backgroundImage: `url(${LobbyBg})`, backgroundSize: "cover" }}
     >
       <GameHeader
+        isGameScreen={true}
         themeConfig={{
           bg: "#4A2574",
           gradientBg: ["#4A2574", "#B277F5"],
@@ -217,7 +218,7 @@ const NehlePeDelhaGame = () => {
           titleColor: "#ffffff",
           headingColor: "#ffffff",
           thumbEnabledColor: "#ffffff",
-          thumbDisabledColor: "#B277F3",
+          thumbDisabledColor: "#D1D5DB",
         }}
         showCrossIcon
         onBack={() => setIsExitModal(true)}
@@ -257,6 +258,8 @@ const NehlePeDelhaGame = () => {
       />
 
       <WinningModal
+        //  isOpen={true}
+        //  winnerName={'You'}
         isOpen={isWinningModalOpen}
         winLossAmount={winLossAmount}
         onClose={() => {

@@ -35,7 +35,7 @@ const TicTacToeGame = memo(() => {
     winningCombination,
     resetGame,
     currentPlayer,
-    isClickBlocked
+    isClickBlocked,
   } = useTicTacToe(ticTacToeGameConfig, selectedOption, entryFee);
 
   useEffect(() => {
@@ -86,6 +86,7 @@ const TicTacToeGame = memo(() => {
       style={{ backgroundImage: `url(${tictactoegameBg})` }}
     >
       <GameHeader
+        isGameScreen={true}
         showCrossIcon
         themeConfig={{
           bg: "#ffffff",
@@ -127,12 +128,15 @@ const TicTacToeGame = memo(() => {
         />
       </div>
 
-      {currentPlayer === selectedOption && <Timer timeLeft={timeLeft} warningTimeStartsFrom={5} />}
+      {currentPlayer === selectedOption && (
+        <Timer timeLeft={timeLeft} warningTimeStartsFrom={5} />
+      )}
 
       {showWinnerModal && (
         <WinnerModal
           winnerDetails={winnerDetails}
-          isPlayerWinner={winnerDetails?.winner === "user"} />
+          isPlayerWinner={winnerDetails?.winner === "user"}
+        />
       )}
 
       {resultModalInfo.visible && (
@@ -141,8 +145,8 @@ const TicTacToeGame = memo(() => {
             winnerDetails?.winner === "user"
               ? "win"
               : winnerDetails?.winner === "bot"
-                ? "lose"
-                : "tie"
+              ? "lose"
+              : "tie"
           }
           winnerDetails={resultModalInfo.winnerDetails}
           resetGame={resetGame}

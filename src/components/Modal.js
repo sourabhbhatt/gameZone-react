@@ -15,7 +15,7 @@ const Modal = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
       <div
         className={`relative rounded-lg shadow-lg transition-transform transform ${
           modalStyles.className || ""
@@ -32,7 +32,7 @@ const Modal = ({
         }}
       >
         {/* Close Button */}
-        <div className="mt-[32px]">
+        <div className="mt-[5px]">
           <button
             onClick={onClose}
             className={`text-gray-600 hover:text-red-500 transition-transform transform hover:scale-110 

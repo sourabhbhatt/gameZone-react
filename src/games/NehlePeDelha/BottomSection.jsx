@@ -19,7 +19,7 @@ const BottomSection = ({
 
   // Helper function for button classes
   const getButtonClasses = (feeValue) =>
-    `flex items-center justify-center px-3 py-2 sm:px-4 sm:py-2 rounded-full shadow-md border-2 h-[34px] ${
+    `flex items-center justify-center px-3 py-2 sm:px-4 sm:py-2 rounded-full border-[1px] h-[34px] ${
       feeValue === currentBetAmount ? " bg-white" : " border-white"
     }`;
 
@@ -103,7 +103,7 @@ const BottomSection = ({
       {/* Reveal Cards Button */}
       <button
         onClick={!disabled ? revealCards : undefined}
-        className={`w-full h-[48px] sm:w-[80%] mt-3 px-4 sm:px-6 py-3 rounded-[12px] sm:rounded-3xl shadow-md transition-all ${
+        className={`w-full h-[48px] sm:w-[80%] mt-3 px-4 py-3 rounded-[12px] transition-all ${
           disabled
             ? "bg-[#E0E0E0] text-[#040402] cursor-not-allowed"
             : "bg-[#EEEEEE] text-[#4A2574] hover:scale-105"

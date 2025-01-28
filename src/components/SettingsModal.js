@@ -1,12 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { IoCloseOutline } from "react-icons/io5";
-import { TbMusic, TbMusicOff } from "react-icons/tb";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  PiSpeakerSimpleHighFill,
-  PiSpeakerSimpleSlashFill,
-} from "react-icons/pi";
 import {
   toggleSound,
   toggleMusic,
@@ -14,6 +9,7 @@ import {
   setMusicVolume,
 } from "../redux/slices/appSlice";
 import "../App.css";
+import { images } from "../assets/images";
 
 const defultThemeConfig = {
   bg: "#5C59F1",
@@ -40,7 +36,7 @@ const SettingsModal = ({
   if (!isOpen) return null;
   return (
     <motion.div
-      className={`fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50`}
+      className={`fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -87,9 +83,15 @@ const SettingsModal = ({
             <div className="flex items-center space-x-3">
               <div className="bg-gray-200 w-8 h-8 flex items-center justify-center rounded-lg">
                 {soundEnabled ? (
-                  <PiSpeakerSimpleHighFill className="text-black text-lg" />
+                  <img
+                    src={images.soundEnabled}
+                    className="text-black text-lg"
+                  />
                 ) : (
-                  <PiSpeakerSimpleSlashFill className="text-gray-500 text-lg" />
+                  <img
+                    src={images.soundDisabled}
+                    className="text-gray-500 text-lg"
+                  />
                 )}
               </div>
               <span
@@ -149,7 +151,7 @@ const SettingsModal = ({
               style={{
                 "--slider-fill-color": soundEnabled
                   ? themeConfig.barColor
-                  : "#CCC7C7",
+                  : "#fff",
                 "--slider-value": `${soundEnabled ? soundVolume : 0}%`,
               }}
               disabled={!soundEnabled}
@@ -171,9 +173,15 @@ const SettingsModal = ({
             <div className="flex items-center space-x-3">
               <div className="bg-gray-200 w-8 h-8 flex items-center justify-center rounded-lg">
                 {musicEnabled ? (
-                  <TbMusic className="text-black text-lg" />
+                  <img
+                    src={images.musicEnabled}
+                    className="text-black text-lg"
+                  />
                 ) : (
-                  <TbMusicOff className="text-gray-500 text-lg" />
+                  <img
+                    src={images.musicDisabled}
+                    className="text-gray-500 text-lg"
+                  />
                 )}
               </div>
               <span
@@ -213,7 +221,7 @@ const SettingsModal = ({
                     musicEnabled ? "translate-x-5" : ""
                   }`}
                   style={{
-                    backgroundColor: soundEnabled
+                    backgroundColor: musicEnabled
                       ? themeConfig.thumbEnabledColor
                       : themeConfig.thumbDisabledColor,
                   }}
@@ -234,7 +242,7 @@ const SettingsModal = ({
               style={{
                 "--slider-fill-color": musicEnabled
                   ? themeConfig.barColor
-                  : "black",
+                  : "#fff",
                 "--slider-value": `${musicEnabled ? musicVolume : 0}%`,
                 cursor: musicEnabled ? "pointer" : "not-allowed",
               }}

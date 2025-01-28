@@ -49,37 +49,37 @@ const WinningModal = ({
     if (winnerName === "You") {
       return (
         <>
-          <h2 className="text-[40px] font-bold font-outfit text-white text-center">
-            🎉 You Won
-          </h2>
-          <p className="text-[20px] font-semibold font-outfit text-white text-center">
-            {renderWinLossMessage}
-          </p>
           <motion.img
             src={trophy}
             alt="Trophy"
             initial="hidden"
             animate="visible"
             variants={trophyAnimation}
-            className="w-[166px] h-[156px] object-contain"
+            className="w-[120px] h-[110px] object-contain"
           />
+          <h2 className="text-[40px] font-bold font-outfit text-white text-center">
+            🎉 You Won
+          </h2>
+          <p className="text-[20px] font-semibold font-outfit text-white text-center">
+            {renderWinLossMessage}
+          </p>
         </>
       );
     }
     return (
       <>
-        <h2 className="text-[40px] font-bold font-outfit text-white  text-center">
-          {winnerName === "Bot" ? "Bot Wins!" : "It's a Tie!"}
-        </h2>
-        <p className="text-[20px] font-semibold font-outfit text-white text-center">
-          {renderWinLossMessage}
-        </p>
         <Lottie
           animationData={winningAnimation}
           loop
           autoplay
           className="w-[166px] h-[156px]"
         />
+        <h2 className="text-[40px] font-bold font-outfit text-white  text-center">
+          {winnerName === "Bot" ? "Bot Wins!" : "It's a Tie!"}
+        </h2>
+        <p className="text-[20px] font-semibold font-outfit text-white text-center">
+          {renderWinLossMessage}
+        </p>
       </>
     );
   };

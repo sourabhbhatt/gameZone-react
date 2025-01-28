@@ -89,6 +89,7 @@ const index = memo(() => {
       >
         <div className="absolute inset-0 bg-black/20" />
         <GameHeader
+          isGameScreen={false}
           className="relative z-10"
           isBackButton={false}
           themeConfig={{
@@ -100,7 +101,7 @@ const index = memo(() => {
             titleColor: "#ffffff",
             headingColor: "#ffffff",
             thumbEnabledColor: "#ffffff",
-            thumbDisabledColor: "#B277F3",
+            thumbDisabledColor: "#D1D5DB",
           }}
         />
       </div>
@@ -120,7 +121,8 @@ const index = memo(() => {
         title="How to play"
         onClose={toggleModal}
         modalStyles={{
-          className: "modal-bottom-sheet bg-gradient-to-b from-[#4A2574] to-[#B277F5]",
+          className:
+            "modal-bottom-sheet bg-gradient-to-b from-[#4A2574] to-[#B277F5]",
           style: {
             backgroundColor: "#f8f9fa",
             width: "100%",

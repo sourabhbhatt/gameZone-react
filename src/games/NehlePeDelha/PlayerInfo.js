@@ -157,7 +157,10 @@ const PlayerInfo = ({
       {amountPlacement === "left" && amountBlock}
       <div className="flex flex-col items-center">
         <div
-          className={`${selectedSize.container} rounded-full border-2 flex mb-1.5 justify-center items-center border-[#cab9c6]/20`}
+          className={`${selectedSize.container} rounded-full border-2 flex mb-1.5 justify-center items-center border-[#968C91]/20`}
+          style={{
+            borderColor: "linear-gradient(to right, #FCEBF3, #968C91)",
+          }}
         >
           {isBot ? (
             <FaRobot

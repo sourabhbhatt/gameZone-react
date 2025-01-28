@@ -83,6 +83,7 @@ const Index = memo(() => {
     >
       {loading && <Loader color={"#615EEE"} size={60} speed={0.8} />}
       <GameHeader
+        isGameScreen={false}
         isBackButton={false}
         themeConfig={{
           bg: "#5C59F1",

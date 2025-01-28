@@ -31,6 +31,7 @@ const GameHeader = memo(
     bgImage = null,
     themeConfig = defultThemeConfig,
     className = "",
+    isGameScreen = false,
   }) => {
     const navigate = useNavigate();
     const [isSettingsOpen, setIsSettingsOpen] = useState(false); // Modal visibility
@@ -69,14 +70,16 @@ const GameHeader = memo(
             className={`text-2xl text-white flex items-center justify-center 
               w-[32px] h-[32px] bg-black bg-opacity-20 rounded-full ${
                 isBackButton ? "rounded-sm" : "rounded-full"
-              }`}
+              }
+                ${isGameScreen ? "bg-white/10" : "bg-[#616161]"}
+              `}
           >
             {showCrossIcon ? <IoCloseOutline /> : <FaAngleLeft />}
           </button>
         )}
 
         {!!title ? (
-          <h1 className="flex-1 text-center tracking-[2px] text-[12px] font-bold font-outfit text-white">
+          <h1 className="flex-1 text-center tracking-[2px] text-[12px] line-height-[16px] ml-[25px] font-bold font-outfit text-white">
             {title}
           </h1>
         ) : (
@@ -85,7 +88,11 @@ const GameHeader = memo(
 
         <div className="flex items-center space-x-3">
           {!title && (
-            <div className="flex items-center px-3 py-1 bg-black bg-opacity-20 rounded-full">
+            <div
+              className={`flex items-center px-3 py-1 rounded-full ${
+                isGameScreen ? "bg-white/10" : "bg-[#0000009E]"
+              }`}
+            >
               <img
                 src={images.coin}
                 alt="Coin"
@@ -99,10 +106,16 @@ const GameHeader = memo(
           {!!menuButton && (
             <button
               onClick={onMenuPress}
-              className="flex items-center justify-center w-[35px] h-[35px] bg-black 
-              bg-opacity-20 rounded-full text-white text-2xl ml-4"
+              className={`flex items-center justify-center w-[35px] h-[35px] 
+                rounded-full text-white text-2xl ml-4 ${
+                  isGameScreen ? "bg-white/10" : "bg-[#0000009E]"
+                }`}
             >
-              {showSettingsIcon ? <FaCog className="w-[18px] h-[18px]" /> : <FaEllipsisV />}
+              {showSettingsIcon ? (
+                <FaCog className="w-[18px] h-[18px]" />
+              ) : (
+                <FaEllipsisV className="w-[18px] h-[18px]" />
+              )}
             </button>
           )}
         </div>

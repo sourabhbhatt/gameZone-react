@@ -4,7 +4,7 @@ import winIcon from "./assets/won.png";
 import lossIcon from "./assets/lose.png";
 import { formatINRLocale } from "../../utils";
 
-const HistoryCard = ({ status, amount }) => {
+const HistoryCard = ({ status, amount, isLastCard = false }) => {
   const isWin = status === "Won" || status === "won";
 
   return (
@@ -41,7 +41,7 @@ const HistoryCard = ({ status, amount }) => {
       </div>
 
       {/* Bottom Separator */}
-      <div className="w-full h-[1px] bg-gray-200/20 mt-4" />
+      {!isLastCard && <div className="w-full h-[1px] bg-gray-200/20 mt-4" />}
     </div>
   );
 };
