@@ -8,6 +8,7 @@ import { images } from "../assets/images";
 import { formatINRLocale } from "../utils";
 const defultThemeConfig = {
   bg: "#5C59F1",
+  gradientBg: ["#4A2574", "#B277F5"],
   switchTogglerEnabledColor: "gray",
   switchTogglerDisabledColor: "gray",
   barColor: "gray",
@@ -75,7 +76,7 @@ const GameHeader = memo(
         )}
 
         {!!title ? (
-          <h1 className="flex-1 text-center tracking-[2px] text-lg font-bold font-outfit text-white">
+          <h1 className="flex-1 text-center tracking-[2px] text-[12px] font-bold font-outfit text-white">
             {title}
           </h1>
         ) : (

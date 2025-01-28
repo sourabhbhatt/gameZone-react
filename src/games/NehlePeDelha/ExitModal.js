@@ -39,7 +39,7 @@ const ExitModal = ({ isOpen, onClose, onConfirm }) => {
           <div className="space-y-4">
             <button
               onClick={onClose}
-              className="w-full py-3 bg-white text-[#4A2574] font-medium font-outfit rounded-xl border border-[#4A2574] hover:bg-[#3A1C5F] transition"
+              className="w-full py-3 bg-white text-[#4A2574] font-medium font-outfit rounded-xl  hover:bg-[#3A1C5F] transition"
               style={{ borderWidth: "1px" }}
             >
               No

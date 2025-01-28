@@ -19,10 +19,8 @@ const BottomSection = ({
 
   // Helper function for button classes
   const getButtonClasses = (feeValue) =>
-    `flex items-center justify-center px-3 py-2 sm:px-4 sm:py-2 rounded-full shadow-md border-2 ${
-      feeValue === currentBetAmount
-        ? "h-[36px] border-green-500 bg-white"
-        : "h-[34px] border-gray-300"
+    `flex items-center justify-center px-3 py-2 sm:px-4 sm:py-2 rounded-full shadow-md border-2 h-[34px] ${
+      feeValue === currentBetAmount ? " bg-white" : " border-white"
     }`;
 
   return (
@@ -36,7 +34,7 @@ const BottomSection = ({
       {/* Header Section */}
       <div className="flex justify-between items-center mb-3 mt-3">
         <span
-          className="text-white text-[12px] font-medium font-outfit"
+          className="text-white text-[12px] tracking-[2px] font-medium font-outfit"
           style={{ textTransform: "capitalize" }}
         >
           {"BET DETAILS"}
@@ -48,27 +46,6 @@ const BottomSection = ({
           View bet history
         </span>
       </div>
-
-      {/* Available Coins Section */}
-      <div className="flex items-center mt-4">
-        <p
-          className="text-[12px] font-outfit sm:text-xl font-semibold text-white"
-          style={{ letterSpacing: "1px", textTransform: "capitalize" }}
-        >
-          {`AVAILABLE COINS TO PLAY`}
-        </p>
-        <img
-          src={coinImage}
-          alt="Coin"
-          className="w-[20px] sm:w-5 h-[20px] sm:h-5 mx-1"
-        />
-        <p className="text-[15px] font-outfit sm:text-xl font-semibold text-white">
-          {formatINRLocale(playingBetAmount)}
-        </p>
-      </div>
-
-      {/* Separator Line */}
-      <hr className="my-4 border-t border-white/30" />
 
       {/* Title Section */}
       <p className="text-[16px] font-outfit sm:text-xl font-bold text-white mb-4">
@@ -93,13 +70,34 @@ const BottomSection = ({
                 className={`${
                   fee?.value === currentBetAmount ? "text-black" : "text-white"
                 } 
-               text-sm sm:text-base font-medium`}
+               text-[18px] font-outfit font-semibold`}
               >
                 {formatINRLocale(fee?.value)}
               </span>
             </button>
           ) : null
         )}
+      </div>
+
+      {/* Separator Line */}
+      <hr className="my-4 border-t border-white/30" />
+
+      {/* Available Coins Section */}
+      <div className="flex items-center mt-4">
+        <p
+          className="text-[12px] font-outfit sm:text-xl font-semibold text-white"
+          style={{ letterSpacing: "1px", textTransform: "capitalize" }}
+        >
+          {`AVAILABLE COINS TO PLAY`}
+        </p>
+        <img
+          src={coinImage}
+          alt="Coin"
+          className="w-[20px] sm:w-5 h-[20px] sm:h-5 mx-1"
+        />
+        <p className="text-[15px] font-outfit sm:text-xl font-semibold text-white">
+          {formatINRLocale(playingBetAmount)}
+        </p>
       </div>
 
       {/* Reveal Cards Button */}

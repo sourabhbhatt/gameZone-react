@@ -201,7 +201,6 @@ const NehlePeDelhaGame = () => {
     }
   }, [getHistory]);
 
-
   return (
     <div
       className="relative bg-[#0F0529] flex flex-col items-center justify-between 
@@ -210,15 +209,15 @@ const NehlePeDelhaGame = () => {
     >
       <GameHeader
         themeConfig={{
-          bg: "#D1D5DB",
-          switchTogglerEnabledColor: "#2E1A4D",
+          bg: "#4A2574",
+          gradientBg: ["#4A2574", "#B277F5"],
+          switchTogglerEnabledColor: "#B277F5",
           switchTogglerDisabledColor: "#ffffff",
-          barColor: "#7A7A7A",
-          // barColor: "#CCC7C7",
-          titleColor: "#000000",
-          headingColor: "#000000",
+          barColor: "#C09BFF",
+          titleColor: "#ffffff",
+          headingColor: "#ffffff",
           thumbEnabledColor: "#ffffff",
-          thumbDisabledColor: "#D1D5DB",
+          thumbDisabledColor: "#B277F3",
         }}
         showCrossIcon
         onBack={() => setIsExitModal(true)}
@@ -263,9 +262,6 @@ const NehlePeDelhaGame = () => {
         onClose={() => {
           setIsWinningModalOpen(false);
           setCardsRevealed(false);
-        }}
-        onPlayAgain={() => {
-          setIsWinningModalOpen(false);
           setWinningPlayer(null);
           startGame();
         }}

@@ -17,6 +17,7 @@ import "../App.css";
 
 const defultThemeConfig = {
   bg: "#5C59F1",
+  gradientBg: [],
   switchTogglerEnabledColor: "gray",
   switchTogglerDisabledColor: "gray",
   barColor: "gray",
@@ -51,7 +52,11 @@ const SettingsModal = ({
         transition={{ type: "spring", stiffness: 200, damping: 20 }}
         className="relative w-80 p-6 rounded-2xl shadow-lg"
         style={{
-          background: `${themeConfig?.bg || "#ffffff"}`,
+          background:
+            Array.isArray(themeConfig?.gradientBg) &&
+            themeConfig?.gradientBg.length > 0
+              ? `linear-gradient(${themeConfig.gradientBg.join(", ")})`
+              : themeConfig?.bg || "#ffffff",
         }}
       >
         {/* Close Button */}
@@ -60,7 +65,7 @@ const SettingsModal = ({
           className={`absolute top-[27px] left-4 text-xl hover:text-black`}
           style={{ color: themeConfig.headingColor }}
         >
-          <IoCloseOutline className="h-[26px] w-[26px] text-black" />
+          <IoCloseOutline className="h-[26px] w-[26px]" />
         </button>
 
         {/* Modal Title */}
@@ -245,4 +250,4 @@ const SettingsModal = ({
   );
 };
 
-export default React.memo(SettingsModal);
+export default SettingsModal;

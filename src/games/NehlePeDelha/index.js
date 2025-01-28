@@ -92,12 +92,15 @@ const index = memo(() => {
           className="relative z-10"
           isBackButton={false}
           themeConfig={{
-            bg: "#ffffff",
-            switchTogglerEnabledColor: "#2E1A4D",
-            switchTogglerDisabledColor: "gray",
-            barColor: "#7A7A7A",
-            titleColor: "#000000",
-            headingColor: "#000000",
+            bg: "#4A2574",
+            gradientBg: ["#4A2574", "#B277F5"],
+            switchTogglerEnabledColor: "#B277F5",
+            switchTogglerDisabledColor: "#ffffff",
+            barColor: "#C09BFF",
+            titleColor: "#ffffff",
+            headingColor: "#ffffff",
+            thumbEnabledColor: "#ffffff",
+            thumbDisabledColor: "#B277F3",
           }}
         />
       </div>
