@@ -14,6 +14,13 @@ const PlayerInfo = ({
   size = "small", // 'small', 'medium', 'large'
   isWinner = false,
   isLooser = false,
+  playerThemeConfig = {
+    botGradient: ["#705c85", "#FCEBF3"],
+    userGradient: ["#705c85", "#FCEBF3"],
+    bg: "#FCEBF3",
+    botTextColor: "#ffffff",
+    userTextColor: "#ffffff",
+  },
 }) => {
   const [displayCoins, setDisplayCoins] = useState(false);
   const [animatedCoins, setAnimatedCoins] = useState(coinAmount);
@@ -46,6 +53,7 @@ const PlayerInfo = ({
     small: {
       container: "w-10 h-10",
       icon: "w-8 h-8 text-xl",
+      boticon: "w-[20px] h-[20px] text-xl",
       amount: "text-sm",
       name: "text-xs mt-[-6px] px-1.5",
     },
@@ -149,16 +157,15 @@ const PlayerInfo = ({
       {amountPlacement === "left" && amountBlock}
       <div className="flex flex-col items-center">
         <div
-          className={`${
-            selectedSize.container
-          } rounded-full border-2 flex justify-center items-center ${
-            isActive ? "border-green-500" : "border-gray-600"
-          }`}
+          className={`${selectedSize.container} rounded-full border-2 flex mb-1.5 justify-center items-center border-[#968C91]/20`}
+          style={{
+            borderColor: "linear-gradient(to right, #FCEBF3, #968C91)",
+          }}
         >
           {isBot ? (
             <FaRobot
               className={`${isActive ? "text-green-500" : "text-green-200"} ${
-                selectedSize.icon
+                selectedSize.boticon
               }`}
             />
           ) : (
@@ -170,15 +177,18 @@ const PlayerInfo = ({
           )}
         </div>
         <div
-          className={`px-3 ${
-            selectedSize.name
-          } rounded-full bg-gradient-to-r from-black via-gray-800 to-black border-2 ${
-            isActive ? "border-green-500" : "border-gray-600"
-          }`}
+          className={`px-3 ${selectedSize.name} rounded-full`}
+          style={{
+            backgroundImage: `url(${images?.nameContainer || ""})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
         >
           <span
-            className={`font-outfit font-semibold ${
-              isActive ? "text-green-400" : "text-gray-400"
+            className={`font-outfit font-bold text-[10px] ${
+              isBot
+                ? playerThemeConfig?.botTextColor || "text-gray-500"
+                : playerThemeConfig?.userTextColor || "text-white"
             }`}
           >
             {name}

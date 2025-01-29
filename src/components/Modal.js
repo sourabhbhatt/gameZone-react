@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
+import { images } from "../assets/images";
 
 const Modal = ({
   isOpen,
@@ -12,13 +13,33 @@ const Modal = ({
   closeButtonStyles = {},
   bgImage,
 }) => {
+
+  // Prevent scrolling when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, [isOpen]);
+
+
   if (!isOpen) return null;
 
   return (
+<<<<<<< HEAD
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 text-white">
+=======
+    <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
+>>>>>>> release-v1-sourabh
       <div
-        className={`relative rounded-lg shadow-lg transition-transform transform ${modalStyles.className || ""
-          }`}
+        className={`relative rounded-lg shadow-lg transition-transform transform ${
+          modalStyles.className || ""
+        }`}
         style={{
           backgroundColor: modalStyles.backgroundColor || "white",
           backgroundImage: `url(${bgImage})`,
@@ -33,10 +54,17 @@ const Modal = ({
         }}
       >
         {/* Close Button */}
+<<<<<<< HEAD
         <div className="flex justify-between items-center text-white pb-5">
           <button
             onClick={onClose}
             className={`absolute top-5 left-4 text-white hover:text-red-500 transition-transform transform hover:scale-110 
+=======
+        <div className="mt-[5px]">
+          <button
+            onClick={onClose}
+            className={`text-gray-600 hover:text-red-500 transition-transform transform hover:scale-110 
+>>>>>>> release-v1-sourabh
               ${closeButtonStyles.className || ""}`}
             style={{
               fontSize: closeButtonStyles.fontSize || "1.5rem",
@@ -45,20 +73,23 @@ const Modal = ({
             }}
             aria-label="Close"
           >
-            <FaTimes />
+            <img src={images.cross} className="h-[24px] w-[24px]" />
           </button>
-        </div>
-
-        {/* Title */}
-        {title && (
-          <h2
-            className={`text-xl font-bold mt-6 text-left ${titleStyles.className || ""
+          {/* Title */}
+          {title && (
+            <h2
+              className={`text-[24px] font-outfit font-semibold mt-1 text-left ${
+                titleStyles.className || ""
               }`}
-            style={{ color: titleStyles.color || "#333", ...titleStyles.style }}
-          >
-            {title}
-          </h2>
-        )}
+              style={{
+                color: titleStyles.color || "#333",
+                ...titleStyles.style,
+              }}
+            >
+              {title}
+            </h2>
+          )}
+        </div>
 
         {/* Modal Content */}
         <div

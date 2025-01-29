@@ -136,6 +136,7 @@ export default function Minesweeper() {
     >
       {loading && <Loader color={"#615EEE"} size={60} speed={0.8} />}
       <GameHeader
+        isGameScreen={true}
         themeConfig={{
           bg: "#5C59F1",
           switchTogglerEnabledColor: "gray",

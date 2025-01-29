@@ -1,57 +1,54 @@
 import React from "react";
 import PropTypes from "prop-types";
+import winIcon from "./assets/won.png";
+import lossIcon from "./assets/lose.png";
+import { formatINRLocale } from "../../utils";
 
-const HistoryCard = ({ status, amount, betDetails }) => {
+const HistoryCard = ({ status, amount, isLastCard = false }) => {
   const isWin = status === "Won" || status === "won";
 
   return (
-    <div
-      className={`p-4 rounded-[6px] shadow-md relative ${
-        isWin
-          ? "bg-gradient-to-r from-green-100 to-green-50"
-          : "bg-gradient-to-r from-red-100 to-red-50"
-      }`}
-    >
-      {/* Status Badge */}
+    <div className="flex flex-col">
+      {/* Top Section */}
       <div className="flex justify-between items-center">
-        <span
-          className={`px-3 py-1 rounded-[20px] text-sm font-outfit capitalize font-semibold border ${
-            isWin
-              ? "text-green-500 border-[#209C20] bg-green-50"
-              : "text-red-500 border-[#9C2022] bg-red-50"
-          }`}
-          aria-label={isWin ? "Win status" : "Loss status"} // Accessibility improvement
-        >
-          {status}
-        </span>
+        {/* Left: Icon and Text */}
+        <div className="flex items-center space-x-3">
+          <img
+            src={isWin ? winIcon : lossIcon}
+            alt={isWin ? "Win Icon" : "Loss Icon"}
+            className="w-[40px] h-[40px]"
+          />
+          <span className="text-[14px] font-outfit font-semibold capitalize">
+            {isWin ? "Win" : "Loss"}
+          </span>
+        </div>
+
+        {/* Right: Coin Icon and Amount */}
+        <div className="flex items-center space-x-1 space-y-1">
+          <img
+            src={require("../../assets/coin.png")}
+            alt="Coin"
+            className="w-[20px] h-[20px]"
+          />
+          <span
+            className={`${"text-white"} text-[14px] font-outfit font-semibold`}
+          >
+            {isWin
+              ? `+${formatINRLocale(amount)}`
+              : `-${formatINRLocale(amount)}`}
+          </span>
+        </div>
       </div>
 
-      {/* Amount Section */}
-      <div className="flex items-center mt-3">
-        <span className="font-medium font-outfit text-[#040404] mr-1">
-          {isWin ? "You have earned" : "You have lost"}
-        </span>
-        <img
-          src={require("../../assets/coin.png")}
-          alt="Coin"
-          className="w-5 h-5 mr-2"
-        />
-        <span
-          className={`${
-            isWin ? "text-green-500" : "text-red-500"
-          } font-bold font-outfit`}
-        >
-          {amount}
-        </span>
-      </div>
+      {/* Bottom Separator */}
+      {!isLastCard && <div className="w-full h-[1px] bg-gray-200/20 mt-4" />}
     </div>
   );
 };
 
 HistoryCard.propTypes = {
-  status: PropTypes.string,
+  status: PropTypes.string.isRequired,
   amount: PropTypes.number.isRequired,
-  betDetails: PropTypes.string.isRequired,
 };
 
 export default HistoryCard;

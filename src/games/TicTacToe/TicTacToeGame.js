@@ -38,7 +38,7 @@ const TicTacToeGame = memo(() => {
     winningCombination,
     resetGame,
     currentPlayer,
-    isClickBlocked
+    isClickBlocked,
   } = useTicTacToe(ticTacToeGameConfig, selectedOption, entryFee);
 
   useEffect(() => {
@@ -102,9 +102,24 @@ const TicTacToeGame = memo(() => {
       }}
     >
       <GameHeader
+<<<<<<< HEAD
         title=""
         showBackButton={true}
         className="bg-transparent"
+=======
+        isGameScreen={true}
+        showCrossIcon
+        themeConfig={{
+          bg: "#ffffff",
+          switchTogglerEnabledColor: "#34eb49",
+          switchTogglerDisabledColor: "gray",
+          barColor: "#7A7A7A",
+          titleColor: "#000000",
+          headingColor: "#000000",
+        }}
+        showSettingsIcon
+        title="Tic Tac Toe"
+>>>>>>> release-v1-sourabh
       />
 
       <div className="flex-1 flex flex-col items-center justify-between overflow-hidden py-4">
@@ -147,10 +162,28 @@ const TicTacToeGame = memo(() => {
         </div>
       </div>
 
+<<<<<<< HEAD
+=======
+      <div className="mt-6">
+        <TicTacToeBoard
+          gameState={gameState}
+          winningCombination={winningCombination}
+          onMove={(index) => {
+            if (!isClickBlocked) handleMove(index);
+          }}
+        />
+      </div>
+
+      {currentPlayer === selectedOption && (
+        <Timer timeLeft={timeLeft} warningTimeStartsFrom={5} />
+      )}
+
+>>>>>>> release-v1-sourabh
       {showWinnerModal && (
         <WinnerModal
           winnerDetails={winnerDetails}
-          isPlayerWinner={winnerDetails?.winner === "user"} />
+          isPlayerWinner={winnerDetails?.winner === "user"}
+        />
       )}
 
       {resultModalInfo.visible && (
@@ -159,8 +192,8 @@ const TicTacToeGame = memo(() => {
             winnerDetails?.winner === "user"
               ? "win"
               : winnerDetails?.winner === "bot"
-                ? "lose"
-                : "tie"
+              ? "lose"
+              : "tie"
           }
           winnerDetails={resultModalInfo.winnerDetails}
           resetGame={resetGame}

@@ -201,7 +201,6 @@ const NehlePeDelhaGame = () => {
     }
   }, [getHistory]);
 
-
   return (
     <div
       className="relative bg-[#0F0529] flex flex-col items-center justify-between 
@@ -209,18 +208,22 @@ const NehlePeDelhaGame = () => {
       style={{ backgroundImage: `url(${LobbyBg})`, backgroundSize: "cover" }}
     >
       <GameHeader
+        isGameScreen={true}
         themeConfig={{
-          bg: "#ffffff",
-          switchTogglerEnabledColor: "#2E1A4D",
-          switchTogglerDisabledColor: "gray",
-          barColor: "#7A7A7A",
-          titleColor: "#000000",
-          headingColor: "#000000",
+          bg: "#4A2574",
+          gradientBg: ["#4A2574", "#B277F5"],
+          switchTogglerEnabledColor: "#B277F5",
+          switchTogglerDisabledColor: "#ffffff",
+          barColor: "#C09BFF",
+          titleColor: "#ffffff",
+          headingColor: "#ffffff",
+          thumbEnabledColor: "#ffffff",
+          thumbDisabledColor: "#D1D5DB",
         }}
         showCrossIcon
         onBack={() => setIsExitModal(true)}
         showSettingsIcon
-        title="Nehle Pe Dehla"
+        title="NEHLE PE DEHLA"
       />
 
       {/* <PlayerInfoHeader currentBetAmount={currentBetAmount} /> */}
@@ -255,14 +258,13 @@ const NehlePeDelhaGame = () => {
       />
 
       <WinningModal
+        //  isOpen={true}
+        //  winnerName={'You'}
         isOpen={isWinningModalOpen}
         winLossAmount={winLossAmount}
         onClose={() => {
           setIsWinningModalOpen(false);
           setCardsRevealed(false);
-        }}
-        onPlayAgain={() => {
-          setIsWinningModalOpen(false);
           setWinningPlayer(null);
           startGame();
         }}

@@ -1,10 +1,22 @@
 import Lottie from "lottie-react";
 import PropTypes from "prop-types";
-import React, { memo } from "react";
+import React, { memo, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import trophy from "./assets/Trophy.png";
-import { FaTimes } from "react-icons/fa";
 import winningAnimation from "./assets/nehlePeDehlaAnimation.json";
+
+const trophyAnimation = {
+  hidden: { scale: 0, opacity: 0 },
+  visible: {
+    scale: 1,
+    opacity: 1,
+    transition: {
+      type: "spring",
+      stiffness: 120,
+      damping: 8,
+    },
+  },
+};
 
 const WinningModal = ({
   isOpen,
@@ -13,97 +25,69 @@ const WinningModal = ({
   onClose = () => {},
   winLossAmount = 0,
 }) => {
-  if (!isOpen) return null;
+  useEffect(() => {
+    if (isOpen) {
+      const timer = setTimeout(() => {
+        onClose();
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, onClose]);
 
-  const trophyAnimation = {
-    hidden: { scale: 0, opacity: 0 },
-    visible: {
-      scale: 1,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 120,
-        damping: 8,
-        duration: 0.5,
-      },
-    },
-  };
-
-  const renderWinLossMessage = () => {
+  const renderWinLossMessage = useMemo(() => {
     if (winnerName === "You") {
       return `Coins Earned ₹${winLossAmount}!`;
     } else if (winnerName === "Bot") {
       return `You lost ₹${Math.abs(winLossAmount)}.`;
-    } else {
-      return "No amount was won or lost.";
     }
+    return "No amount was won or lost.";
+  }, [winnerName, winLossAmount]);
+
+  if (!isOpen) return null;
+
+  const renderContent = () => {
+    if (winnerName === "You") {
+      return (
+        <>
+          <motion.img
+            src={trophy}
+            alt="Trophy"
+            initial="hidden"
+            animate="visible"
+            variants={trophyAnimation}
+            className="w-[120px] h-[110px] object-contain"
+          />
+          <h2 className="text-[40px] font-bold font-outfit text-white text-center">
+            🎉 You Won
+          </h2>
+          <p className="text-[20px] font-semibold font-outfit text-white text-center">
+            {renderWinLossMessage}
+          </p>
+        </>
+      );
+    }
+    return (
+      <>
+        <Lottie
+          animationData={winningAnimation}
+          loop
+          autoplay
+          className="w-[166px] h-[156px]"
+        />
+        <h2 className="text-[40px] font-bold font-outfit text-white  text-center">
+          {winnerName === "Bot" ? "Bot Wins!" : "It's a Tie!"}
+        </h2>
+        <p className="text-[20px] font-semibold font-outfit text-white text-center">
+          {renderWinLossMessage}
+        </p>
+      </>
+    );
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-70 z-50">
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 text-2xl text-black p-2 rounded-full bg-gray-200 transition-all z-50"
-        aria-label="Close"
-      >
-        <FaTimes />
-      </button>
-      <div className="flex flex-col items-center justify-center p-8 w-[90%] max-w-md  rounded-lg">
-        {winnerName === "You" && (
-          <>
-            <h2 className="text-3xl font-bold font-outfit text-gray-800 mb-4 text-center">
-              🎉 You Won
-            </h2>
-            <motion.img
-              src={trophy}
-              alt="Trophy"
-              initial="hidden"
-              animate="visible"
-              variants={trophyAnimation}
-              className="w-48 h-48 object-contain"
-            />
-          </>
-        )}
-
-        {winnerName === "Bot" && (
-          <>
-            <h2 className="text-3xl font-outfit font-bold text-gray-800 mb-4 text-center">
-              Bot Wins!
-            </h2>
-            <Lottie
-              animationData={winningAnimation}
-              loop
-              autoplay
-              className="w-48 h-48"
-            />
-          </>
-        )}
-
-        {winnerName === "It's a Tie!" && (
-          <>
-            <h2 className="text-3xl font-outfit  font-bold text-gray-800 mb-4 text-center">
-              It's a Tie!
-            </h2>
-            <Lottie
-              animationData={winningAnimation}
-              loop
-              autoplay
-              className="w-48 h-48"
-            />
-          </>
-        )}
-
-        {/* Win/Loss Amount Message */}
-        <p className="text-[20px] font-semibold font-outfit text-gray-700 mt-4 text-center">
-          {renderWinLossMessage()}
-        </p>
-
-        <button
-          onClick={onPlayAgain}
-          className="mt-6 px-6 py-2 bg-purple-600 text-white text-lg font-semibold rounded-full hover:bg-purple-700 transition-all"
-        >
-          Play Again
-        </button>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
+      <div className="flex flex-col items-center justify-center p-8 w-[90%] max-w-md rounded-lg">
+        {renderContent()}
       </div>
     </div>
   );
@@ -111,9 +95,9 @@ const WinningModal = ({
 
 WinningModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  onPlayAgain: PropTypes.func.isRequired,
+  onPlayAgain: PropTypes.func,
   winnerName: PropTypes.string.isRequired,
-  onClose: PropTypes.func.isRequired,
+  onClose: PropTypes.func,
   winLossAmount: PropTypes.number,
 };
 

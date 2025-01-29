@@ -1,5 +1,6 @@
 {
   "files": {
+<<<<<<< HEAD
     "main.css": "/static/css/main.e40a1b44.css",
     "main.js": "/static/js/main.676d9e47.js",
     "static/js/26.626cd440.chunk.js": "/static/js/26.626cd440.chunk.js",
@@ -25,18 +26,54 @@
     "static/js/402.6c56d087.chunk.js": "/static/js/402.6c56d087.chunk.js",
     "static/js/453.92d8d202.chunk.js": "/static/js/453.92d8d202.chunk.js",
     "static/js/337.aaf64b69.chunk.js": "/static/js/337.aaf64b69.chunk.js",
+=======
+    "main.css": "/static/css/main.3b20aa39.css",
+    "main.js": "/static/js/main.5dac8271.js",
+    "static/js/26.f16f9467.chunk.js": "/static/js/26.f16f9467.chunk.js",
+    "static/js/982.8000c049.chunk.js": "/static/js/982.8000c049.chunk.js",
+    "static/js/299.46ec3d1d.chunk.js": "/static/js/299.46ec3d1d.chunk.js",
+    "static/css/981.0e7676bb.chunk.css": "/static/css/981.0e7676bb.chunk.css",
+    "static/js/981.015397e7.chunk.js": "/static/js/981.015397e7.chunk.js",
+    "static/css/387.0e7676bb.chunk.css": "/static/css/387.0e7676bb.chunk.css",
+    "static/js/387.e7c7eb10.chunk.js": "/static/js/387.e7c7eb10.chunk.js",
+    "static/css/930.1114888a.chunk.css": "/static/css/930.1114888a.chunk.css",
+    "static/js/930.4ef39a44.chunk.js": "/static/js/930.4ef39a44.chunk.js",
+    "static/css/319.0e7676bb.chunk.css": "/static/css/319.0e7676bb.chunk.css",
+    "static/js/319.eccd21fa.chunk.js": "/static/js/319.eccd21fa.chunk.js",
+    "static/css/51.0e7676bb.chunk.css": "/static/css/51.0e7676bb.chunk.css",
+    "static/js/51.22d53947.chunk.js": "/static/js/51.22d53947.chunk.js",
+    "static/css/491.0e7676bb.chunk.css": "/static/css/491.0e7676bb.chunk.css",
+    "static/js/491.d5b72d8f.chunk.js": "/static/js/491.d5b72d8f.chunk.js",
+    "static/css/578.0e7676bb.chunk.css": "/static/css/578.0e7676bb.chunk.css",
+    "static/js/578.01dd46fa.chunk.js": "/static/js/578.01dd46fa.chunk.js",
+    "static/js/853.9c916fe0.chunk.js": "/static/js/853.9c916fe0.chunk.js",
+    "static/js/241.9fabc03e.chunk.js": "/static/js/241.9fabc03e.chunk.js",
+    "static/js/505.89dcec93.chunk.js": "/static/js/505.89dcec93.chunk.js",
+    "static/js/402.1a8fd1e1.chunk.js": "/static/js/402.1a8fd1e1.chunk.js",
+    "static/js/453.92d8d202.chunk.js": "/static/js/453.92d8d202.chunk.js",
+    "static/js/422.5edf383a.chunk.js": "/static/js/422.5edf383a.chunk.js",
+>>>>>>> release-v1-sourabh
     "static/js/104.2be514ac.chunk.js": "/static/js/104.2be514ac.chunk.js",
     "static/js/750.bbf67c61.chunk.js": "/static/js/750.bbf67c61.chunk.js",
-    "static/js/90.038a5da8.chunk.js": "/static/js/90.038a5da8.chunk.js",
+    "static/js/90.21bf18fe.chunk.js": "/static/js/90.21bf18fe.chunk.js",
     "static/js/833.d0bd1171.chunk.js": "/static/js/833.d0bd1171.chunk.js",
+<<<<<<< HEAD
     "static/js/464.10dba234.chunk.js": "/static/js/464.10dba234.chunk.js",
     "static/js/394.4c39a191.chunk.js": "/static/js/394.4c39a191.chunk.js",
     "static/js/804.05d77606.chunk.js": "/static/js/804.05d77606.chunk.js",
     "static/js/512.1dc75c75.chunk.js": "/static/js/512.1dc75c75.chunk.js",
+=======
+    "static/js/804.05d77606.chunk.js": "/static/js/804.05d77606.chunk.js",
+    "static/js/698.092066fd.chunk.js": "/static/js/698.092066fd.chunk.js",
+>>>>>>> release-v1-sourabh
     "static/media/LobbyBg.png": "/static/media/LobbyBg.09e59160040b8275c474.png",
     "static/media/tictactoeLanding.png": "/static/media/tictactoeLanding.78e759d3b9fa985f9b9a.png",
     "static/media/game-music-loop.mp3": "/static/media/game-music-loop.45b6eb5e231682a1d39a.mp3",
     "static/media/cardBottomBg.png": "/static/media/cardBottomBg.5170c0fdb16d945a7e85.png",
+<<<<<<< HEAD
+=======
+    "static/media/tictactoegameBg.png": "/static/media/tictactoegameBg.eae25272ce0e1bc7a847.png",
+>>>>>>> release-v1-sourabh
     "static/media/gameBg.png": "/static/media/gameBg.6a175cc1534418023896.png",
     "static/media/landingCover.png": "/static/media/landingCover.958a04c706cc7fd56d32.png",
     "static/media/cardsBg.png": "/static/media/cardsBg.83f960d8fe450f152afb.png",
@@ -59,6 +96,7 @@
     "static/media/Suit=Clubs, Number=King.png": "/static/media/Suit=Clubs, Number=King.50aa8680b2c236fb094b.png",
     "static/media/landingBg.png": "/static/media/landingBg.6151ae424e98a016cd85.png",
     "static/media/nehlePeDelha.webp": "/static/media/nehlePeDelha.40d6f070d7c3e55fbdb1.webp",
+<<<<<<< HEAD
     "static/media/Cross.png": "/static/media/Cross.57e4375e6529af15faae.png",
     "static/media/BetDetailsSection.png": "/static/media/BetDetailsSection.c483137833145c594e6b.png",
     "static/media/winScreen.png": "/static/media/winScreen.7d929fbceeac0a1958ed.png",
@@ -66,6 +104,11 @@
     "static/media/cardBack.png": "/static/media/cardBack.192c5722afd52ca020e6.png",
     "static/media/badgetictactoe.png": "/static/media/badgetictactoe.ad4e45a7b4694a19f3da.png",
     "static/media/bottom-bg.png": "/static/media/bottom-bg.0461202309c4bbe962ef.png",
+=======
+    "static/media/BetDetailsSection.png": "/static/media/BetDetailsSection.c483137833145c594e6b.png",
+    "static/media/winScreen.png": "/static/media/winScreen.7d929fbceeac0a1958ed.png",
+    "static/media/coinsEarned.mp3": "/static/media/coinsEarned.d9d2b4e095f381ebaca9.mp3",
+>>>>>>> release-v1-sourabh
     "static/media/tic-tac-toe.jpg": "/static/media/tic-tac-toe.057a8c7ebb218df88c7e.jpg",
     "static/media/SuccessTrophy.png": "/static/media/SuccessTrophy.a8acdba9c75b5096ba79.png",
     "static/media/tictactoeBgGame.png": "/static/media/tictactoeBgGame.4b4bee572f7f1ba22ad8.png",
@@ -75,12 +118,17 @@
     "static/media/success.mp3": "/static/media/success.fd2c2fea27379cbc44da.mp3",
     "static/media/click.mp3": "/static/media/click.26bdd2961d63849e0741.mp3",
     "static/media/playAndEarnBtn.png": "/static/media/playAndEarnBtn.4fd78f7917488e2a1cf3.png",
+<<<<<<< HEAD
+=======
+    "static/media/playAndEarn.png": "/static/media/playAndEarn.a0941a3913deed713cdd.png",
+>>>>>>> release-v1-sourabh
     "static/media/lobbyHeader.png": "/static/media/lobbyHeader.71470a3aa0eeba827db5.png",
     "static/media/game-start.mp3": "/static/media/game-start.31f371aa54d6099a48e0.mp3",
     "static/media/failureEmoji.png": "/static/media/failureEmoji.039b92cb3233d20c7098.png",
     "static/media/coin.png": "/static/media/coin.58bdc7818f1fdfcaaa27.png",
     "static/media/diamond.png": "/static/media/diamond.1e4c7d2e36296b2b7f45.png",
     "static/media/explosion.mpeg": "/static/media/explosion.a8f413841a2ca2a390f5.mpeg",
+    "static/media/cardBack.png": "/static/media/cardBack.a4e64d2d27e8ebd39ae9.png",
     "static/media/typing.jpg": "/static/media/typing.a2d528a013632bd1a9e3.jpg",
     "static/media/Suit=Clubs, Number=10.png": "/static/media/Suit=Clubs, Number=10.f16a41107eadf5995e29.png",
     "static/media/click.wav": "/static/media/click.91940e3f5c0dacec1c6c.wav",
@@ -127,6 +175,7 @@
     "static/media/Suit=Spades, Number=Ace.png": "/static/media/Suit=Spades, Number=Ace.e294b0a1d96bc39235c8.png",
     "static/media/Suit=Hearts, Number=Ace.png": "/static/media/Suit=Hearts, Number=Ace.dd5b6255ffb7512a5f4b.png",
     "static/media/Suit=Diamonds, Number=Ace.png": "/static/media/Suit=Diamonds, Number=Ace.88e3129a8d364b50dbc0.png",
+<<<<<<< HEAD
     "static/media/settings.png": "/static/media/settings.52f25a1fd8f521605acf.png",
     "static/media/flip.mp3": "/static/media/flip.75ea415e95039034a512.mp3",
     "index.html": "/index.html",
@@ -155,10 +204,42 @@
     "402.6c56d087.chunk.js.map": "/static/js/402.6c56d087.chunk.js.map",
     "453.92d8d202.chunk.js.map": "/static/js/453.92d8d202.chunk.js.map",
     "337.aaf64b69.chunk.js.map": "/static/js/337.aaf64b69.chunk.js.map",
+=======
+    "static/media/won.png": "/static/media/won.1ca31e7c3b598e6c6704.png",
+    "static/media/lose.png": "/static/media/lose.fc1b8d53d7d60308724f.png",
+    "static/media/flip.mp3": "/static/media/flip.75ea415e95039034a512.mp3",
+    "index.html": "/index.html",
+    "main.3b20aa39.css.map": "/static/css/main.3b20aa39.css.map",
+    "main.5dac8271.js.map": "/static/js/main.5dac8271.js.map",
+    "26.f16f9467.chunk.js.map": "/static/js/26.f16f9467.chunk.js.map",
+    "982.8000c049.chunk.js.map": "/static/js/982.8000c049.chunk.js.map",
+    "299.46ec3d1d.chunk.js.map": "/static/js/299.46ec3d1d.chunk.js.map",
+    "981.0e7676bb.chunk.css.map": "/static/css/981.0e7676bb.chunk.css.map",
+    "981.015397e7.chunk.js.map": "/static/js/981.015397e7.chunk.js.map",
+    "387.0e7676bb.chunk.css.map": "/static/css/387.0e7676bb.chunk.css.map",
+    "387.e7c7eb10.chunk.js.map": "/static/js/387.e7c7eb10.chunk.js.map",
+    "930.1114888a.chunk.css.map": "/static/css/930.1114888a.chunk.css.map",
+    "930.4ef39a44.chunk.js.map": "/static/js/930.4ef39a44.chunk.js.map",
+    "319.0e7676bb.chunk.css.map": "/static/css/319.0e7676bb.chunk.css.map",
+    "319.eccd21fa.chunk.js.map": "/static/js/319.eccd21fa.chunk.js.map",
+    "51.0e7676bb.chunk.css.map": "/static/css/51.0e7676bb.chunk.css.map",
+    "51.22d53947.chunk.js.map": "/static/js/51.22d53947.chunk.js.map",
+    "491.0e7676bb.chunk.css.map": "/static/css/491.0e7676bb.chunk.css.map",
+    "491.d5b72d8f.chunk.js.map": "/static/js/491.d5b72d8f.chunk.js.map",
+    "578.0e7676bb.chunk.css.map": "/static/css/578.0e7676bb.chunk.css.map",
+    "578.01dd46fa.chunk.js.map": "/static/js/578.01dd46fa.chunk.js.map",
+    "853.9c916fe0.chunk.js.map": "/static/js/853.9c916fe0.chunk.js.map",
+    "241.9fabc03e.chunk.js.map": "/static/js/241.9fabc03e.chunk.js.map",
+    "505.89dcec93.chunk.js.map": "/static/js/505.89dcec93.chunk.js.map",
+    "402.1a8fd1e1.chunk.js.map": "/static/js/402.1a8fd1e1.chunk.js.map",
+    "453.92d8d202.chunk.js.map": "/static/js/453.92d8d202.chunk.js.map",
+    "422.5edf383a.chunk.js.map": "/static/js/422.5edf383a.chunk.js.map",
+>>>>>>> release-v1-sourabh
     "104.2be514ac.chunk.js.map": "/static/js/104.2be514ac.chunk.js.map",
     "750.bbf67c61.chunk.js.map": "/static/js/750.bbf67c61.chunk.js.map",
-    "90.038a5da8.chunk.js.map": "/static/js/90.038a5da8.chunk.js.map",
+    "90.21bf18fe.chunk.js.map": "/static/js/90.21bf18fe.chunk.js.map",
     "833.d0bd1171.chunk.js.map": "/static/js/833.d0bd1171.chunk.js.map",
+<<<<<<< HEAD
     "464.10dba234.chunk.js.map": "/static/js/464.10dba234.chunk.js.map",
     "394.4c39a191.chunk.js.map": "/static/js/394.4c39a191.chunk.js.map",
     "804.05d77606.chunk.js.map": "/static/js/804.05d77606.chunk.js.map",
@@ -167,5 +248,13 @@
   "entrypoints": [
     "static/css/main.e40a1b44.css",
     "static/js/main.676d9e47.js"
+=======
+    "804.05d77606.chunk.js.map": "/static/js/804.05d77606.chunk.js.map",
+    "698.092066fd.chunk.js.map": "/static/js/698.092066fd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3b20aa39.css",
+    "static/js/main.5dac8271.js"
+>>>>>>> release-v1-sourabh
   ]
 }

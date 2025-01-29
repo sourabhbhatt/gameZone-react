@@ -1,9 +1,9 @@
 import React, { memo } from "react";
-import { FaBitcoin } from "react-icons/fa";
 import { images } from "../assets/images";
 
-function PlayAndEarnButton() {
+function PlayAndEarnButton({ className = "" }) {
   return (
+<<<<<<< HEAD
     <div className="flex justify-center items-center">
       <button
         className="flex items-center px-4 py-2 bg-gradient-to-r from-pink-500 via-orange-400 to-pink-500 
@@ -18,6 +18,14 @@ function PlayAndEarnButton() {
           PLAY & EARN
         </span>
       </button>
+=======
+    <div className={`flex justify-center items-center ${className}`}>
+      <img
+        src={images.playAndEarn}
+        alt="Play and Earn"
+        className="w-[108px] h-[28px] object-contain sm:w-[120px] sm:h-[32px] md:w-[140px] md:h-[36px] lg:w-[160px] lg:h-[40px]"
+      />
+>>>>>>> release-v1-sourabh
     </div>
   );
 }

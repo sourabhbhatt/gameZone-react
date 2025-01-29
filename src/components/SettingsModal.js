@@ -1,9 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
-import { FaTimes } from "react-icons/fa";
-import { TbMusic, TbMusicOff } from "react-icons/tb"
+import { IoCloseOutline } from "react-icons/io5";
 import { useSelector, useDispatch } from "react-redux";
-import { PiSpeakerSimpleHighFill,PiSpeakerSimpleSlashFill } from "react-icons/pi";
 import {
   toggleSound,
   toggleMusic,
@@ -11,14 +9,18 @@ import {
   setMusicVolume,
 } from "../redux/slices/appSlice";
 import "../App.css";
+import { images } from "../assets/images";
 
 const defultThemeConfig = {
   bg: "#5C59F1",
+  gradientBg: [],
   switchTogglerEnabledColor: "gray",
   switchTogglerDisabledColor: "gray",
   barColor: "gray",
   titleColor: "#ffffff",
   headingColor: "#ffffff",
+  thumbEnabledColor: "#ffffff",
+  thumbDisabledColor: "#ffffff",
 };
 
 const SettingsModal = ({
@@ -31,10 +33,23 @@ const SettingsModal = ({
     (state) => state.app.soundSettings
   );
 
+  // Prevent scrolling when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
   return (
     <motion.div
-      className={`fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50`}
+      className={`fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50 overflow-hidden`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -46,16 +61,20 @@ const SettingsModal = ({
         transition={{ type: "spring", stiffness: 200, damping: 20 }}
         className="relative w-80 p-6 rounded-2xl shadow-lg"
         style={{
-          background: `${themeConfig?.bg || "#ffffff"}`,
+          background:
+            Array.isArray(themeConfig?.gradientBg) &&
+            themeConfig?.gradientBg.length > 0
+              ? `linear-gradient(${themeConfig.gradientBg.join(", ")})`
+              : themeConfig?.bg || "#ffffff",
         }}
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className={`absolute top-4 right-4 text-xl hover:text-black`}
+          className={`absolute top-[27px] left-4 text-xl hover:text-black`}
           style={{ color: themeConfig.headingColor }}
         >
-          <FaTimes />
+          <IoCloseOutline className="h-[26px] w-[26px]" />
         </button>
 
         {/* Modal Title */}
@@ -63,7 +82,7 @@ const SettingsModal = ({
           style={{ color: themeConfig.headingColor }}
           className={`text-center text-lg font-semibold mb-6`}
         >
-          {'Settings'}
+          {"Settings"}
         </h2>
 
         {/* Sound Settings */}
@@ -77,9 +96,15 @@ const SettingsModal = ({
             <div className="flex items-center space-x-3">
               <div className="bg-gray-200 w-8 h-8 flex items-center justify-center rounded-lg">
                 {soundEnabled ? (
-                  <PiSpeakerSimpleHighFill className="text-black text-lg" />
+                  <img
+                    src={images.soundEnabled}
+                    className="text-black text-lg"
+                  />
                 ) : (
-                  <PiSpeakerSimpleSlashFill className="text-gray-500 text-lg" />
+                  <img
+                    src={images.soundDisabled}
+                    className="text-gray-500 text-lg"
+                  />
                 )}
               </div>
               <span
@@ -89,7 +114,7 @@ const SettingsModal = ({
                 Sound
               </span>
             </div>
-            <label className="inline-flex items-center">
+            <label className="inline-flex items-center ">
               <input
                 type="checkbox"
                 className="hidden"
@@ -101,19 +126,27 @@ const SettingsModal = ({
                 }}
               />
               <div
-                className={`w-10 h-5 flex items-center rounded-full p-1 cursor-pointer transition-all ${
+                className={`w-[47px] h-[24px] flex items-center rounded-full p-1 cursor-pointer transition-all ${
                   soundEnabled ? "bg-gray-500" : "bg-gray-300"
                 }`}
                 style={{
+                  borderWidth: "1.5px",
+                  borderStyle: "solid",
+                  borderColor: "#D1D5DB",
                   backgroundColor: soundEnabled
                     ? themeConfig.switchTogglerEnabledColor
                     : themeConfig.switchTogglerDisabledColor,
                 }}
               >
                 <motion.div
-                  className={`w-4 h-4 bg-white rounded-full shadow ${
+                  className={`w-[20px] h-[20px] bg-white rounded-full shadow ${
                     soundEnabled ? "translate-x-5" : ""
                   }`}
+                  style={{
+                    backgroundColor: soundEnabled
+                      ? themeConfig.thumbEnabledColor
+                      : themeConfig.thumbDisabledColor,
+                  }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 />
               </div>
@@ -131,7 +164,7 @@ const SettingsModal = ({
               style={{
                 "--slider-fill-color": soundEnabled
                   ? themeConfig.barColor
-                  : "gray",
+                  : "#fff",
                 "--slider-value": `${soundEnabled ? soundVolume : 0}%`,
               }}
               disabled={!soundEnabled}
@@ -153,9 +186,15 @@ const SettingsModal = ({
             <div className="flex items-center space-x-3">
               <div className="bg-gray-200 w-8 h-8 flex items-center justify-center rounded-lg">
                 {musicEnabled ? (
-                  <TbMusic className="text-black text-lg" />
+                  <img
+                    src={images.musicEnabled}
+                    className="text-black text-lg"
+                  />
                 ) : (
-                  <TbMusicOff className="text-gray-500 text-lg" />
+                  <img
+                    src={images.musicDisabled}
+                    className="text-gray-500 text-lg"
+                  />
                 )}
               </div>
               <span
@@ -180,17 +219,25 @@ const SettingsModal = ({
                 }}
               />
               <div
-                className={`w-10 h-5 flex items-center rounded-full p-1 cursor-pointer transition-all`}
+                className={`w-[47px] h-[24px] flex items-center rounded-full p-1 cursor-pointer transition-all`}
                 style={{
+                  borderWidth: "1.5px",
+                  borderStyle: "solid",
+                  borderColor: "#D1D5DB",
                   backgroundColor: musicEnabled
                     ? themeConfig.switchTogglerEnabledColor
                     : themeConfig.switchTogglerDisabledColor,
                 }}
               >
                 <motion.div
-                  className={`w-4 h-4 bg-white rounded-full shadow ${
+                  className={`w-[20px] h-[20px] bg-white rounded-full shadow ${
                     musicEnabled ? "translate-x-5" : ""
                   }`}
+                  style={{
+                    backgroundColor: musicEnabled
+                      ? themeConfig.thumbEnabledColor
+                      : themeConfig.thumbDisabledColor,
+                  }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 />
               </div>
@@ -208,7 +255,7 @@ const SettingsModal = ({
               style={{
                 "--slider-fill-color": musicEnabled
                   ? themeConfig.barColor
-                  : "black",
+                  : "#fff",
                 "--slider-value": `${musicEnabled ? musicVolume : 0}%`,
                 cursor: musicEnabled ? "pointer" : "not-allowed",
               }}
@@ -224,4 +271,4 @@ const SettingsModal = ({
   );
 };
 
-export default React.memo(SettingsModal);
+export default SettingsModal;
