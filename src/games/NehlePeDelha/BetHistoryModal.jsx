@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { IoClose } from "react-icons/io5"; // Import the cross icon
 import HistoryCard from "./HistoryCard";
 
 const BetHistoryModal = ({ isOpen, onClose, betHistory }) => {
+  // Prevent scrolling when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, [isOpen]);
   if (!isOpen) return null;
 
   return (

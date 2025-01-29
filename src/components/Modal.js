@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
 import { images } from "../assets/images";
 
@@ -12,6 +12,21 @@ const Modal = ({
   titleStyles = {},
   closeButtonStyles = {},
 }) => {
+
+  // Prevent scrolling when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, [isOpen]);
+
+
   if (!isOpen) return null;
 
   return (

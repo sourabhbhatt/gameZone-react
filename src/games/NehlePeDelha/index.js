@@ -81,7 +81,7 @@ const index = memo(() => {
   }, []);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen overflow-hidden">
       {loading && <Loader color={"#ffffff"} size={60} speed={0.8} />}
       <div
         className="relative h-[458px] w-full bg-black/10 bg-cover bg-center"
