@@ -24,7 +24,7 @@ const BetHistoryModal = ({ isOpen, onClose, betHistory }) => {
       style={{ touchAction: "none" }} // Prevent mobile gestures from interfering
     >
       <div
-        className="w-full h-full pb-5 bg-gradient-to-t from-[#9C64E2] to-[#623AA2] rounded-t-3xl flex flex-col"
+        className="w-full h-full pb-5 bg-gradient-to-t from-[#9C64E2] to-[#623AA2] rounded-t-3xl flex flex-col px-2.5"
         style={{
           WebkitOverflowScrolling: "touch", // Enable smooth scrolling for iOS
           maxHeight: "60vh", // Set maximum height
@@ -33,11 +33,11 @@ const BetHistoryModal = ({ isOpen, onClose, betHistory }) => {
         }}
       >
         {/* Header */}
-        <div className="sticky top-0 bg-transparent  items-center justify-between p-4 z-10">
+        <div className="sticky top-0 bg-transparent  items-center justify-between p-4 z-10 pt-7">
           <button onClick={onClose} className="text-white text-3xl">
             <IoClose />
           </button>
-          <h2 className="text-white text-[24px] font-semiBold font-outfit">
+          <h2 className="text-white text-[24px] font-semibold font-outfit">
             Bet history
           </h2>
         </div>

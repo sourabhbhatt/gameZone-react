@@ -144,7 +144,6 @@ const TicTacToeLanding = memo(() => {
       }}
     >
       {loading && <Loader size={60} speed={0.8} />}
-<<<<<<< HEAD
       <header className="w-full">
         <GameHeader
           title=""
@@ -165,25 +164,6 @@ const TicTacToeLanding = memo(() => {
           <GlowingTitle className="mt-2">Tic Tac Toe</GlowingTitle>
 
           <p className="text-xs text-gray-300 mt-1 font-outfit max-w-xs mx-auto">
-=======
-      <GameHeader
-        isGameScreen={false}
-        isBackButton={false}
-        themeConfig={{
-          bg: "#ffffff",
-          switchTogglerEnabledColor: "#34eb49",
-          switchTogglerDisabledColor: "gray",
-          barColor: "#7A7A7A",
-          titleColor: "#000000",
-          headingColor: "#000000",
-        }}
-      />
-      <main className="w-full max-w-lg px-4 mt-12">
-        <PlayAndEarnButton className="absolute bottom-4 left-1/2 transform -translate-x-1/2" />
-        <section className="text-center mt-5">
-          <h1 className="text-3xl font-bold">Tic Tac Toe</h1>
-          <p className="text-sm text-gray-300 mt-2">
->>>>>>> release-v1-sourabh
             Experience the timeless classic Tic Tac Toe! Challenge yourself or
             your friends to align three X's or O's in a row and claim victory!
           </p>

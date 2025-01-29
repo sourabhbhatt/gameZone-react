@@ -56,6 +56,21 @@ const glowAnimation = keyframes`
   100% { filter: brightness(1); }
 `;
 
+const blastOut = keyframes`
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5) rotate(45deg);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(0) rotate(90deg);
+    opacity: 0;
+  }
+`;
+
 const BoardContainer = styled.div`
   position: relative;
   box-sizing: border-box;
@@ -134,6 +149,18 @@ const GridLine = styled.div`
 `;
 
 const Cell = styled(motion.div)`
+  ${({ isWinning }) => isWinning && css`
+    animation: ${celebrate} 0.5s ease-in-out;
+  `}
+  
+  ${({ isLosing }) => isLosing && css`
+    animation: ${blastOut} 0.5s ease-in-out forwards;
+  `}
+  
+  ${({ isReplacing }) => isReplacing && css`
+    animation: ${popIn} 0.5s ease-in-out 0.5s forwards;
+  `}
+  
   display: flex;
   justify-content: center;
   align-items: center;
@@ -142,17 +169,10 @@ const Cell = styled(motion.div)`
   border: 2px solid transparent;
   transition: all 0.3s ease;
 
-  ${props => props.isWinning && css`
-    animation: ${winAnimation} 0.5s ease infinite;
-    svg {
-      animation: ${glowAnimation} 1s ease infinite;
-    }
-  `}
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-  }
+  // &:hover {
+  //   background: rgba(255, 255, 255, 0.1);
+  //   border-radius: 12px;
+  // }
 `;
 
 const WinningLine = styled.div`
@@ -165,6 +185,7 @@ const WinningLine = styled.div`
 
 const TicTacToeBoard = ({ gameState = [], winningCombination = null, onMove }) => {
   const [displayState, setDisplayState] = useState(gameState);
+  const [animationPhase, setAnimationPhase] = useState('initial'); // 'initial', 'blasting', 'replacing'
   
   useEffect(() => {
     if (winningCombination && gameState[winningCombination[0]]) {
@@ -172,41 +193,62 @@ const TicTacToeBoard = ({ gameState = [], winningCombination = null, onMove }) =
       
       // First update winning cells' animation
       setDisplayState([...gameState]);
+      setAnimationPhase('blasting');
       
-      // Then fill the board with winning symbol after a delay
-      const timer = setTimeout(() => {
+      // Then fill the board with winning symbol after the blast animation
+      const replaceTimer = setTimeout(() => {
+        // Create array with winning symbol in all positions
         const newState = Array(9).fill(winningSymbol);
         setDisplayState(newState);
-      }, 1000);
+        setAnimationPhase('replacing');
+      }, 500); // After blast animation
       
-      return () => clearTimeout(timer);
+      return () => clearTimeout(replaceTimer);
     } else {
       setDisplayState(gameState);
+      setAnimationPhase('initial');
     }
   }, [winningCombination, gameState]);
-
-  const winningCombinations = [
-    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-    [0, 4, 8], [2, 4, 6] // Diagonals
-  ];
 
   const isWinningCell = (index) => {
     if (!winningCombination) return false;
     return winningCombination.includes(index);
   };
 
+  const isLosingCell = (index) => {
+    if (!winningCombination || !displayState[index]) return false;
+    const winningSymbol = gameState[winningCombination[0]];
+    return displayState[index] !== winningSymbol && animationPhase === 'blasting';
+  };
+
+  const shouldShowSymbol = (index) => {
+    if (animationPhase === 'initial') return displayState[index];
+    if (animationPhase === 'blasting') {
+      // During blasting, show original symbols
+      return displayState[index];
+    }
+    if (animationPhase === 'replacing') {
+      // During replacing, show winning symbol in all cells
+      return displayState[index];
+    }
+    return displayState[index];
+  };
+
   const renderCell = (index) => {
-    const isWinning = winningCombination?.includes(index);
-    const symbol = displayState[index];
+    const isWinning = isWinningCell(index);
+    const isLosing = isLosingCell(index);
+    const symbol = shouldShowSymbol(index);
+    const isReplacing = animationPhase === 'replacing';
 
     return (
       <Cell
         key={index}
         isWinning={isWinning}
+        isLosing={isLosing}
+        isReplacing={isReplacing}
         onClick={() => !displayState[index] && onMove(index)}
       >
-        {symbol && (
+        {(symbol || animationPhase === 'replacing') && (
           <motion.div
             initial={{ scale: 0 }}
             animate={{ 
@@ -214,7 +256,8 @@ const TicTacToeBoard = ({ gameState = [], winningCombination = null, onMove }) =
               transition: {
                 type: "spring",
                 stiffness: 260,
-                damping: 20
+                damping: 20,
+                delay: isReplacing ? index * 0.1 : 0 // Add delay based on index for replacing phase
               }
             }}
           >
@@ -224,6 +267,12 @@ const TicTacToeBoard = ({ gameState = [], winningCombination = null, onMove }) =
       </Cell>
     );
   };
+
+  const winningCombinations = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+    [0, 4, 8], [2, 4, 6] // Diagonals
+  ];
 
   const getWinningLine = () => {
     const margin = "15%"; // 20px margin from corners

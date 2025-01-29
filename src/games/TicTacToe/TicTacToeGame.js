@@ -1,5 +1,6 @@
 import React, { memo, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import Confetti from 'react-confetti';
 
 import PlayerInfo from "./PlayerInfo";
 import WinnerModal from "./WinnerModal";
@@ -40,6 +41,23 @@ const TicTacToeGame = memo(() => {
     currentPlayer,
     isClickBlocked,
   } = useTicTacToe(ticTacToeGameConfig, selectedOption, entryFee);
+
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     joinGame();
@@ -101,25 +119,21 @@ const TicTacToeGame = memo(() => {
         backgroundRepeat: 'no-repeat',
       }}
     >
+      {status === "win" && (
+        <Confetti
+          width={windowSize.width}
+          height={windowSize.height}
+          numberOfPieces={200}
+          recycle={false}
+          colors={['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff']}
+          gravity={0.3}
+          tweenDuration={4000}
+        />
+      )}
       <GameHeader
-<<<<<<< HEAD
         title=""
         showBackButton={true}
         className="bg-transparent"
-=======
-        isGameScreen={true}
-        showCrossIcon
-        themeConfig={{
-          bg: "#ffffff",
-          switchTogglerEnabledColor: "#34eb49",
-          switchTogglerDisabledColor: "gray",
-          barColor: "#7A7A7A",
-          titleColor: "#000000",
-          headingColor: "#000000",
-        }}
-        showSettingsIcon
-        title="Tic Tac Toe"
->>>>>>> release-v1-sourabh
       />
 
       <div className="flex-1 flex flex-col items-center justify-between overflow-hidden py-4">
@@ -162,23 +176,6 @@ const TicTacToeGame = memo(() => {
         </div>
       </div>
 
-<<<<<<< HEAD
-=======
-      <div className="mt-6">
-        <TicTacToeBoard
-          gameState={gameState}
-          winningCombination={winningCombination}
-          onMove={(index) => {
-            if (!isClickBlocked) handleMove(index);
-          }}
-        />
-      </div>
-
-      {currentPlayer === selectedOption && (
-        <Timer timeLeft={timeLeft} warningTimeStartsFrom={5} />
-      )}
-
->>>>>>> release-v1-sourabh
       {showWinnerModal && (
         <WinnerModal
           winnerDetails={winnerDetails}

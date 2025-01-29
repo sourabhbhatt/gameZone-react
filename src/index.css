@@ -19,45 +19,8 @@ code {
     monospace;
 }
 
-<<<<<<< HEAD
-.broswer-safe-area {
-  height: calc(100vh - env(safe-area-inset-top));
-  /* Accounts for safe area and UI elements */
-  width: 100%;
-  overflow: hidden;
-  /* Prevent scrolling */
-}
-
-.feeselector-border {
-  position: relative;
-  z-index: 1;
-  overflow: hidden; /* Ensures pseudo-element stays inside rounded corners */
-}
-
-.feeselector-border::before {
-  content: '';
-  position: absolute;
-  inset: 0; /* Fills the entire element */
-  border-radius: inherit; /* Matches the parent's border-radius */
-  background: radial-gradient(circle at 49.84% 0%, #FFFFFF 0%, rgba(205, 205, 205, 0) 49.01%, rgba(153, 153, 153, 0.23) 100%);
-  opacity: 0; /* Initially hidden */
-  transition: opacity 0.3s ease-in-out; /* Smooth transition effect */
-  z-index: -1; /* Places the border behind the content */
-}
-
-.feeselector-border:hover::before {
-  opacity: 1; /* Makes the gradient border visible on hover */
-}
-
-
-.feeselector-bg {
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.31) 100%);
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  
-=======
 @layer base {
   body {
     @apply m-0 p-0 box-border;
   }
->>>>>>> release-v1-sourabh
 }
