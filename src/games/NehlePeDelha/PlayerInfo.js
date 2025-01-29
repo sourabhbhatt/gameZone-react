@@ -118,7 +118,7 @@ const PlayerInfo = ({
   };
 
   const amountBlock = (
-    <div className="flex flex-row items-center space-x-2 relative">
+    <div className="flex flex-row items-center space-x-1 relative -ml-2">
       {displayCoins && (
         <div className="absolute inset-0 flex justify-center items-center">
           <AnimatePresence>

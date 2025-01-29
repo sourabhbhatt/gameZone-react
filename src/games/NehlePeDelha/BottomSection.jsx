@@ -27,7 +27,7 @@ const BottomSection = ({
     <div
       className={`relative w-full max-w-lg mt-2 p-4 sm:p-6 bg-transparent 
         bg-cover bg-center bg-no-repeat rounded-t-3xl ${
-          disabled ? "opacity-70 pointer-events-none" : ""
+          disabled ? "opacity-60 pointer-events-none [filter:brightness(0.4)]" : ""
         }`}
       style={{ backgroundImage: `url(${BetDetailsSection})` }}
     >
@@ -109,7 +109,7 @@ const BottomSection = ({
             : "bg-[#EEEEEE] text-[#4A2574] hover:scale-105"
         } flex items-center justify-center mx-auto font-outfit font-semibold text-[16px]`}
       >
-        Reveal cards
+        Reveal card
       </button>
     </div>
   );

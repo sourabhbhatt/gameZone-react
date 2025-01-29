@@ -6,6 +6,8 @@ import { IoCloseOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import { images } from "../assets/images";
 import { formatINRLocale } from "../utils";
+import cross2 from "../assets/Close.png";
+import settings from "../assets/settings.png";
 const defultThemeConfig = {
   bg: "#5C59F1",
   gradientBg: ["#4A2574", "#B277F5"],
@@ -67,14 +69,14 @@ const GameHeader = memo(
         {!!isBackButton && (
           <button
             onClick={onBackPress}
-            className={`text-2xl text-white flex items-center justify-center 
-              w-[32px] h-[32px] bg-black bg-opacity-20 rounded-full ${
-                isBackButton ? "rounded-sm" : "rounded-full"
+            className={`text-4xl text-white flex items-center justify-center 
+              w-[32px] h-[32px] bg-black bg-opacity-20 rounded-full border-[1px] border-[#0000001A] ${
+                isBackButton ? "rounded-md" : "rounded-full"
               }
                 ${isGameScreen ? "bg-white/10" : "bg-[#616161]"}
               `}
           >
-            {showCrossIcon ? <IoCloseOutline /> : <FaAngleLeft />}
+            {showCrossIcon ? <img src={cross2} alt="cross" className="w-[26px] h-[26px] opacity-90" /> : <FaAngleLeft />}
           </button>
         )}
 
@@ -106,13 +108,15 @@ const GameHeader = memo(
           {!!menuButton && (
             <button
               onClick={onMenuPress}
-              className={`flex items-center justify-center w-[35px] h-[35px] 
-                rounded-full text-white text-2xl ml-4 ${
+              className={`text-4xl text-white flex items-center justify-center 
+              w-[32px] h-[32px] bg-black bg-opacity-20 rounded-full border-[1px] border-[#0000001A] ${
                   isGameScreen ? "bg-white/10" : "bg-[#0000009E]"
+                } ${
+                  isBackButton ? "rounded-md" : "rounded-full"
                 }`}
             >
               {showSettingsIcon ? (
-                <FaCog className="w-[18px] h-[18px]" />
+               <img src={settings} alt="settings" className="w-[18px] h-[18px]" />
               ) : (
                 <FaEllipsisV className="w-[18px] h-[18px]" />
               )}
