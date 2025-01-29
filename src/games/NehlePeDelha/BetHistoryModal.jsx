@@ -20,7 +20,7 @@ const BetHistoryModal = ({ isOpen, onClose, betHistory }) => {
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-end z-50"
+      className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-end z-50"
       style={{ touchAction: "none" }} // Prevent mobile gestures from interfering
     >
       <div

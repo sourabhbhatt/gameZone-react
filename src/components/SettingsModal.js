@@ -49,7 +49,7 @@ const SettingsModal = ({
   if (!isOpen) return null;
   return (
     <motion.div
-      className={`fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50 overflow-hidden`}
+      className={`fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50 overflow-hidden`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -59,7 +59,7 @@ const SettingsModal = ({
         animate={{ y: 0, scale: 1 }}
         exit={{ y: "-50%", scale: 0.8 }}
         transition={{ type: "spring", stiffness: 200, damping: 20 }}
-        className="relative w-80 p-6 rounded-2xl shadow-lg"
+        className="relative w-80 p-6 rounded-[32px] shadow-lg"
         style={{
           background:
             Array.isArray(themeConfig?.gradientBg) &&
@@ -71,16 +71,16 @@ const SettingsModal = ({
         {/* Close Button */}
         <button
           onClick={onClose}
-          className={`absolute top-[27px] left-4 text-xl hover:text-black`}
+          className={`absolute top-[34px] left-[22px] text-xl hover:text-black`}
           style={{ color: themeConfig.headingColor }}
         >
-          <IoCloseOutline className="h-[26px] w-[26px]" />
+          <img src={images.cross} className="h-[26px] w-[26px]" />
         </button>
 
         {/* Modal Title */}
         <h2
           style={{ color: themeConfig.headingColor }}
-          className={`text-center text-lg font-semibold mb-6`}
+          className={`text-center text-[16px] font-outfit font-semibold mt-[10px] mb-[30px]`}
         >
           {"Settings"}
         </h2>
@@ -108,7 +108,7 @@ const SettingsModal = ({
                 )}
               </div>
               <span
-                className="text-sm font-medium"
+                className="text-[14px] font-outfit font-regular"
                 style={{ color: themeConfig.titleColor }}
               >
                 Sound

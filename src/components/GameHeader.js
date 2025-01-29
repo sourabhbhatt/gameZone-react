@@ -76,7 +76,15 @@ const GameHeader = memo(
                 ${isGameScreen ? "bg-white/10" : "bg-[#616161]"}
               `}
           >
-            {showCrossIcon ? <img src={cross2} alt="cross" className="w-[26px] h-[26px] opacity-90" /> : <FaAngleLeft />}
+            {showCrossIcon ? (
+              <img
+                src={cross2}
+                alt="cross"
+                className="w-[26px] h-[26px] opacity-90"
+              />
+            ) : (
+              <FaAngleLeft />
+            )}
           </button>
         )}
 
@@ -109,14 +117,17 @@ const GameHeader = memo(
             <button
               onClick={onMenuPress}
               className={`text-4xl text-white flex items-center justify-center 
-              w-[32px] h-[32px] bg-black bg-opacity-20 rounded-full border-[1px] border-[#0000001A] ${
-                  isGameScreen ? "bg-white/10" : "bg-[#0000009E]"
-                } ${
-                  isBackButton ? "rounded-md" : "rounded-full"
-                }`}
+              w-[32px] h-[32px] bg-black bg-opacity-20 rounded-md border-[1px] 
+              border-[#0000001A] ${
+                isGameScreen ? "bg-white/10" : "bg-[#0000009E]"
+              }`}
             >
               {showSettingsIcon ? (
-               <img src={settings} alt="settings" className="w-[18px] h-[18px]" />
+                <img
+                  src={settings}
+                  alt="settings"
+                  className="w-[18px] h-[18px]"
+                />
               ) : (
                 <FaEllipsisV className="w-[18px] h-[18px]" />
               )}

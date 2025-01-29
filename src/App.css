@@ -68,7 +68,7 @@
   background: linear-gradient(
     to right,
     var(--slider-fill-color, gray) var(--slider-value, 0%),
-    #ccc var(--slider-value, 0%)
+    #fff var(--slider-value, 0%)
   );
   border-radius: 4px;
   outline: none;
@@ -81,7 +81,7 @@
   height: 18px;
   background: #C09BFF;
   border-radius: 50%;
-  border: 2px solid var(--slider-fill-color, #C09BFF);
+  border: 1px solid var(--slider-thumb-border-color, #fff);
   cursor: pointer;
   position: relative;
 }
@@ -91,7 +91,7 @@
   height: 16px;
   background: #C09BFF;
   border-radius: 50%;
-  border: 2px solid var(--slider-fill-color, #C09BFF);
+  border: 2px solid var(--slider-fill-color, #fff);
   cursor: pointer;
 }
 

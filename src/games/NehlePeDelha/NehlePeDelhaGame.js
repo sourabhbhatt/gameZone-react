@@ -212,12 +212,12 @@ const NehlePeDelhaGame = () => {
         themeConfig={{
           bg: "#4A2574",
           gradientBg: ["#4A2574", "#B277F5"],
-          switchTogglerEnabledColor: "#B277F5",
+          switchTogglerEnabledColor: "#ffffff",
           switchTogglerDisabledColor: "#ffffff",
           barColor: "#C09BFF",
           titleColor: "#ffffff",
           headingColor: "#ffffff",
-          thumbEnabledColor: "#ffffff",
+          thumbEnabledColor: "#4A2574",
           thumbDisabledColor: "#D1D5DB",
         }}
         showCrossIcon
