@@ -203,8 +203,7 @@ const NehlePeDelhaGame = () => {
 
   return (
     <div
-      className="relative bg-[#0F0529] flex flex-col items-center justify-between 
-      h-[100vh] overflow-y-auto text-white bg-cover bg-center bg-no-repeat"
+      className="relative bg-[#0F0529] flex flex-col h-screen w-screen overflow-hidden text-white bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: `url(${LobbyBg})`, backgroundSize: "cover" }}
     >
       <GameHeader
@@ -226,15 +225,18 @@ const NehlePeDelhaGame = () => {
         title="NEHLE PE DEHLA"
       />
 
-      {/* <PlayerInfoHeader currentBetAmount={currentBetAmount} /> */}
-      <PlayerCardSection
-        botHand={botHand}
-        playerHand={playerHand}
-        cardsRevealed={cardsRevealed}
-        currentBetAmount={currentBetAmount}
-        winningPlayer={winningPlayer}
-      />
+      {/* Player Cards Section */}
+      <div className="flex-1 flex items-center justify-center">
+        <PlayerCardSection
+          botHand={botHand}
+          playerHand={playerHand}
+          cardsRevealed={cardsRevealed}
+          currentBetAmount={currentBetAmount}
+          winningPlayer={winningPlayer}
+        />
+      </div>
 
+      {/* Bottom Section */}
       <BottomSection
         walletAmount={walletAmount}
         playingBetAmount={toalAmountForTheGame}
@@ -249,6 +251,7 @@ const NehlePeDelhaGame = () => {
         disabled={cardsRevealed}
       />
 
+      {/* Modals */}
       <CountdownRevealModal isOpen={isModalOpen} onReveal={revealCards} />
 
       <BetHistoryModal
@@ -258,8 +261,6 @@ const NehlePeDelhaGame = () => {
       />
 
       <WinningModal
-        //  isOpen={true}
-        //  winnerName={'You'}
         isOpen={isWinningModalOpen}
         winLossAmount={winLossAmount}
         onClose={() => {
