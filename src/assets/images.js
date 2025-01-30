@@ -7,6 +7,7 @@ import musicDisabled from "./musicDisabled.png";
 import soundEnabled from "./soundEnabled.png";
 import soundDisabled from "./soundDisabled.png";
 import playerBorder from "./playerBorder.png";
+import KebabMenu from "./KebabMenu.png";
 
 export const images = {
   coin: coinIcon,
@@ -18,4 +19,5 @@ export const images = {
   soundEnabled: soundEnabled,
   soundDisabled: soundDisabled,
   playerBorder: playerBorder,
+  kebabMenu:KebabMenu
 };

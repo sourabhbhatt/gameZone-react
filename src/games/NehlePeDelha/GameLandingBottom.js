@@ -29,9 +29,8 @@ const GameLandingBottom = ({
           <h3 className="text-[23px] font-bold text-[#ffffff] font-outfit">
             {NehlePeDelhaConfig.gameTitle}
           </h3>
-          <p className="text-[12px] font-outfit text-[#FFFFFF] mt-4">
-            {`Challenge your skills and strategy in this fun card game. Compete to
-        win exciting rewards and enjoy the thrill of victory!`}
+          <p className="text-[12px] font-outfit text-[#FFFFFF] mt-4 mx-[35px]">
+            {`Challenge your skills and strategy in this fun card game. Compete to win exciting rewards and enjoy the thrill of victory!`}
           </p>
         </section>
         <div className="p-2 mt-4 justify-end">
@@ -49,7 +48,7 @@ const GameLandingBottom = ({
             walletAmount={walletAmount}
             thumbColor={"#C09BFF"}
           />
-          <div className="flex justify-between font-outfit text-[14px] font-regular items-center mb-4 mt-4">
+          <div className="flex justify-between font-outfit text-[14px] font-regular items-center mb-4 mt-[10px] mx-[8px]">
             <span>{formatINRLocale(minimumAmount)}</span>
             <span>{formatINRLocale(walletAmount)}</span>
           </div>
@@ -80,7 +79,7 @@ const GameLandingBottom = ({
               className="w-4 sm:w-5 h-4 sm:h-5 object-contain animate-spin-slow"
             />
             <span className="text-[16px] font-outfit font-semibold">
-              {formatINRLocale(currentFee)}
+              {`${formatINRLocale(currentFee)}`}
             </span>
           </button>
         </div>

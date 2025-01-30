@@ -77,8 +77,8 @@
 
 .range-slider::-webkit-slider-thumb {
   appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 21px;
+  height: 21px;
   background: #C09BFF;
   border-radius: 50%;
   border: 1px solid var(--slider-thumb-border-color, #fff);

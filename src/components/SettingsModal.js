@@ -162,6 +162,8 @@ const SettingsModal = ({
               value={soundEnabled ? soundVolume : 0}
               className="w-full range-slider"
               style={{
+                borderRadius: "32px",
+                height: "11px",
                 "--slider-fill-color": soundEnabled
                   ? themeConfig.barColor
                   : "#fff",
@@ -253,6 +255,8 @@ const SettingsModal = ({
               value={musicEnabled ? musicVolume : 0}
               className="w-full range-slider"
               style={{
+                borderRadius: "32px",
+                height: "11px",
                 "--slider-fill-color": musicEnabled
                   ? themeConfig.barColor
                   : "#fff",

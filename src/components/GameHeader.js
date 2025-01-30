@@ -108,7 +108,7 @@ const GameHeader = memo(
                 alt="Coin"
                 className="w-5 h-5 object-contain"
               />
-              <span className="ml-2 text-lg font-bold text-white font-outfit">
+              <span className="ml-2 text-[16px] font-medium text-white font-outfit">
                 {formatINRLocale(amountOnWallet)}
               </span>
             </div>
@@ -117,7 +117,7 @@ const GameHeader = memo(
             <button
               onClick={onMenuPress}
               className={`text-4xl text-white flex items-center justify-center 
-              w-[32px] h-[32px] bg-black bg-opacity-20 rounded-md border-[1px] 
+              w-[32px] h-[32px] bg-opacity-20 rounded-md border-[1px] 
               border-[#0000001A] ${
                 isGameScreen ? "bg-white/10" : "bg-[#0000009E]"
               }`}
@@ -129,7 +129,7 @@ const GameHeader = memo(
                   className="w-[18px] h-[18px]"
                 />
               ) : (
-                <FaEllipsisV className="w-[18px] h-[18px]" />
+                <img src={images.kebabMenu} className="w-[24px] h-[24px]" />
               )}
             </button>
           )}
