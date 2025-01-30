@@ -1,17 +1,21 @@
 import React, { memo, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import Confetti from 'react-confetti';
 
 import PlayerInfo from "./PlayerInfo";
 import WinnerModal from "./WinnerModal";
 import Timer from "../../components/Timer";
-import TicTacToeBoard from "./TicTacToeBoard";
+import TicTacToeBoard from "../../components/TicTacToeBoard";
 import GameHeader from "../../components/GameHeader";
 import GameSuccessModal from "./GameSuccessModal";
 
 import useTicTacToe from "./hooks/useTicTacToe";
 
-import tictactoegameBg from "./assets/tictactoegameBg.png";
+import tictactoegameBg from "../../assets/tictactoeBgGame.png";
 import ticTacToeGameConfig from "./ticTacToeGameConfig.json";
+import sleep from "../../utils/sleep";
+import badgetictactoe from "../../assets/badgetictactoe.png";
+import useFullHeight from "../../hooks/useFullheight";
 
 const TicTacToeGame = memo(() => {
   const location = useLocation();
@@ -38,6 +42,23 @@ const TicTacToeGame = memo(() => {
     isClickBlocked,
   } = useTicTacToe(ticTacToeGameConfig, selectedOption, entryFee);
 
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   useEffect(() => {
     joinGame();
   }, [joinGame]);
@@ -54,23 +75,32 @@ const TicTacToeGame = memo(() => {
   useEffect(() => {
     let modalTimeout;
     if (status) {
-      if (["win", "lose", "tie"].includes(status)) {
-        setShowWinnerModal(true);
-        modalTimeout = setTimeout(() => {
-          setShowWinnerModal(false);
-          setResultModalInfo({
-            visible: true,
-            status,
-            winnerDetails,
-          });
-        }, 1000);
-        // } else {
-        //   setResultModalInfo({
-        //     visible: true,
-        //     status,
-        //     winnerDetails,
-        //   });
-      }
+      const showModal = async () => {
+        let modalTimeout;
+        if (status && ["win", "lose", "tie"].includes(status)) {
+          await sleep(3000); // wait for 3 seconds
+
+          setShowWinnerModal(true);
+          modalTimeout = setTimeout(() => {
+            setShowWinnerModal(false);
+            setResultModalInfo({
+              visible: true,
+              status,
+              winnerDetails,
+            });
+          }, 1000);
+          setShowWinnerModal(true);
+          modalTimeout = setTimeout(() => {
+            setShowWinnerModal(false);
+            setResultModalInfo({
+              visible: true,
+              status,
+              winnerDetails,
+            });
+          }, 1000);
+        }
+      };
+      showModal();
     }
 
     return () => {
@@ -78,59 +108,73 @@ const TicTacToeGame = memo(() => {
     };
   }, [status, winnerDetails]);
 
-  console.log("winnerDetails?.winner", winnerDetails?.winner);
-
+  useFullHeight();
   return (
     <div
-      className="flex flex-col items-center min-h-screen text-white "
-      style={{ backgroundImage: `url(${tictactoegameBg})` }}
+      className="flex flex-col h-screen max-h-screen overflow-hidden"
+      style={{
+        backgroundImage: `url(${tictactoegameBg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
     >
+      {status === "win" && (
+        <Confetti
+          width={windowSize.width}
+          height={windowSize.height}
+          numberOfPieces={200}
+          recycle={false}
+          colors={['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff']}
+          gravity={0.3}
+          tweenDuration={4000}
+        />
+      )}
       <GameHeader
-        isGameScreen={true}
-        showCrossIcon
-        themeConfig={{
-          bg: "#ffffff",
-          switchTogglerEnabledColor: "#34eb49",
-          switchTogglerDisabledColor: "gray",
-          barColor: "#7A7A7A",
-          titleColor: "#000000",
-          headingColor: "#000000",
-        }}
-        showSettingsIcon
-        title="Tic Tac Toe"
+        title=""
+        showBackButton={true}
+        className="bg-transparent"
       />
 
-      <div className="flex flex-col items-center space-y-4 mt-4">
-        <div className="flex justify-center items-center space-x-8">
-          <PlayerInfo
-            name="You"
-            avatar={require("../../assets/avatar.png")}
-            isActive={isPlayerTurn}
-            choice={selectedOption}
+      <div className="flex-1 flex flex-col items-center justify-between overflow-hidden py-4">
+        <div className="flex flex-col items-center">
+          <div className="flex justify-between items-center w-full max-w-md px-4">
+            <PlayerInfo
+              type="user"
+              choice={selectedOption}
+              isActive={currentPlayer === "user"}
+              avatar={require("../../assets/avatar.png")}
+            />
+            <span className="text-md font-bold text-white mt-[27%]">vs</span>
+            <PlayerInfo
+              type="bot"
+              choice={selectedOption === "X" ? "O" : "X"}
+              isActive={currentPlayer === "bot"}
+              isBot={true}
+              avatar={require("../../assets/bot.png")}
+            />
+          </div>
+          <img src={badgetictactoe} alt="Badge" className="w-16 mt-2" />
+        </div>
+
+        <div className="flex flex-col items-start justify-start flex-1 min-h-0 scale-90">
+          <TicTacToeBoard 
+            gameState={gameState} 
+            winningCombination={winningCombination} 
+            onMove={(index) => {
+              if (!isClickBlocked) handleMove(index);
+            }}
           />
-          <span className="text-2xl font-bold text-white">VS</span>
-          <PlayerInfo
-            name="Bot"
-            isBot
-            isActive={!isPlayerTurn}
-            choice={selectedOption === "X" ? "O" : "X"}
+        </div>
+
+        <div className="w-full flex justify-center mb-4">
+          <Timer 
+            timeLeft={timeLeft} 
+            warningTimeStartsFrom={5} 
+            show={isPlayerTurn && !["win", "lose", "tie"].includes(status)} 
           />
         </div>
       </div>
-
-      <div className="mt-6">
-        <TicTacToeBoard
-          gameState={gameState}
-          winningCombination={winningCombination}
-          onMove={(index) => {
-            if (!isClickBlocked) handleMove(index);
-          }}
-        />
-      </div>
-
-      {currentPlayer === selectedOption && (
-        <Timer timeLeft={timeLeft} warningTimeStartsFrom={5} />
-      )}
 
       {showWinnerModal && (
         <WinnerModal

@@ -12,7 +12,7 @@ const EntryFeeSelector = memo(
     };
 
     return (
-      <div className="w-full max-w-lg mt-8 px-4">
+      <div className="w-full max-w-lg mt-8 px-0">
         <h2 className="text-lg mb-6 text-center text-gray-100 font-outfit font-semibold">
           Select Entry Fee
         </h2>
@@ -21,43 +21,56 @@ const EntryFeeSelector = memo(
           {fees.map((fee) => (
             <div
               key={fee.value}
-              className={`relative flex flex-col items-center cursor-pointer bg-black-400 ${
+              className={`relative flex flex-col items-center cursor-pointer mx-1 ${
                 fee.value === selectedFee
-                  ? "border-[2px] border-gradient-to-r from-green-400 via-green-800 to-green-500 shadow-[0_0_12px_rgba(34,197,94,0.9)]"
-                  : "border-[1px] border-gray-700"
-              } text-white p-4 rounded-lg shadow-md w-28 h-36 transition-all`}
+                  ? "border-[1px] border-green-400 shadow-md"
+                  : "border-[1px] border-gray-700 bg-[#ffffff10]"
+              } text-white p-3 rounded-lg w-24 h-32 transition-all`}
               onClick={() => handleFeeSelect(fee)}
+              style={{
+                boxShadow:
+                  fee.value === selectedFee
+                    ? "0 0 20px rgba(20, 255, 0, 0.5), inset 0 0 17px rgba(30, 189, 59, 0.7)"
+                    : "0 0 10px rgba(0, 0, 0, 0.3), inset 0 0 5px rgba(0, 0, 0, 0.5)",
+              }}
             >
               {/* Recommended Badge */}
               {fee.recommended && (
-                <div className="absolute -top-3 px-2 py-1 text-xs bg-gradient-to-r from-green-500 to-green-400 text-white rounded-full shadow-md font-outfit">
+                <div className="absolute -top-3 px-2 py-0.5 text-[10px] bg-gradient-to-r from-green-500 to-green-400 text-white rounded-full shadow-md font-outfit font-semibold">
                   Recommended
                 </div>
               )}
 
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-1 mt-1">
                 <img
                   src={images.coin}
                   alt="Coin"
-                  className="w-5 h-5 object-contain"
+                  className="w-4 h-4 object-contain -mr-1"
                 />
-                <span className="text-lg font-bold font-outfit">{fee.value}</span>
+                <span className="text-base font-bold font-outfit">{fee.value}</span>
               </div>
 
-              <div className="w-full h-[1px] bg-gradient-to-r from-green-200 via-green-600 to-green-200 my-2"></div>
+              {/* Divider */}
+              <div
+                className="w-[40px] h-[1px] bg-white my-1"
+                style={{
+                  clipPath: 'polygon(0 0, 40% 0, 100% 100%, 0 40%)',
+                  opacity: 0.6,
+                }}
+              ></div>
 
-              <p className="text-sm text-center  text-gray-300 font-semibold font-outfit">
+              <p className="text-xs text-center text-gray-300 font-semibold font-outfit uppercase">
                 {fee.description}
               </p>
 
               {fee.value !== 0 && (
-                <div className="flex items-center space-x-2 mt-2">
+                <div className="flex items-center space-x-1 mt-1">
                   <img
                     src={images.coin}
                     alt="Coin"
-                    className="w-5 h-5 object-contain"
+                    className="w-4 h-4 object-contain -mr-1"
                   />
-                  <p className="text-lg text-gray-200 text-center font-bold font-outfit">
+                  <p className="text-base text-gray-200 text-center font-bold font-outfit">
                     {fee.winUpto}
                   </p>
                 </div>
@@ -65,11 +78,13 @@ const EntryFeeSelector = memo(
             </div>
           ))}
         </div>
-
-        <div className="w-full px-6 mt-6">
+        <div className="w-full px-6">
           <button
-            className="flex items-center justify-center w-full px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white 
-            rounded-full text-lg font-bold shadow-md hover:from-green-600 hover:to-green-700 transition-all space-x-2"
+            className="flex items-center justify-center w-full px-6 py-2.5 bg-gradient-to-b from-green-500 to-green-800 text-white 
+            rounded-2xl mt-16 text-base font-bold shadow-md hover:from-green-600 hover:to-green-700 transition-all space-x-2"
+            style={{
+              background: "linear-gradient(to bottom, rgba(66, 159, 99, 0.7), rgba(66, 159, 99, 1))",
+            }}
             onClick={() => {
               if (balance < selectedFee) {
                 showToastMessage("error", "Insufficient balance");

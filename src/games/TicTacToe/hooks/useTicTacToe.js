@@ -37,7 +37,6 @@ const useTicTacToe = (config, selectedOption, entryFee) => {
     socket.emit("resetGame", { player: selectedOption || data });
   }, []);
 
-
   const getGameSatus = useCallback((winner, playerSymbol) => {
 
     console.log(winner, playerSymbol);
@@ -56,6 +55,21 @@ const useTicTacToe = (config, selectedOption, entryFee) => {
 
   }, []);
 
+  const calculateWinningCombination = (board) => {
+    const winningCombinations = [
+      [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+      [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+      [0, 4, 8], [2, 4, 6] // Diagonals
+    ];
+
+    for (const combination of winningCombinations) {
+      const [a, b, c] = combination;
+      if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+        return combination;
+      }
+    }
+    return null;
+  };
 
   useEffect(() => {
     initializeSound("click", clickSound, { volume: soundVolume / 100 });
@@ -69,7 +83,15 @@ const useTicTacToe = (config, selectedOption, entryFee) => {
       dispatch(updateWallet(balance?.data || 0));
     });
     socket.on("gameUpdate", (updatedGameState) => {
-      console.log("updatedGameState::::", updatedGameState);
+      console.log("Game Update Received:", JSON.stringify(updatedGameState));
+      
+      // Calculate winning combination if we have a winner but no combination
+      if (updatedGameState.winner && !updatedGameState.winningCombination) {
+        updatedGameState.winningCombination = calculateWinningCombination(updatedGameState.board);
+      }
+      
+      console.log("Winning Combination:", updatedGameState.winningCombination);
+      
       setGameState(updatedGameState.board);
       setIsPlayerTurn(updatedGameState.currentPlayer === selectedOption);
       setStatus(getGameSatus(updatedGameState.winner, updatedGameState.playerSymbol));

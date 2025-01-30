@@ -11,6 +11,7 @@ const Modal = ({
   contentStyles = {},
   titleStyles = {},
   closeButtonStyles = {},
+  bgImage,
 }) => {
 
   // Prevent scrolling when modal is open
@@ -37,7 +38,9 @@ const Modal = ({
         }`}
         style={{
           backgroundColor: modalStyles.backgroundColor || "white",
-          width: modalStyles.width || "90%", // Default for mobile
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: "cover",
+          width: modalStyles.width || "100%", // Default for mobile
           maxWidth: modalStyles.maxWidth || "500px", // Limits width for desktop
           maxHeight: modalStyles.maxHeight || "90vh", // Ensures it doesn't exceed the viewport height
           padding: modalStyles.padding || "1.5rem",
@@ -54,7 +57,7 @@ const Modal = ({
               ${closeButtonStyles.className || ""}`}
             style={{
               fontSize: closeButtonStyles.fontSize || "1.5rem",
-              color: closeButtonStyles.color || "#333",
+              color: closeButtonStyles.color || "white",
               ...closeButtonStyles.style,
             }}
             aria-label="Close"

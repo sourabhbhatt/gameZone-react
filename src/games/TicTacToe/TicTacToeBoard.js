@@ -105,4 +105,4 @@ const TicTacToeBoard = ({ gameState, onMove, winningCombination }) => {
   );
 };
 
-export default React.memo(TicTacToeBoard);
+export default TicTacToeBoard;
