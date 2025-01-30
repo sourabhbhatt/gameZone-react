@@ -117,7 +117,7 @@ const GameHeader = memo(
             <button
               onClick={onMenuPress}
               className={`text-4xl text-white flex items-center justify-center 
-              w-[32px] h-[32px] bg-opacity-20 rounded-md border-[1px] 
+              w-[32px] h-[32px] bg-opacity-20 rounded-[8px] border-[1px] 
               border-[#0000001A] ${
                 isGameScreen ? "bg-white/10" : "bg-[#0000009E]"
               }`}
