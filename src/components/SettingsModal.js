@@ -21,6 +21,9 @@ const defultThemeConfig = {
   headingColor: "#ffffff",
   thumbEnabledColor: "#ffffff",
   thumbDisabledColor: "#ffffff",
+  bgImage: null,
+  sliderThumbColor: null,
+  sliderThumbBorderColor: null
 };
 
 const SettingsModal = ({
@@ -61,9 +64,10 @@ const SettingsModal = ({
         transition={{ type: "spring", stiffness: 200, damping: 20 }}
         className="relative w-80 p-6 rounded-[32px] shadow-lg"
         style={{
-          background:
-            Array.isArray(themeConfig?.gradientBg) &&
-            themeConfig?.gradientBg.length > 0
+          background: themeConfig?.bgImage 
+            ? `url(${themeConfig.bgImage}) center/cover no-repeat`
+            : Array.isArray(themeConfig?.gradientBg) &&
+              themeConfig?.gradientBg.length > 0
               ? `linear-gradient(${themeConfig.gradientBg.join(", ")})`
               : themeConfig?.bg || "#ffffff",
         }}
@@ -168,6 +172,8 @@ const SettingsModal = ({
                   ? themeConfig.barColor
                   : "#fff",
                 "--slider-value": `${soundEnabled ? soundVolume : 0}%`,
+                "--slider-thumb-color": themeConfig.sliderThumbColor || "#C09BFF",
+                "--slider-thumb-border-color": themeConfig.sliderThumbBorderColor || themeConfig.barColor || "#fff"
               }}
               disabled={!soundEnabled}
               onChange={(e) =>
@@ -261,6 +267,8 @@ const SettingsModal = ({
                   ? themeConfig.barColor
                   : "#fff",
                 "--slider-value": `${musicEnabled ? musicVolume : 0}%`,
+                "--slider-thumb-color": themeConfig.sliderThumbColor || "#C09BFF",
+                "--slider-thumb-border-color": themeConfig.sliderThumbBorderColor || themeConfig.barColor || "#fff",
                 cursor: musicEnabled ? "pointer" : "not-allowed",
               }}
               disabled={!musicEnabled}

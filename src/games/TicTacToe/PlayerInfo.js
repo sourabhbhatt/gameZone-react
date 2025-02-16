@@ -22,7 +22,7 @@ const AvatarContainer = styled.div`
   justify-content: center;
   align-items: center;
   background: rgba(0, 0, 0, 0.5);
-  // border: 1px solid ${props => props.isActive ? '#2ED573' : '#4A4A4A'};
+  border: 1px solid ${props => props.isActive ? '#2ED573' : '#4A4A4A'};
   transition: all 0.3s ease;
   margin-bottom: -0.25rem;
     &::before {
@@ -121,6 +121,8 @@ const ChoiceImage = styled.img`
 `;
 
 const PlayerInfo = ({ name, avatar, isActive, choice, isBot = false }) => {
+
+  console.log(isActive, ">>>>>is active")
   return (
     <PlayerContainer>
       <div className="flex flex-col items-center">

@@ -24,6 +24,7 @@ import bottombg from "../../assets/bottom-bg.png";
 
 import styled from "styled-components";
 import useFullHeight from "../../hooks/useFullheight";
+import bottomBg from "../../assets/bottom-bg.png";
 
 const GlowingTitle = styled.h2`
   font-size: 1.7rem;
@@ -152,6 +153,20 @@ const TicTacToeLanding = memo(() => {
           onBackClick={() => {
             // playClickSound();
             navigate(-1);
+          }}
+          themeConfig={{
+            bg: "#ffffff",
+            gradientBg: ["rgba(79, 164, 44, 1)", "rgba(79, 164, 44, 1)"],
+            switchTogglerEnabledColor: "rgba(79, 164, 44, 1)",
+            switchTogglerDisabledColor: "gray",
+            barColor: "rgba(79, 164, 44, 1)",
+            titleColor: "#ffffff",
+            headingColor: "#ffffff",
+            thumbEnabledColor: "#ffffff",
+            thumbDisabledColor: "#ffffff",
+            bgImage: bottomBg,
+            sliderThumbColor: "#ffffff",
+            sliderThumbBorderColor: "rgba(79, 164, 44, 1)"
           }}
         />
       </header>

@@ -136,20 +136,22 @@ const TicTacToeGame = memo(() => {
         className="bg-transparent"
       />
 
+      {console.log("currentPlayer>>>>>>", currentPlayer)}
+
       <div className="flex-1 flex flex-col items-center justify-between overflow-hidden py-4">
         <div className="flex flex-col items-center">
           <div className="flex justify-between items-center w-full max-w-md px-4">
             <PlayerInfo
               type="user"
               choice={selectedOption}
-              isActive={currentPlayer === "user"}
+              isActive={currentPlayer === "X"}
               avatar={require("../../assets/avatar.png")}
             />
             <span className="text-md font-bold text-white mt-[27%]">vs</span>
             <PlayerInfo
               type="bot"
               choice={selectedOption === "X" ? "O" : "X"}
-              isActive={currentPlayer === "bot"}
+              isActive={currentPlayer !== "X"}
               isBot={true}
               avatar={require("../../assets/bot.png")}
             />
